@@ -143,6 +143,17 @@ fn check_mesh_ready_no_rapier(
                     //     Indices::U32(indices) => {println!("I use U32"); indices.iter().map(|&i| i as usize).collect::<Vec<_>>()},
                     // };
 
+                    // let position_2 = mesh.clone().attribute(Mesh::ATTRIBUTE_POSITION)
+                    //     .and_then(|attr| if let VertexAttributeValues::Float32x3(pos) = attr { Some(pos) } else { None })
+                    //     .expect("Expected a VertexAttributeValues::Float32x3");
+                    let mesh_clone = mesh.clone();
+                    let position_2 = match mesh_clone.attribute(Mesh::ATTRIBUTE_POSITION) {
+                        Some(VertexAttributeValues::Float32x3(position_2)) => position_2,
+                        _ => panic!("Expected a VertexAttributeValues::Float32x3"),
+                    };
+
+
+
                     match indices_copy {
                         Indices::U16(indices) => mesh.insert_indices(Indices::U16(indices)),
                         Indices::U32(indices) => mesh.insert_indices(Indices::U32(indices)),
@@ -179,15 +190,15 @@ fn check_mesh_ready_no_rapier(
 
                     // Assign random colors to vertices
                     let mut rng = rand::thread_rng();
-                    let mut colors = vec![[0.0, 0.0, 0.0, 1.0]; positions.len()];
+                    let mut colors = vec![[0.0, 0.0, 0.0, 1.0]; position_2.len()];
 
 
                     // Iterate through the indices in sets of three (each triangle)
                     for vertexs in indices.chunks(3) {
                         // job 1: number of point in unit cube
-                        let p1 = &positions[vertexs[0]];
-                        let p2 = &positions[vertexs[1]];
-                        let p3 = &positions[vertexs[2]];
+                        let p1 = &position_2[vertexs[0]];
+                        let p2 = &position_2[vertexs[1]];
+                        let p3 = &position_2[vertexs[2]];
 
 
 
