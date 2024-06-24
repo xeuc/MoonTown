@@ -111,192 +111,81 @@ fn check_mesh_ready_no_rapier(
         }
 
         if let Some(mut mesh) = meshes.get_mut(mesh_handle) {
-
-
-            if let Some(indices) = mesh.indices() {
-                println!("Indices found before duplication.");
-            // Save indices before duplication
-            let indices_copy = indices.clone();
-
-            // Duplicate vertices to ensure no vertices are shared
-            // mesh.duplicate_vertices();                                             <--- Decoment it for anormal behaviour
-            match indices_copy {
-                Indices::U16(indices) => mesh.insert_indices(Indices::U16(indices)),
-                Indices::U32(indices) => mesh.insert_indices(Indices::U32(indices)),
-            }
-
-
-
-            // with_duplicated_vertices
-
-
-            // Debug output after duplicating vertices
-            if mesh.indices().is_some() {
-                println!("Indices reassigned after duplication.");
-            } else {
-                println!("Failed to reassign indices after duplication.");
-            }
-        } else {
-            println!("No indices found before duplication.");
-        }
+            mesh.duplicate_vertices();
+            // WHY THERE NO INDICE ANYMORE IN MESH? 
+            // NO INDICES
+            // YOU MAY NOT NEED THEM THOUGH, BUT IT's CLEARLY A BEVY MISSed FEATURE
  
-        if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) {
-            if let Some(indices) = mesh.indices() {
-                let indices = match indices {
-                    Indices::U16(indices) => indices.iter().map(|i| *i as usize).collect::<Vec<_>>(),
-                    Indices::U32(indices) => indices.iter().map(|i| *i as usize).collect::<Vec<_>>(),
-                };
+            if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.clone().attribute(Mesh::ATTRIBUTE_POSITION) {
 
-                // Assign random colors to vertices
                 let mut rng = rand::thread_rng();
                 let mut colors = vec![[0.0, 0.0, 0.0, 1.0]; positions.len()];
-                for vertexs in indices.chunks(3) {
-                    if vertexs.len() == 3 {
-                       
-                        // job 2: triangle color task
-                        let random_color = [
-                            rng.gen::<f32>(), // Red
-                            rng.gen::<f32>(), // Green
-                            rng.gen::<f32>(), // Blue
-                            1.,            // Alpha
-                        ];
+                let mut counter = 0;
+                for position_time_three in positions.chunks(3) {
+                    let random_color = [
+                        rng.gen::<f32>(), // Red
+                        rng.gen::<f32>(), // Green
+                        rng.gen::<f32>(), // Blue
+                        1.,            // Alpha
+                    ];
 
-                        colors[vertexs[0]] = random_color;
-                        colors[vertexs[1]] = random_color;
-                        colors[vertexs[2]] = random_color;
-
-                    } else {
-                        println!("est pas egual a trois :o");
+                    for _ in 0..3 {
+                        colors[counter] = random_color;
+                        counter += 1;
                     }
 
-                    // job 2: triangle color task
-                    // Insert the color attribute into the mesh
-                    mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
-
-                    
-                    // job 3: make the function run once (TODO make it be CALLED until finished only)
-                    commands.entity(entity).insert(Randomized);
                 }
-            } else {
-                println!("No indices found in the mesh after reassignment.");
-            }
-        } else {
-            println!("No vertex positions found in the mesh.");
-        }
- 
-                // let mesh_clone = mesh.clone();
-                // let position_2 = match mesh_clone.attribute(Mesh::ATTRIBUTE_POSITION) {
-                //     Some(VertexAttributeValues::Float32x3(position_2)) => position_2,
-                //     _ => panic!("Expected a VertexAttributeValues::Float32x3"),
-                // };
+                mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
+                commands.entity(entity).insert(Randomized);
 
 
 
-                // match indices_copy {
-                //     Indices::U16(indices) => mesh.insert_indices(Indices::U16(indices)),
-                //     Indices::U32(indices) => mesh.insert_indices(Indices::U32(indices)),
-                // }
-
-                // // Debug output after duplicating vertices
-                // if mesh.indices().is_some() {
-                //     println!("Indices reassigned after duplication.");
-                // } else {
-                //     println!("Failed to reassign indices after duplication.");
-                //     return
-                // }
-
-                // let indices = mesh.indices().unwrap();
-                // let indices = match indices {
-                //     Indices::U16(indices) => indices.iter().map(|i| *i as usize).collect::<Vec<_>>(),
-                //     Indices::U32(indices) => indices.iter().map(|i| *i as usize).collect::<Vec<_>>(),
-                // };
-
-                // // Function to check if a point is inside the unit cube
-                // // TODO, il manque le global transform 
-                // // let pos0 = transform.transform_point(Vec3::from(positions[vertexs[0]]));
-                // // let pos1 = transform.transform_point(Vec3::from(positions[vertexs[1]]));
-                // // let pos2 = transform.transform_point(Vec3::from(positions[vertexs[2]]));
-                // fn is_point_in_unit_cube(point: &[f32; 3]) -> bool {
-                //     (0.0..=1.0).contains(&point[0]) && // x
-                //     (0.0..=1.0).contains(&point[1]) && // y
-                //     (0.0..=1.0).contains(&point[2])    // z
-                // }
-
-
-                // let mut intersecting_triangles = Vec::new();
-
-
-                // // Assign random colors to vertices
-                // let mut rng = rand::thread_rng();
-                // let mut colors = vec![[0.0, 0.0, 0.0, 1.0]; position_2.len()];
-
-
-                // // Iterate through the indices in sets of three (each triangle)
-                // for vertexs in indices.chunks(3) {
-                //     // job 1: number of point in unit cube
-                //     let p1 = &position_2[vertexs[0]];
-                //     let p2 = &position_2[vertexs[1]];
-                //     let p3 = &position_2[vertexs[2]];
 
 
 
-                //     //-------------------------------------------------------------------------------------------
-                //     // Create an empty mutable vector called "remember"
-                //     let mut remember: Vec<usize> = Vec::new();
 
-                //     // Iterate through vertexs[0], vertexs[1], and vertexs[3]
-                //     for &vertex in &[vertexs[0], vertexs[1], vertexs[2]] {
-                //         // Check if vertex is already in remember
-                //         if remember.contains(&vertex) {
-                //             println!("FOUND A DUPLICATE: {}", vertex);
+                // if let Some(indices) = mesh.indices() {
+                //     let indices = match indices {
+                //         Indices::U16(indices) => indices.iter().map(|i| *i as usize).collect::<Vec<_>>(),
+                //         Indices::U32(indices) => indices.iter().map(|i| *i as usize).collect::<Vec<_>>(),
+                //     };
+
+                //     // Assign random colors to vertices
+                //     let mut rng = rand::thread_rng();
+                //     let mut colors = vec![[0.0, 0.0, 0.0, 1.0]; positions.len()];
+                //     for vertexs in indices.chunks(3) {
+                //         if vertexs.len() == 3 {
+                        
+                //             // job 2: triangle color task
+                //             let random_color = [
+                //                 rng.gen::<f32>(), // Red
+                //                 rng.gen::<f32>(), // Green
+                //                 rng.gen::<f32>(), // Blue
+                //                 1.,            // Alpha
+                //             ];
+
+                //             colors[vertexs[0]] = random_color;
+                //             colors[vertexs[1]] = random_color;
+                //             colors[vertexs[2]] = random_color;
+
                 //         } else {
-                //             // If not found, add vertex to remember
-                //             remember.push(vertex);
-
+                //             println!("est pas egual a trois :o");
                 //         }
+
+                //         // job 2: triangle color task
+                //         // Insert the color attribute into the mesh
+                //         mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
+
+                        
+                //         // job 3: make the function run once (TODO make it be CALLED until finished only)
+                //         commands.entity(entity).insert(Randomized);
                 //     }
-                //     //-------------------------------------------------------------------------------------------
-
-
-
-
-
-                //     // does_triangle_intersect_unit_cube ? 
-                //     if is_point_in_unit_cube(p1) || is_point_in_unit_cube(p2) || is_point_in_unit_cube(p3) {}
-                //         intersecting_triangles.push((p1.clone(), p2.clone(), p3.clone()));
-                    
-
-
-                //     // job 2: triangle color task
-                //     let random_color = [
-                //         rng.gen::<f32>(), // Red
-                //         rng.gen::<f32>(), // Green
-                //         rng.gen::<f32>(), // Blue
-                //         // p1[0], // Blue
-                //         // p1[1]/100., // Green
-                //         // p1[2], // Red
-                //         1.,            // Alpha
-                //     ];
-
-                //     colors[vertexs[0]] = random_color;
-                //     colors[vertexs[1]] = random_color;
-                //     colors[vertexs[2]] = random_color;
+                // } else {
+                //     println!("No indices found in the mesh after reassignment.");
                 // }
-
-                // // job 1: number of point in unit cube
-                // println!("Number of intersecting triangles: {}", intersecting_triangles.len());
-
-
-                // // job 2: triangle color task
-                // // Insert the color attribute into the mesh
-                // // mesh.remove_attribute(Mesh::ATTRIBUTE_COLOR); // march pas 
-                // mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors));
-
-                
-                // // job 3: make the function run once (TODO make it be CALLED until finished only)
-                // commands.entity(entity).insert(Randomized);
-
-
+            } else {
+                println!("No vertex positions found in the mesh.");
+            }
         } else {
             println!("PAS DE MESH");
         }
