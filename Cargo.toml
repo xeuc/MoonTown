@@ -1,0 +1,15 @@
+[package]
+name = "basic_game_1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.13.2"
+bevy_egui = "0.27.0"
+chrono = "0.4.38"
+rand = "0.8.5"
+
+[dependencies.async-std]
+version = "1.7.0"
+default-features = true
+features = ["std"]
