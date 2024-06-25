@@ -20,6 +20,7 @@ struct Player {
 struct Game {
     // board: Vec<Vec<Cell>>,
     player: Player,
+    map_triangle_colors: Vec<[f32; 4]>,
     // bonus: Bonus,
     // score: i32,
     // cake_eaten: u32,
@@ -120,6 +121,7 @@ fn setup2(
 struct Randomized;
 
 fn check_mesh_ready_no_rapier(
+    mut game: ResMut<Game>,
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
@@ -157,6 +159,7 @@ fn check_mesh_ready_no_rapier(
 
                 }
                 mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
+                game.map_triangle_colors = colors;
                 commands.entity(entity).insert(Randomized);
 
             } else {
@@ -195,7 +198,16 @@ fn bon_ta_gagne_voila_ton_update_de_merde(
     for (mesh_handle, transform ) in query.iter() {
         if let Some(mesh) = meshes.get_mut(mesh_handle) {
             if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.clone().attribute(Mesh::ATTRIBUTE_POSITION) {
-                let mut colors = vec![[0.0, 0.0, 0.0, 1.0]; positions.len()];
+
+                // let mut colors = match mesh.attribute(Mesh::ATTRIBUTE_COLOR) {
+                //     Some(VertexAttributeValues::Float32x4(colors2)) => colors2.clone(),
+                //     _ => {
+                //         println!("Error occurs on colors of the mesh. Id = 524");
+                //         return;
+                //     },
+                // };
+                let mut colors = game.map_triangle_colors.clone();
+
                 let mut counter = 0;
 
                 for position_time_three in positions.chunks(3) {
@@ -214,14 +226,6 @@ fn bon_ta_gagne_voila_ton_update_de_merde(
                     gizmos.ray_gradient(pos2, vec2_to_0, Color::BLUE, Color::RED);
 
 
-
-                    // if let Some(player_entity) = game.player.entity {
-                    //     if let Some(mut transform) = world.entity_mut(player_entity).get_mut::<Transform>() {
-                    //         transform.translation.x = 20.0;
-                    //     }
-                    // }
-                    // Set pos to 0 
-                    // *transforms.get_mut(game.player.entity.unwrap()).unwrap() = Transform {translation: Vec3::new(0., 0., 0.), ..default()};
                     let aze = *transforms.get_mut(game.player.entity.unwrap()).unwrap();
                     let coordinate = aze.translation;
                     for pos in [pos0, pos1, pos2] {
