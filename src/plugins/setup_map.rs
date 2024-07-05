@@ -1,5 +1,5 @@
 use std::borrow::BorrowMut;
-use std::default;
+use std::{cmp, default};
 
 use bevy::prelude::*;
 use bevy::render::mesh::{Indices, VertexAttributeValues};
@@ -156,6 +156,35 @@ fn check_mesh_ready_no_rapier(
                         colors[counter] = random_color;
                         counter += 1;
                     }
+
+
+
+                    // while being in the setup of the foreach triangles of the map
+                    // get the chunks 
+                    // 1 find the Xmin Xmax Ymin Ymax Zmin Zmax coordinate and you have your BIG box chunk
+
+                    let h = 1;
+
+                    let x0 = position_time_three[0][0]; let x1 = position_time_three[1][0]; let x2 = position_time_three[2][0];
+                    let y0 = position_time_three[0][1]; let y1 = position_time_three[1][1]; let y2 = position_time_three[2][1];
+                    let z0 = position_time_three[0][2]; let z1 = position_time_three[1][2]; let z2 = position_time_three[2][2];
+                    
+                    let xchunk_min = (cmp::min(x0, cmp::min(x1, x2))/h).floor(); let xchunk_max = max(x0, x1, x2);
+                    let ychunk_min = min(y0, y1, y2); let ychunk_max = max(y0, y1, y2);
+                    let zchunk_min = min(z0, z1, z2); let zchunk_max = max(z0, z1, z2);
+                    
+                    
+                    
+                    
+                    
+                    min(x0, )
+                    
+                    // but some of them are empty.. 
+                    // apres pour savoir le la ligne traverse le cube il faut aller en 2D:
+                    // foreach xa
+
+                    // après il y a est ce qu'on manque pas des carrées à l'interieur
+                    // (ou alors est ce quon a bien extudé l'exterieur?)
 
                 }
                 mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
