@@ -163,22 +163,139 @@ fn check_mesh_ready_no_rapier(
                     // get the chunks 
                     // 1 find the Xmin Xmax Ymin Ymax Zmin Zmax coordinate and you have your BIG box chunk
 
-                    let h = 1;
+                    let h:u8 = 1;
 
                     let x0 = position_time_three[0][0]; let x1 = position_time_three[1][0]; let x2 = position_time_three[2][0];
                     let y0 = position_time_three[0][1]; let y1 = position_time_three[1][1]; let y2 = position_time_three[2][1];
                     let z0 = position_time_three[0][2]; let z1 = position_time_three[1][2]; let z2 = position_time_three[2][2];
                     
-                    let xchunk_min = (cmp::min(x0, cmp::min(x1, x2))/h).floor(); let xchunk_max = max(x0, x1, x2);
-                    let ychunk_min = min(y0, y1, y2); let ychunk_max = max(y0, y1, y2);
-                    let zchunk_min = min(z0, z1, z2); let zchunk_max = max(z0, z1, z2);
+                    let x_min = x0.min(x1.min(x2)); let x_max = x0.max(x1.max(x2));
+                    let y_min = y0.min(y1.min(y2)); let y_max = y0.max(y1.max(y2));
+                    let z_min = z0.min(z1.min(z2)); let z_max = z0.max(z1.max(z2));
+
+                    fn get_chunk_coordinate(f: f32, h: u8) -> u8 {
+                        return (f/h as f32).floor() as u8;
+                    }
                     
+                    let xchunk_min = get_chunk_coordinate(x_min, h); let xchunk_max = get_chunk_coordinate(x_max, h);
+                    let ychunk_min = get_chunk_coordinate(y_min, h); let ychunk_max = get_chunk_coordinate(y_max, h);
+                    let zchunk_min = get_chunk_coordinate(z_min, h); let zchunk_max = get_chunk_coordinate(z_max, h);
+
+                    // TODO is ychunk_max = ychunk_max or ychunk_max = ychunk_max + h ? 
+
+                    // TODO erase nested code
+
+                    fn get_plane_equation(
+                        x0: f32, y0: f32, z0: f32,
+                        x1: f32, y1: f32, z1: f32,
+                        x2: f32, y2: f32, z2: f32,
+                        // x: f32, y: f32, z: f32,
+                    ) -> (f32, f32, f32, f32) {
+                        // Plan of the triangle
+                        let x10 = x1 - x0; let x20 = x2 - x0;
+                        let y10 = y1 - y0; let y20 = y2 - y0;
+                        let z10 = z1 - z0; let z20 = z2 - z0;
+                        // n = |   x   y   z |
+                        //     | x10 y10 z10 |
+                        //     | x20 y20 z20 |
+                        // let n = (y10*z20 - y20*z10)*x - (x10*z20 - x20*z10)*y + (x10*y20 - x20*y10)*z;
+                        let a = (y10*z20 - y20*z10); // TODO naming's rude man
+                        let b = - (x10*z20 - x20*z10);
+                        let c = (x10*y20 - x20*y10);
+                        // Plan is Ax + By + Cz = D
+                        let d = a*x0 + b*y0 + c*z0;
+                        return (a, b, c, d);
+
+                    }
+
+                    let (a, b, c, d) = get_plane_equation(x0, y0, z0, x1, y1, z1, x2, y2, z2);
+
+                    #[derive(Clone, Copy, PartialEq)]  // Assuming this trait is needed
+                    enum WhereIsThePointRegardingTheTriangle {
+                        OnTopOf,
+                        IntersectingIeInside,
+                        Below,
+                        Unknown,
+                    }
+                    // TODO do not recalculate the plane equasion each time
+                    fn where_is_the_point_regarding_the_triangle(
+                        a: f32, b: f32, c: f32, d: f32,
+                        x: f32, y: f32, z: f32,
+                    ) -> WhereIsThePointRegardingTheTriangle {
+                        // Epsilon value for floating-point comparison
+                        let e = 1e-6;
+
+                        let naming_var = a*x + b*y + c*z - d;
+                        if naming_var > e {
+                            return WhereIsThePointRegardingTheTriangle::OnTopOf;
+                        } else if naming_var < -e {
+                            return WhereIsThePointRegardingTheTriangle::Below;
+                        } else {
+                            return WhereIsThePointRegardingTheTriangle::IntersectingIeInside;
+                        }
+                    }
+
+                    // let mut where_is_the_point_regarding_the_triangle_sav: [[[WhereIsThePointRegardingTheTriangle; xchunk_max - xchunk_min + 1]; ychunk_max - ychunk_min + 1]; zchunk_max - zchunk_min + 1] ;
+                    let mut where_is_the_point_regarding_the_triangle_sav: Vec<Vec<Vec<WhereIsThePointRegardingTheTriangle>>> = vec![vec![vec![WhereIsThePointRegardingTheTriangle::Unknown; (xchunk_max - xchunk_min + 1) as usize]; (ychunk_max - ychunk_min + 1) as usize]; (zchunk_max - zchunk_min + 1) as usize]; // TODO Line a bit too long
                     
-                    
-                    
-                    
-                    min(x0, )
-                    
+                    // for each chunks containing (?) the triangle
+                    let mut is_the_chunk_sliced_by_the_triangle: bool = false; // #estimation
+                    for x in (xchunk_min..xchunk_max).step_by(h as usize) {
+                        for y in (ychunk_min..ychunk_max).step_by(h as usize) {
+                            for z in (zchunk_min..zchunk_max).step_by(h as usize) {
+                                let x = x as usize; let y = y as usize; let z = z as usize; let h = h as usize;
+                                
+                                
+                                
+                                fn fill_tab_with_pos_point(
+                                    where_is_the_point_regarding_the_triangle_sav: &mut Vec<Vec<Vec<WhereIsThePointRegardingTheTriangle>>>,
+                                    x: usize, y: usize, z: usize, 
+                                    a: f32, b: f32, c: f32, d: f32,
+                                ) {
+                                    // Is the pos of the point regarding the triangle is not already calculated? 
+                                    if where_is_the_point_regarding_the_triangle_sav[x][y][z] == WhereIsThePointRegardingTheTriangle::Unknown {
+                                        let where_is_tri = where_is_the_point_regarding_the_triangle(a, b, c, d, x as f32, y as f32, z as f32);
+                                        where_is_the_point_regarding_the_triangle_sav[x][y][z] = where_is_tri;
+                                    }
+                                }
+
+                                let xh: usize = (x + h) as usize; let yh: usize = (y + h) as usize; let zh: usize = (z + h) as usize; // temp values
+                                let points_to_test = [
+                                    [x , y , z ],
+                                    [x , y , zh],
+                                    [x , yh, z ],
+                                    [x , yh, zh],
+                                    [xh, y , z ],
+                                    [xh, y , zh],
+                                    [xh, yh, z ],
+                                    [xh, yh, zh],
+                                ];
+
+                                for triple_of_points in points_to_test {
+                                    fill_tab_with_pos_point(&mut where_is_the_point_regarding_the_triangle_sav, triple_of_points[0], triple_of_points[1], triple_of_points[2], a, b, c, d);
+                                }
+
+                                // Is the cube be sliced by the triangle
+                                let i_guess_the_pos_of_hte_point_is = where_is_the_point_regarding_the_triangle_sav[x][y][z];
+
+                                for triple_of_points in points_to_test { // TODO Don't check the first one twice.. 
+                                    if where_is_the_point_regarding_the_triangle_sav[triple_of_points[0]][triple_of_points[1]][triple_of_points[2]] != i_guess_the_pos_of_hte_point_is {
+                                        // YES THE TRIANGLE SLICE (or is contained in) the chunck
+                                        is_the_chunk_sliced_by_the_triangle = true;
+                                    }
+                                    break;
+                                }
+
+
+                            }
+                        }
+                    }
+
+                    if is_the_chunk_sliced_by_the_triangle {
+                        PUT IN VECT
+                    }
+
+
                     // but some of them are empty.. 
                     // apres pour savoir le la ligne traverse le cube il faut aller en 2D:
                     // foreach xa
