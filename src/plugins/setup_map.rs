@@ -163,15 +163,24 @@ fn check_mesh_ready_no_rapier(
                     // get the chunks 
                     // 1 find the Xmin Xmax Ymin Ymax Zmin Zmax coordinate and you have your BIG box chunk
 
+                    // set len of chunck
                     let h:u8 = 1;
 
+                    // make tri pos more readable
                     let x0 = position_time_three[0][0]; let x1 = position_time_three[1][0]; let x2 = position_time_three[2][0];
                     let y0 = position_time_three[0][1]; let y1 = position_time_three[1][1]; let y2 = position_time_three[2][1];
                     let z0 = position_time_three[0][2]; let z1 = position_time_three[1][2]; let z2 = position_time_three[2][2];
-                    
+
+                    // determine bounding box coord
                     let x_min = x0.min(x1.min(x2)); let x_max = x0.max(x1.max(x2));
                     let y_min = y0.min(y1.min(y2)); let y_max = y0.max(y1.max(y2));
                     let z_min = z0.min(z1.min(z2)); let z_max = z0.max(z1.max(z2));
+
+                    // test if triangle is ENTIRELY inside chunk (I hope)
+                    if x_min == x_max && y_min == y_max && z_min == z_max{
+                        // yes
+                        // TODO Add this triangle in chunk table bizz
+                    }
 
                     fn get_chunk_coordinate(f: f32, h: u8) -> u8 {
                         return (f/h as f32).floor() as u8;
@@ -295,13 +304,58 @@ fn check_mesh_ready_no_rapier(
                         PUT IN VECT
                     }
 
+                    // STEP 2 DIAGONALS 
+
+
 
                     // but some of them are empty.. 
                     // apres pour savoir le la ligne traverse le cube il faut aller en 2D:
                     // foreach xa
 
-                    // après il y a est ce qu'on manque pas des carrées à l'interieur
-                    // (ou alors est ce quon a bien extudé l'exterieur?)
+
+                    
+                    // 2D
+                    // https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+                    fn sign(
+                        xp1: f32, yp1: f32,
+                        xp2: f32, yp2: f32,
+                        xp3: f32, yp3: f32,
+                    ) -> f32 {
+                        return (xp1 - xp3) * (yp2 - yp3) - (xp2 - xp3) * (yp1 - yp3);
+                    }
+
+                    fn point_in_triangle(
+                        xpt: f32, ypt: f32, zpt: f32,
+                        xv1: f32, yv1: f32, zv1: f32,
+                        xv2: f32, yv2: f32, zv2: f32,
+                        xv3: f32, yv3: f32, zv3: f32,
+                    ) -> bool {
+                        let d1 = sign(
+                            xpt, ypt,
+                            xv1, yv1,
+                            xv2, yv2,
+                        );
+                        let d2 = sign(
+                            xpt, ypt,
+                            xv2, yv2,
+                            xv3, yv3,
+                        );
+                        let d3 = sign(
+                            xpt, ypt,
+                            xv3, yv3,
+                            xv1, yv1,
+                        );
+
+                        let has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+                        let has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+                        return !(has_neg && has_pos);
+                    }
+
+
+
+
+                    
 
                 }
                 mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
