@@ -301,7 +301,7 @@ fn check_mesh_ready_no_rapier(
                     }
 
                     if is_the_chunk_sliced_by_the_triangle {
-                        PUT IN VECT
+                        // TODO: PUT IN VECT
                     }
 
                     // STEP 2 DIAGONALS 
@@ -346,8 +346,8 @@ fn check_mesh_ready_no_rapier(
                             xv1, yv1,
                         );
 
-                        let has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
-                        let has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+                        let has_neg = (d1 < 0.) || (d2 < 0.) || (d3 < 0.);
+                        let has_pos = (d1 > 0.) || (d2 > 0.) || (d3 > 0.);
 
                         return !(has_neg && has_pos);
                     }
