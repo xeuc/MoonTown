@@ -69,7 +69,7 @@ fn _setup_fps(mut commands: Commands) {
 fn update_log_text(
     diagnostics: Res<DiagnosticsStore>,
     mut query: Query<&mut Text, With<FpsText>>,
-    mut cam_transforms: Query<&mut Transform, With<Camera>>,
+    mut cam_transforms: Query<&mut Transform, With<Camera>>, // TODO: do not use querry here
 ) {
     for mut text in &mut query {
         if let Some(fps) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FPS) {
