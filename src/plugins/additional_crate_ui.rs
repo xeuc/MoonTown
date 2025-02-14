@@ -4,6 +4,7 @@ use bevy_egui::egui::Pos2;
 
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
 
+
 pub struct UiPlugin;
 
 impl Plugin for UiPlugin {

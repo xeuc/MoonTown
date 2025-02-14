@@ -10,13 +10,16 @@
 //! The character controller logic is contained within the `plugin` module.
 //!
 //! For a kinematic character controller, see the `kinematic_character_3d` example.
-use bevy::{
-    asset::LoadState, core_pipeline::Skybox, prelude::*, render::{
-        render_resource::{TextureViewDescriptor, TextureViewDimension},
-        renderer::RenderDevice, texture::CompressedImageFormats,
-    }
-};
 
+use bevy::{
+    core_pipeline::Skybox,
+    image::CompressedImageFormats,
+    prelude::*,
+    render::{
+        render_resource::{TextureViewDescriptor, TextureViewDimension},
+        renderer::RenderDevice,
+    },
+};
 
 pub struct SkyboxPlugin;
 
@@ -66,7 +69,7 @@ fn cycle_cubemap_asset(
     asset_server: Res<AssetServer>,
     render_device: Res<RenderDevice>,
 ) {
-    let now = time.elapsed_seconds();
+    let now = time.elapsed_secs();
     if *next_swap == 0.0 {
         *next_swap = now + CUBEMAP_SWAP_DELAY;
         return;
@@ -110,7 +113,7 @@ fn asset_loaded(
     mut cubemap: ResMut<Cubemap>,
     mut skyboxes: Query<&mut Skybox>,
 ) {
-    if !cubemap.is_loaded && asset_server.load_state(&cubemap.image_handle) == LoadState::Loaded {
+    if !cubemap.is_loaded && asset_server.load_state(&cubemap.image_handle).is_loaded() {
         // info!("Swapping to {}...", CUBEMAPS[cubemap.index].0); // TODO
         let image = images.get_mut(&cubemap.image_handle).unwrap();
         // NOTE: PNGs do not have any metadata that could indicate they contain a cubemap texture,

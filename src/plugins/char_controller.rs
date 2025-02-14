@@ -131,7 +131,7 @@ fn movement(
     mut movement_event_reader: EventReader<MovementAction>,
     mut transform_of_player: Query<&mut Transform, With<Camera>>,
 ) {
-    let delta_time = time.delta_seconds();
+    let delta_time = time.delta_secs();
 
     for event in movement_event_reader.read() {
         match event {

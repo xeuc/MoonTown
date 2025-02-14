@@ -1,10 +1,12 @@
 use std::borrow::BorrowMut;
 use std::{cmp, default};
 
+use bevy::color::palettes::css;
+use bevy::pbr::{StandardMaterialKey, StandardMaterialUniform};
 use bevy::prelude::*;
 use bevy::render::mesh::{Indices, VertexAttributeValues};
 
-use bevy::asset::{AssetServer, Assets, Handle, LoadState};
+use bevy::asset::{AssetServer, Assets, LoadState};
 use bevy::core_pipeline::Skybox;
 
 use rand::*;
@@ -63,14 +65,15 @@ fn setup(
     // Player
     let skybox_handle = assets.load(super::skybox::CUBEMAPS[0].0); // TODO
     let entity_player = commands.spawn((
-        Camera3dBundle {
-            transform: Transform::from_xyz(0.0, 100., 0.0),
+        Camera3d {
+            // transform: Transform::from_xyz(0.0, 100., 0.0),
             ..default()
         },
         Skybox {
             image: skybox_handle.clone(),
             brightness: 1000.0,
-        },
+            rotation:  Quat::IDENTITY,
+            },
     ))
     .id()
     ;
@@ -101,13 +104,9 @@ fn setup2(
     commands.insert_resource(MeshHandle { handle: mesh_handle });
 
     // Charge la scène GLTF
-    commands.spawn(SceneBundle {
-        // scene: asset_server.load("triangle_simple.gltf#Scene0"),
-        // scene: asset_server.load("triangle_simple_2.gltf#Scene0"),
-        scene: asset_server.load("nulMap4.gltf#Scene0"),
-        // transform: Transform::from_xyz(0.0, 1000., 0.0),
-        ..default()
-    });
+    commands.spawn(SceneRoot(asset_server.load(
+        GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0"),
+    )));
 }
 
 
@@ -125,7 +124,7 @@ fn check_mesh_ready_no_rapier(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    query: Query<(Entity, &Handle<Mesh>, &Handle<StandardMaterial>, &GlobalTransform), Without<Randomized>>,
+    query: Query<(Entity, &Mesh3d, &MeshMaterial3d<StandardMaterial>, &GlobalTransform), Without<Randomized>>,
 ) {
     // println!("START FUNCTION check_mesh_ready_no_rapier");
     for (entity, mesh_handle, material_handle, global_transform) in query.iter() {
@@ -379,7 +378,7 @@ fn check_mesh_ready_no_rapier(
 fn bon_ta_gagne_voila_ton_update_de_merde(
     mut gizmos: Gizmos,
     mut meshes: ResMut<Assets<Mesh>>,
-    query: Query<(&Handle<Mesh>, &GlobalTransform)>,
+    query: Query<(&Mesh3d, &GlobalTransform)>,
     mut game: ResMut<Game>,
     mut commands: Commands,
     // mut world: ResMut<World>,
@@ -390,10 +389,10 @@ fn bon_ta_gagne_voila_ton_update_de_merde(
         Color::BLACK,
     );
     gizmos.linestrip_gradient_2d([
-        (Vec2::Y * 300., Color::BLUE),
-        (Vec2::new(-255., -155.), Color::RED),
-        (Vec2::new(255., -155.), Color::GREEN),
-        (Vec2::Y * 300., Color::BLUE),
+        (Vec2::Y * 300., css::BLUE),
+        (Vec2::new(-255., -155.), css::RED),
+        (Vec2::new(255., -155.), css::GREEN),
+        (Vec2::Y * 300., css::BLUE),
     ]);
     for (mesh_handle, transform ) in query.iter() {
         if let Some(mesh) = meshes.get_mut(mesh_handle) {
@@ -421,9 +420,9 @@ fn bon_ta_gagne_voila_ton_update_de_merde(
                     let vec1_to_2 = pos2 - pos1;
                     let vec2_to_0 = pos0 - pos2;
 
-                    gizmos.ray_gradient(pos0, vec0_to_1, Color::BLUE, Color::RED);
-                    gizmos.ray_gradient(pos1, vec1_to_2, Color::BLUE, Color::RED);
-                    gizmos.ray_gradient(pos2, vec2_to_0, Color::BLUE, Color::RED);
+                    gizmos.ray_gradient(pos0, vec0_to_1, css::BLUE, css::RED);
+                    gizmos.ray_gradient(pos1, vec1_to_2, css::BLUE, css::RED);
+                    gizmos.ray_gradient(pos2, vec2_to_0, css::BLUE, css::RED);
 
 
                     let aze = *transforms.get_mut(game.player.entity.unwrap()).unwrap();

@@ -1,91 +1,85 @@
-use bevy::{diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin}, prelude::*};
+//! Showcase how to use and configure FPS overlay.
+
+use bevy::{
+    dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin},
+    prelude::*,
+    text::FontSmoothing,
+};
+
+struct OverlayColor;
+
+impl OverlayColor {
+    const RED: Color = Color::srgb(1.0, 0.0, 0.0);
+    const GREEN: Color = Color::srgb(0.0, 1.0, 0.0);
+}
+
 pub struct FpsPlugin;
 
 impl Plugin for FpsPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Startup, setup_fps_2)
-            .add_systems(Update, update_log_text);
+            .add_plugins((
+                FpsOverlayPlugin {
+                    config: FpsOverlayConfig {
+                        text_config: TextFont {
+                            // Here we define size of our overlay
+                            font_size: 42.0,
+                            // If we want, we can use a custom font
+                            font: default(),
+                            // We could also disable font smoothing,
+                            font_smoothing: FontSmoothing::default(),
+                        },
+                        // We can also change color of the overlay
+                        text_color: OverlayColor::GREEN,
+                        enabled: true,
+                    },
+                },
+            ))
+            .add_systems(Startup, setup)
+            .add_systems(Update, customize_config);
+        
     }
 }
 
-#[derive(Component)]
-struct FpsText;
 
-fn setup_fps_2(
-    mut commands: Commands,
-) {
-    commands.spawn(
-        NodeBundle {
-            style: Style {
-                width: Val::Percent(100.),
-                align_items: AlignItems::Start,
-                justify_content: JustifyContent::Start,
-                ..default()
-            },
-            ..default()
-        },
-    )
-        .with_children(|parent| {
-            parent.spawn((
-                TextBundle::from_section(
-                format!(""),
+fn setup(mut commands: Commands) {
+    // We need to spawn a camera (2d or 3d) to see the overlay
+    commands.spawn(Camera2d);
 
-                TextStyle {
-                    font_size: 20.0,
-                    color: Color::rgb(0.5, 0.5, 1.0),
-                    ..default()
-                },
-            ).with_background_color(Color::rgb(1., 1., 1.)),
-            FpsText,));
-        },
-    
-    );
-}
+    // Instruction text
 
-
-fn _setup_fps(mut commands: Commands) {
     commands.spawn((
-        TextBundle::from_section(
-            "FPS: ",
-            TextStyle {
-                font: default(),
-                font_size: 20.0,
-                color: Color::TOMATO,
-                
-            },
-        )
-        .with_style(Style {
+        Text::new(concat!(
+            "Press 1 to toggle the overlay color.\n",
+            "Press 2 to decrease the overlay size.\n",
+            "Press 3 to increase the overlay size.\n",
+            "Press 4 to toggle the overlay visibility."
+        )),
+        Node {
             position_type: PositionType::Absolute,
-            top: Val::Px(5.0),
-            left: Val::Px(5.0),
+            bottom: Val::Px(12.),
+            left: Val::Px(12.),
             ..default()
-        }),
-        FpsText,
+        },
     ));
 }
 
-
-fn update_log_text(
-    diagnostics: Res<DiagnosticsStore>,
-    mut query: Query<&mut Text, With<FpsText>>,
-    mut cam_transforms: Query<&mut Transform, With<Camera>>, // TODO: do not use querry here
-) {
-    for mut text in &mut query {
-        if let Some(fps) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FPS) {
-            if let Some(value) = fps.smoothed() {
-                // Update the value of the second section
-                text.sections[0].value = format!("FPS: {value:.2}\n");
-            }
+fn customize_config(input: Res<ButtonInput<KeyCode>>, mut overlay: ResMut<FpsOverlayConfig>) {
+    if input.just_pressed(KeyCode::Digit1) {
+        // Changing resource will affect overlay
+        if overlay.text_color == OverlayColor::GREEN {
+            overlay.text_color = OverlayColor::RED;
+        } else {
+            overlay.text_color = OverlayColor::GREEN;
         }
-
-        for cam_transform in &mut cam_transforms.iter_mut() {
-            // append cam pos
-            text.sections[0].value += &format!("CAM_POS_X: {}\n", cam_transform.translation.x);//camTransform.translation.x
-            text.sections[0].value += &format!("CAM_POS_Y: {}\n", cam_transform.translation.y);//camTransform.translation.x
-            text.sections[0].value += &format!("CAM_POS_Z: {}\n", cam_transform.translation.z);//camTransform.translation.x
-            text.sections[0].value += &format!("COUCOU :D");//camTransform.translation.x
-        }
-
+    }
+    if input.just_pressed(KeyCode::Digit2) {
+        overlay.text_config.font_size -= 2.0;
+    }
+    if input.just_pressed(KeyCode::Digit3) {
+        overlay.text_config.font_size += 2.0;
+    }
+    if input.just_pressed(KeyCode::Digit4) {
+        overlay.enabled = !overlay.enabled;
     }
 }
