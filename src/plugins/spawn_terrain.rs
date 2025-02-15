@@ -8,8 +8,7 @@ const GRAVITY: f32 = -9.81;
 #[derive(Component)]
 struct Player;
 
-#[derive(Component)]
-struct Velocity(Vec3);
+
 
 pub struct SpawnTerrainPlugin;
 
@@ -53,7 +52,6 @@ fn setup(mut commands: Commands) {
             ..KinematicCharacterController::default()
         },
         Player,
-        Velocity(Vec3::ZERO),
         RigidBody::Dynamic,
         Collider::capsule_y(1.8, 1.0),
         ActiveEvents::COLLISION_EVENTS,

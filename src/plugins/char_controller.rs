@@ -1,4 +1,3 @@
-use std::f32::consts::PI;
 use bevy::prelude::*;
 
 use super::app_state::AppState;
@@ -25,66 +24,7 @@ pub enum MovementAction {
     DeJump,
 }
 
-/// A marker component indicating that an entity is using a character controller.
-#[derive(Component)]
-pub struct CharacterController;
 
-/// The acceleration used for character movement.
-#[derive(Component)]
-pub struct MovementAcceleration(f32);
-
-/// The damping factor used for slowing down movement.
-#[derive(Component)]
-pub struct MovementDampingFactor(f32);
-
-/// The strength of a jump.
-#[derive(Component)]
-pub struct JumpImpulse(f32);
-
-/// The maximum angle a slope can have for a character controller
-/// to be able to climb and jump. If the slope is steeper than this angle,
-/// the character will slide down.
-#[derive(Component)]
-pub struct MaxSlopeAngle(f32);
-
-/// A bundle that contains the components needed for a basic
-/// kinematic character controller.
-#[derive(Bundle)]
-pub struct CharacterControllerBundle {
-    character_controller: CharacterController,
-    movement: MovementBundle,
-}
-
-/// A bundle that contains components for character movement.
-#[derive(Bundle)]
-pub struct MovementBundle {
-    acceleration: MovementAcceleration,
-    damping: MovementDampingFactor,
-    jump_impulse: JumpImpulse,
-    max_slope_angle: MaxSlopeAngle,
-}
-
-impl MovementBundle {
-    pub const fn new(
-        acceleration: f32,
-        damping: f32,
-        jump_impulse: f32,
-        max_slope_angle: f32,
-    ) -> Self {
-        Self {
-            acceleration: MovementAcceleration(acceleration),
-            damping: MovementDampingFactor(damping),
-            jump_impulse: JumpImpulse(jump_impulse),
-            max_slope_angle: MaxSlopeAngle(max_slope_angle),
-        }
-    }
-}
-
-impl Default for MovementBundle {
-    fn default() -> Self {
-        Self::new(30.0, 0.9, 7.0, PI * 0.45)
-    }
-}
 
 
 /// Sends [`MovementAction`] events based on keyboard input.

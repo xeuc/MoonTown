@@ -1,17 +1,12 @@
-use std::borrow::BorrowMut;
-use std::{cmp, default};
 
 use bevy::color::palettes::css;
-use bevy::pbr::{StandardMaterialKey, StandardMaterialUniform};
 use bevy::prelude::*;
-use bevy::render::mesh::{Indices, VertexAttributeValues};
+use bevy::render::mesh::VertexAttributeValues;
 
-use bevy::asset::{AssetServer, Assets, LoadState};
+use bevy::asset::{AssetServer, Assets};
 use bevy::core_pipeline::Skybox;
 
-use bevy_rapier3d::prelude::*;
 
-use bevy_rapier3d::rapier::prelude::Collider;
 use rand::*;
 
 #[derive(Default)]
@@ -91,7 +86,7 @@ fn setup(
 
 #[derive(Resource)]
 struct MeshHandle {
-    handle: Handle<Mesh>,
+    _handle: Handle<Mesh>,
 }
 
 fn setup2(
@@ -104,7 +99,7 @@ fn setup2(
    
     let mesh_handle = asset_server.load("nulMap4.gltf#Mesh0/Primitive0");
 
-    commands.insert_resource(MeshHandle { handle: mesh_handle });
+    commands.insert_resource(MeshHandle { _handle: mesh_handle });
 
     // Charge la scène GLTF
     commands
@@ -140,12 +135,12 @@ fn check_mesh_ready_no_rapier(
     query: Query<(Entity, &Mesh3d, &MeshMaterial3d<StandardMaterial>, &GlobalTransform), Without<Randomized>>,
 ) {
     // println!("START FUNCTION check_mesh_ready_no_rapier");
-    for (entity, mesh_handle, material_handle, global_transform) in query.iter() {
+    for (entity, mesh_handle, material_handle, _global_transform) in query.iter() {
         if let Some(standard_material) = materials.get_mut(material_handle) {
-            standard_material.base_color = Color::rgb(1.0, 1.0, 1.0); // WHITE
+            standard_material.base_color = Color::srgb(1.0, 1.0, 1.0); // WHITE
         }
 
-        if let Some(mut mesh) = meshes.get_mut(mesh_handle) {
+        if let Some(mesh) = meshes.get_mut(mesh_handle) {
             mesh.duplicate_vertices();
             // WHY THERE NO INDICE ANYMORE IN MESH? 
             // NO INDICES
@@ -220,9 +215,9 @@ fn check_mesh_ready_no_rapier(
                         //     | x10 y10 z10 |
                         //     | x20 y20 z20 |
                         // let n = (y10*z20 - y20*z10)*x - (x10*z20 - x20*z10)*y + (x10*y20 - x20*y10)*z;
-                        let a = (y10*z20 - y20*z10); // TODO naming's rude man
+                        let a = y10*z20 - y20*z10; // TODO naming's rude man
                         let b = - (x10*z20 - x20*z10);
-                        let c = (x10*y20 - x20*y10);
+                        let c = x10*y20 - x20*y10;
                         // Plan is Ax + By + Cz = D
                         let d = a*x0 + b*y0 + c*z0;
                         return (a, b, c, d);
@@ -328,7 +323,7 @@ fn check_mesh_ready_no_rapier(
                     
                     // 2D
                     // https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
-                    fn sign(
+                    fn _sign(
                         xp1: f32, yp1: f32,
                         xp2: f32, yp2: f32,
                         xp3: f32, yp3: f32,
@@ -336,23 +331,23 @@ fn check_mesh_ready_no_rapier(
                         return (xp1 - xp3) * (yp2 - yp3) - (xp2 - xp3) * (yp1 - yp3);
                     }
 
-                    fn point_in_triangle(
-                        xpt: f32, ypt: f32, zpt: f32,
-                        xv1: f32, yv1: f32, zv1: f32,
-                        xv2: f32, yv2: f32, zv2: f32,
-                        xv3: f32, yv3: f32, zv3: f32,
+                    fn _point_in_triangle(
+                        xpt: f32, ypt: f32, _zpt: f32,
+                        xv1: f32, yv1: f32, _zv1: f32,
+                        xv2: f32, yv2: f32, _zv2: f32,
+                        xv3: f32, yv3: f32, _zv3: f32,
                     ) -> bool {
-                        let d1 = sign(
+                        let d1 = _sign(
                             xpt, ypt,
                             xv1, yv1,
                             xv2, yv2,
                         );
-                        let d2 = sign(
+                        let d2 = _sign(
                             xpt, ypt,
                             xv2, yv2,
                             xv3, yv3,
                         );
-                        let d3 = sign(
+                        let d3 = _sign(
                             xpt, ypt,
                             xv3, yv3,
                             xv1, yv1,
@@ -392,8 +387,8 @@ fn bon_ta_gagne_voila_ton_update_de_merde(
     mut gizmos: Gizmos,
     mut meshes: ResMut<Assets<Mesh>>,
     query: Query<(&Mesh3d, &GlobalTransform)>,
-    mut game: ResMut<Game>,
-    mut commands: Commands,
+    game: ResMut<Game>,
+    _commands: Commands,
     // mut world: ResMut<World>,
     mut transforms: Query<&mut Transform>,
 ) {
