@@ -9,6 +9,9 @@ use bevy::render::mesh::{Indices, VertexAttributeValues};
 use bevy::asset::{AssetServer, Assets, LoadState};
 use bevy::core_pipeline::Skybox;
 
+use bevy_rapier3d::prelude::*;
+
+use bevy_rapier3d::rapier::prelude::Collider;
 use rand::*;
 
 #[derive(Default)]
@@ -104,12 +107,22 @@ fn setup2(
     commands.insert_resource(MeshHandle { handle: mesh_handle });
 
     // Charge la scène GLTF
-    commands.spawn(SceneRoot(asset_server.load(
-        GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0"),
-    )));
+    commands
+        .spawn(SceneRoot(asset_server.load(
+            GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0"),
+        )));
+        // .insert(Collider::from_bevy_mesh(mesh_handle));
 }
 
 
+// fn i_hate_querry(
+//     commands: &mut Commands,
+//     query: Query<(Entity, &Mesh3d)>,
+// ) {
+//     for (entity, mesh) in query.iter() {
+//         commands.entity(entity).insert(Collider::from(mesh));
+//     }
+// }
 
 
 
@@ -425,8 +438,8 @@ fn bon_ta_gagne_voila_ton_update_de_merde(
                     gizmos.ray_gradient(pos2, vec2_to_0, css::BLUE, css::RED);
 
 
-                    let aze = *transforms.get_mut(game.player.entity.unwrap()).unwrap();
-                    let coordinate = aze.translation;
+                    let player_transform = *transforms.get_mut(game.player.entity.unwrap()).unwrap();
+                    let coordinate = player_transform.translation;
                     for pos in [pos0, pos1, pos2] {
                         if 10000. > (pos[0] - coordinate[0])*(pos[0] - coordinate[0]) + (pos[1] - coordinate[1])*(pos[1] - coordinate[1]) + (pos[2] - coordinate[2])*(pos[2] - coordinate[2]) {
                             colors[counter + 0] = [1., 0., 0., 1.];
@@ -443,7 +456,7 @@ fn bon_ta_gagne_voila_ton_update_de_merde(
                 println!("No vertex positions found in the mesh.");
             } 
         } else {
-            println!("PAS DE MESH");
+            println!("NO MESH");
         }
     }
 

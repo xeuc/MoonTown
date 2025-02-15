@@ -35,34 +35,11 @@ impl Plugin for FpsPlugin {
                     },
                 },
             ))
-            .add_systems(Startup, setup)
             .add_systems(Update, customize_config);
         
     }
 }
 
-
-fn setup(mut commands: Commands) {
-    // We need to spawn a camera (2d or 3d) to see the overlay
-    commands.spawn(Camera2d);
-
-    // Instruction text
-
-    commands.spawn((
-        Text::new(concat!(
-            "Press 1 to toggle the overlay color.\n",
-            "Press 2 to decrease the overlay size.\n",
-            "Press 3 to increase the overlay size.\n",
-            "Press 4 to toggle the overlay visibility."
-        )),
-        Node {
-            position_type: PositionType::Absolute,
-            bottom: Val::Px(12.),
-            left: Val::Px(12.),
-            ..default()
-        },
-    ));
-}
 
 fn customize_config(input: Res<ButtonInput<KeyCode>>, mut overlay: ResMut<FpsOverlayConfig>) {
     if input.just_pressed(KeyCode::Digit1) {

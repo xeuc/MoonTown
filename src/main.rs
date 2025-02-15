@@ -15,6 +15,7 @@ mod plugins {
     pub mod light;
     pub mod additional_crate_ui;
     pub mod app_state;
+    pub mod spawn_terrain;
 }
 
 fn main() {
@@ -34,6 +35,7 @@ fn main() {
             plugins::fps::FpsPlugin,
             plugins::additional_crate_ui::UiPlugin,
             plugins::app_state::AppStatePlugin,
+            plugins::spawn_terrain::SpawnTerrainPlugin,
         ))
         .run();
 }
@@ -88,3 +90,8 @@ fn main() {
 // but it also means the state is entirely transparent, without the need for propagating state through a retained tree.
 // In bevy, using bevy_egui, this state is accessed through the EguiContext resource - a single struct that contains the entire UI state.
 // When you have mutable access to the EguiContext, you can add widgets, updating the state.
+
+
+
+
+// Do INDEPENDANT plugins or look for plugins dependancies
