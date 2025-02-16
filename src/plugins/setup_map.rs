@@ -51,7 +51,10 @@ impl Plugin for SetupMapPlugin {
         // .add_systems(Update, check_mesh_ready_no_rapier.after(make_bevy_wait_bc_he_does_not_know_how))
 
         .add_systems(Update, check_mesh_ready_no_rapier)
-        .add_systems(Update, bon_ta_gagne_voila_ton_update_de_merde)
+        // .add_systems(Update, bon_ta_gagne_voila_ton_update_de_merde)
+
+        .add_systems(Startup, spawn_gltf_map)
+        .add_systems(Update, update_colliders)
         ;
     }
 }
@@ -83,38 +86,65 @@ fn cubemap_setup(
 
 
 
+fn _spawn_gltf_map_0(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    _meshes: Res<Assets<Mesh>>,
+) {
+    let _map_entity = commands.spawn(SceneRoot(asset_server.load(
+        GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Mesh0/Primitive0"),
+    )));
+    // map_entity.insert(Collider::from_bevy_mesh(mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap());
 
-#[derive(Resource)]
-struct MeshHandle {
-    _handle: Handle<Mesh>,
+    // if let Some(mesh) = meshes.get(&mesh_handle) {
+    // } else {
+    //     println!("NO mesh does not exist or is empty and it's a problem!")
+    // }
 }
+
+
+#[derive(Component)]
+struct ColliderWaitingForMesh;
 
 fn spawn_gltf_map(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    meshes: Res<Assets<Mesh>>, // Ajouté pour récupérer la ressource
 ) {
-    let mesh_handle = asset_server.load("nulMap4.gltf#Mesh0/Primitive0");
-    commands.insert_resource(MeshHandle { _handle: mesh_handle.clone() });
+    let mesh_handle: Mesh3d = bevy::prelude::Mesh3d(asset_server.load("nulMap4.gltf#Mesh0/Primitive0"));
 
-    if let Some(mesh) = meshes.get(&mesh_handle) {
-        // Spawn gltf scene
-        commands
-            .spawn(SceneRoot(asset_server.load(
-                GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0"),
-            )))
-            .insert(Collider::from_bevy_mesh(mesh, 
-                &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap())
-            ;
-    } else {
-        println!("NO mesh does not exist or is empty and it's a problem!")
+    commands.spawn((
+        SceneRoot(asset_server.load(
+            GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0"),
+        )),
+        mesh_handle.clone(), // On stocke le Handle pour l'utiliser plus tard
+        ColliderWaitingForMesh, // Un tag temporaire pour suivre les entités sans collider
+    ));
+}
+
+fn update_colliders(
+    mut commands: Commands,
+    meshes: Res<Assets<Mesh>>,
+    query: Query<(Entity, &Mesh3d), With<ColliderWaitingForMesh>>,
+) {
+    for (entity, mesh_handle) in query.iter() {
+        if let Some(mesh) = meshes.get(mesh_handle) {
+            commands.entity(entity).insert(
+                Collider::from_bevy_mesh(mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap()
+            );
+            commands.entity(entity).remove::<ColliderWaitingForMesh>(); // On enlève le tag une fois terminé
+        }
     }
 }
 
 
 
 
-// Définir un composant pour marquer les entités déjà randomisées
+
+
+
+
+
+// Random colored python
 #[derive(Component)]
 struct Randomized;
 
@@ -374,7 +404,7 @@ fn check_mesh_ready_no_rapier(
 
 
 
-fn bon_ta_gagne_voila_ton_update_de_merde(
+fn _bon_ta_gagne_voila_ton_update_de_merde(
     mut gizmos: Gizmos,
     mut meshes: ResMut<Assets<Mesh>>,
     query: Query<(&Mesh3d, &GlobalTransform)>,
