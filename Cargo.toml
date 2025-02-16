@@ -15,3 +15,10 @@ rand = "0.8.5"
 version = "1.13.0"
 default-features = true
 features = ["std"]
+
+
+[profile.release]
+opt-level = 3
+lto = "fat" # Link Time Optimization
+codegen-units = 1 # Compile All same time
+panic = "abort"
