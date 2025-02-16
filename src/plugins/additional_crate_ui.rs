@@ -3,6 +3,7 @@ use bevy_egui::egui::Pos2;
 // use bevy_egui::*;
 
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
+use bevy_rapier3d::prelude::KinematicCharacterControllerOutput;
 
 
 pub struct UiPlugin;
@@ -24,7 +25,8 @@ pub struct SliderValueSmiley{
 fn ui_example_system(
     mut query: Query<&mut Transform, With<Camera>>,
     mut slider_value_smiley: ResMut<SliderValueSmiley>,
-    mut contexts: EguiContexts
+    mut contexts: EguiContexts,
+    controllers: Query<(Entity, &KinematicCharacterControllerOutput, &Transform), Without<Camera>>,
 ) {
     egui::Window::new("Hello")
         .fixed_pos(Pos2::new(0., 40.))
@@ -51,6 +53,16 @@ fn ui_example_system(
                 );
                 ui.label(position_text.clone());
             }
+            for (entity, output, transform2) in controllers.iter() {
+                let ball_info_text = format!(
+                    "Entity: {:?}, Moved by {:?}, Grounded: {:?}, Position: {:?}",
+                    entity, output.effective_translation, output.grounded, transform2.translation
+                );
+                ui.label(ball_info_text);
+            }
+
         }
     );
 }
+
+

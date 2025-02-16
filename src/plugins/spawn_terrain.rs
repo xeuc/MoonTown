@@ -5,11 +5,6 @@ const SPEED: f32 = 10.0;
 const JUMP_FORCE: f32 = 10.0;
 const GRAVITY: f32 = -9.81;
 
-#[derive(Component)]
-struct Player;
-
-
-
 pub struct SpawnTerrainPlugin;
 
 impl Plugin for SpawnTerrainPlugin {
@@ -20,54 +15,42 @@ impl Plugin for SpawnTerrainPlugin {
             // .insert_resource(GravityScale(GRAVITY))
             .add_systems(Startup, setup)
             .add_systems(Update, player_movement)
-            .add_systems(Startup, setup_physics)
-            .add_systems(Update, read_result_system);
-    }
-}
-
-
-fn setup_physics(mut commands: Commands) {
-    commands
-        .spawn(RigidBody::KinematicPositionBased)
-        .insert(Collider::ball(0.5))
-        .insert(Transform::default())
-        .insert(KinematicCharacterController {
-            ..KinematicCharacterController::default()
-        });
-}
-
-fn read_result_system(controllers: Query<(Entity, &KinematicCharacterControllerOutput)>) {
-    for (entity, output) in controllers.iter() {
-        println!(
-            "Entity {:?} moved by {:?} and touches the ground: {:?}",
-            entity, output.effective_translation, output.grounded
-        );
+            ;
     }
 }
 
 
 fn setup(mut commands: Commands) {
-    commands.spawn((
-        KinematicCharacterController {
+    // spawn ball player (numpad)
+    commands
+        .spawn(RigidBody::KinematicPositionBased)
+        .insert(Collider::ball(0.5))
+        .insert(Transform::from_xyz(0.0, 200.0, 0.0))
+        .insert(KinematicCharacterController {
             ..KinematicCharacterController::default()
-        },
-        Player,
-        RigidBody::Dynamic,
-        Collider::capsule_y(1.8, 1.0),
-        ActiveEvents::COLLISION_EVENTS,
-        LockedAxes::ROTATION_LOCKED,
+        });
+
+    // commands.spawn((
+    //     KinematicCharacterController {
+    //         ..KinematicCharacterController::default()
+    //     },
+    //     Player,
+    //     RigidBody::Dynamic,
+    //     Collider::capsule_y(1.8, 1.0),
+    //     ActiveEvents::COLLISION_EVENTS,
+    //     LockedAxes::ROTATION_LOCKED,
         
-    ));
+    // ));
 
-    commands
-        .spawn(Collider::cuboid(200.0, 0.2, 200.0))
-        .insert(Transform::from_xyz(0.0, -4.0, 0.0));
+    // commands
+    //     .spawn(Collider::cuboid(200.0, 0.2, 200.0))
+    //     .insert(Transform::from_xyz(0.0, -4.0, 0.0));
 
-    commands
-        .spawn(RigidBody::Dynamic)
-        .insert(Collider::ball(1.))
-        .insert(Restitution::coefficient(1.4))
-        .insert(Transform::from_xyz(0.0, 8.0, 0.0));
+    // commands
+    //     .spawn(RigidBody::Dynamic)
+    //     .insert(Collider::ball(1.))
+    //     .insert(Restitution::coefficient(1.4))
+    //     .insert(Transform::from_xyz(0.0, 8.0, 0.0));
 }
 
 

@@ -7,6 +7,7 @@ use bevy::asset::{AssetServer, Assets};
 use bevy::core_pipeline::Skybox;
 
 
+use bevy_rapier3d::prelude::{Collider, ComputedColliderShape, TriMeshFlags};
 use rand::*;
 
 #[derive(Default)]
@@ -41,8 +42,8 @@ impl Plugin for SetupMapPlugin {
     fn build(&self, app: &mut App) {
         app
         .init_resource::<Game>()
-        .add_systems(Startup, setup2)
-        .add_systems(Startup, setup)
+        .add_systems(Startup, spawn_gltf_map)
+        .add_systems(Startup, cubemap_setup)
 
         // .add_systems(Startup, check_asset_load_state.after(setup2))
         
@@ -55,12 +56,11 @@ impl Plugin for SetupMapPlugin {
     }
 }
 
-fn setup(
+fn cubemap_setup(
     mut commands: Commands,
     assets: Res<AssetServer>,
     mut game: ResMut<Game>,
 ) {
-    // Player
     let skybox_handle = assets.load(super::skybox::CUBEMAPS[0].0); // TODO
     let entity_player = commands.spawn((
         Camera3d {
@@ -89,39 +89,30 @@ struct MeshHandle {
     _handle: Handle<Mesh>,
 }
 
-fn setup2(
+fn spawn_gltf_map(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
+    meshes: Res<Assets<Mesh>>, // Ajouté pour récupérer la ressource
 ) {
-    // Charge le handle du mesh
-    // let mesh_handle = asset_server.load("triangle_simple.gltf#Mesh0/Primitive0");
-    // let mesh_handle = asset_server.load("triangle_simple_2.gltf#Mesh1/Primitive0");
-   
     let mesh_handle = asset_server.load("nulMap4.gltf#Mesh0/Primitive0");
+    commands.insert_resource(MeshHandle { _handle: mesh_handle.clone() });
 
-    commands.insert_resource(MeshHandle { _handle: mesh_handle });
-
-    // Charge la scène GLTF
-    commands
-        .spawn(SceneRoot(asset_server.load(
-            GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0"),
-        )));
-        // .insert(Collider::from_bevy_mesh(mesh_handle));
+    if let Some(mesh) = meshes.get(&mesh_handle) {
+        // Spawn gltf scene
+        commands
+            .spawn(SceneRoot(asset_server.load(
+                GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0"),
+            )))
+            .insert(Collider::from_bevy_mesh(mesh, 
+                &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap())
+            ;
+    } else {
+        println!("NO mesh does not exist or is empty and it's a problem!")
+    }
 }
 
 
-// fn i_hate_querry(
-//     commands: &mut Commands,
-//     query: Query<(Entity, &Mesh3d)>,
-// ) {
-//     for (entity, mesh) in query.iter() {
-//         commands.entity(entity).insert(Collider::from(mesh));
-//     }
-// }
 
-
-
-// fn make_bevy_wait_bc_he_does_not_know_how() { }
 
 // Définir un composant pour marquer les entités déjà randomisées
 #[derive(Component)]

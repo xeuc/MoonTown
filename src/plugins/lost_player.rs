@@ -17,6 +17,6 @@ fn tp_when_player_below_y(
         if transform.translation.y > -200. {
             return
         }
-        transform.translation = Transform::from_xyz(0.0, 100., 0.0).translation;
+        transform.translation = Transform::from_xyz(0.0, 50., 0.0).translation;
     }
 }
