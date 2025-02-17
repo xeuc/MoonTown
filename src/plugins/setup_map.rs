@@ -1,7 +1,7 @@
 
 use bevy::color::palettes::css;
 use bevy::prelude::*;
-use bevy::render::mesh::VertexAttributeValues;
+use bevy::render::mesh::{Indices, VertexAttributeValues};
 
 use bevy::asset::{AssetServer, Assets};
 use bevy::core_pipeline::Skybox;
@@ -103,6 +103,7 @@ fn _spawn_gltf_map_0(
 }
 
 
+
 #[derive(Component)]
 struct ColliderWaitingForMesh;
 
@@ -170,8 +171,91 @@ fn update_colliders(
 
 
 
+// file too long, ik, just a poc
+fn spawn_gltf_polygons(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    meshes: Res<Assets<Mesh>>,
+) {
+    let mesh_handle: Handle<Mesh> = asset_server.load("nulMap4.gltf#Mesh0/Primitive0");
 
-// Random colored python
+    // Attente que le mesh soit chargé
+    // commands.spawn((
+    //     ColliderWaitingForMesh,
+    //     mesh_handle.clone(),
+    // ));
+
+
+
+}
+
+fn process_gltf_meshes(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    query: Query<(Entity, &Mesh3d), Without<Randomized>>,
+) {
+    for (entity, mut mesh_handle) in query.iter() {
+        if let Some(mesh) = meshes.get(mesh_handle) {
+            if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) {
+                if let Some(Indices::U32(indices)) = mesh.indices() {
+                    for triangle in indices.chunks(3) {
+                        if let [i0, i1, i2] = triangle {
+                            let v0 = positions[*i0 as usize];
+                            let v1 = positions[*i1 as usize];
+                            let v2 = positions[*i2 as usize];
+
+                            let triangle_mesh = Mesh::from(Triangle3d {
+                                vertices: [
+                                    Vec3::from(v0),
+                                    Vec3::from(v1),
+                                    Vec3::from(v2),
+                                ],
+                            });
+
+                            let triangle_mesh_handle = meshes.add(triangle_mesh);
+
+                            commands.spawn((
+                                Mesh3d(triangle_mesh_handle.clone()),
+                            ));
+
+                        }
+                    }
+                }
+            }
+            commands.entity(entity).despawn(); // Supprime l'entité temporaire
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Random colored polygon
 #[derive(Component)]
 struct Randomized;
 
@@ -431,79 +515,79 @@ fn check_mesh_ready_no_rapier(
 
 
 
-fn _bon_ta_gagne_voila_ton_update_de_merde(
-    mut gizmos: Gizmos,
-    mut meshes: ResMut<Assets<Mesh>>,
-    query: Query<(&Mesh3d, &GlobalTransform)>,
-    game: ResMut<Game>,
-    _commands: Commands,
-    // mut world: ResMut<World>,
-    mut transforms: Query<&mut Transform>,
-) {
-    gizmos.cuboid(
-        Transform::from_translation(Vec3::Y * 0.5).with_scale(Vec3::splat(8.)),
-        Color::BLACK,
-    );
-    gizmos.linestrip_gradient_2d([
-        (Vec2::Y * 300., css::BLUE),
-        (Vec2::new(-255., -155.), css::RED),
-        (Vec2::new(255., -155.), css::GREEN),
-        (Vec2::Y * 300., css::BLUE),
-    ]);
-    for (mesh_handle, transform ) in query.iter() {
-        if let Some(mesh) = meshes.get_mut(mesh_handle) {
-            if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.clone().attribute(Mesh::ATTRIBUTE_POSITION) {
+// fn _bon_ta_gagne_voila_ton_update_de_merde(
+//     mut gizmos: Gizmos,
+//     mut meshes: ResMut<Assets<Mesh>>,
+//     query: Query<(&Mesh3d, &GlobalTransform)>,
+//     game: ResMut<Game>,
+//     _commands: Commands,
+//     // mut world: ResMut<World>,
+//     mut transforms: Query<&mut Transform>,
+// ) {
+//     gizmos.cuboid(
+//         Transform::from_translation(Vec3::Y * 0.5).with_scale(Vec3::splat(8.)),
+//         Color::BLACK,
+//     );
+//     gizmos.linestrip_gradient_2d([
+//         (Vec2::Y * 300., css::BLUE),
+//         (Vec2::new(-255., -155.), css::RED),
+//         (Vec2::new(255., -155.), css::GREEN),
+//         (Vec2::Y * 300., css::BLUE),
+//     ]);
+//     for (mesh_handle, transform ) in query.iter() {
+//         if let Some(mesh) = meshes.get_mut(mesh_handle) {
+//             if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.clone().attribute(Mesh::ATTRIBUTE_POSITION) {
 
-                // let mut colors = match mesh.attribute(Mesh::ATTRIBUTE_COLOR) {
-                //     Some(VertexAttributeValues::Float32x4(colors2)) => colors2.clone(),
-                //     _ => {
-                //         println!("Error occurs on colors of the mesh. Id = 524");
-                //         return;
-                //     },
-                // };
-                let mut colors = game.map_triangle_colors.clone();
+//                 // let mut colors = match mesh.attribute(Mesh::ATTRIBUTE_COLOR) {
+//                 //     Some(VertexAttributeValues::Float32x4(colors2)) => colors2.clone(),
+//                 //     _ => {
+//                 //         println!("Error occurs on colors of the mesh. Id = 524");
+//                 //         return;
+//                 //     },
+//                 // };
+//                 let mut colors = game.map_triangle_colors.clone();
 
-                let mut counter = 0;
+//                 let mut counter = 0;
 
-                for position_time_three in positions.chunks(3) {
+//                 for position_time_three in positions.chunks(3) {
 
-                    // TODO: make sure you don't redraw already drawn gizmo
-                    let pos0 = transform.transform_point(Vec3::from(position_time_three[0]));
-                    let pos1 = transform.transform_point(Vec3::from(position_time_three[1]));
-                    let pos2 = transform.transform_point(Vec3::from(position_time_three[2]));
+//                     // TODO: make sure you don't redraw already drawn gizmo
+//                     let pos0 = transform.transform_point(Vec3::from(position_time_three[0]));
+//                     let pos1 = transform.transform_point(Vec3::from(position_time_three[1]));
+//                     let pos2 = transform.transform_point(Vec3::from(position_time_three[2]));
                     
-                    let vec0_to_1 = pos1 - pos0;
-                    let vec1_to_2 = pos2 - pos1;
-                    let vec2_to_0 = pos0 - pos2;
+//                     let vec0_to_1 = pos1 - pos0;
+//                     let vec1_to_2 = pos2 - pos1;
+//                     let vec2_to_0 = pos0 - pos2;
 
-                    gizmos.ray_gradient(pos0, vec0_to_1, css::BLUE, css::RED);
-                    gizmos.ray_gradient(pos1, vec1_to_2, css::BLUE, css::RED);
-                    gizmos.ray_gradient(pos2, vec2_to_0, css::BLUE, css::RED);
+//                     gizmos.ray_gradient(pos0, vec0_to_1, css::BLUE, css::RED);
+//                     gizmos.ray_gradient(pos1, vec1_to_2, css::BLUE, css::RED);
+//                     gizmos.ray_gradient(pos2, vec2_to_0, css::BLUE, css::RED);
 
 
-                    let player_transform = *transforms.get_mut(game.player.entity.unwrap()).unwrap();
-                    let coordinate = player_transform.translation;
-                    for pos in [pos0, pos1, pos2] {
-                        if 10000. > (pos[0] - coordinate[0])*(pos[0] - coordinate[0]) + (pos[1] - coordinate[1])*(pos[1] - coordinate[1]) + (pos[2] - coordinate[2])*(pos[2] - coordinate[2]) {
-                            colors[counter + 0] = [1., 0., 0., 1.];
-                            colors[counter + 1] = [1., 0., 0., 1.];
-                            colors[counter + 2] = [1., 0., 0., 1.];
-                        }
-                    }
-                    counter += 3;
+//                     let player_transform = *transforms.get_mut(game.player.entity.unwrap()).unwrap();
+//                     let coordinate = player_transform.translation;
+//                     for pos in [pos0, pos1, pos2] {
+//                         if 10000. > (pos[0] - coordinate[0])*(pos[0] - coordinate[0]) + (pos[1] - coordinate[1])*(pos[1] - coordinate[1]) + (pos[2] - coordinate[2])*(pos[2] - coordinate[2]) {
+//                             colors[counter + 0] = [1., 0., 0., 1.];
+//                             colors[counter + 1] = [1., 0., 0., 1.];
+//                             colors[counter + 2] = [1., 0., 0., 1.];
+//                         }
+//                     }
+//                     counter += 3;
 
-                }
-                mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
+//                 }
+//                 mesh.insert_attribute(Mesh::ATTRIBUTE_COLOR, VertexAttributeValues::Float32x4(colors.clone()));
 
-            } else {
-                println!("No vertex positions found in the mesh.");
-            } 
-        } else {
-            println!("NO MESH");
-        }
-    }
+//             } else {
+//                 println!("No vertex positions found in the mesh.");
+//             } 
+//         } else {
+//             println!("NO MESH");
+//         }
+//     }
 
-}
+// }
 
 
 
