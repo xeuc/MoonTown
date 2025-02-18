@@ -184,17 +184,18 @@ fn spawn_gltf_polygons(
     //     ColliderWaitingForMesh,
     //     mesh_handle.clone(),
     // ));
-
-
-
 }
+
+
 
 fn process_gltf_meshes(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     query: Query<(Entity, &Mesh3d), Without<Randomized>>,
 ) {
-    for (entity, mut mesh_handle) in query.iter() {
+    let mut new_meshes = Vec::new();
+
+    for (entity, mesh_handle) in query.iter() {
         if let Some(mesh) = meshes.get(mesh_handle) {
             if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) {
                 if let Some(Indices::U32(indices)) = mesh.indices() {
@@ -212,20 +213,21 @@ fn process_gltf_meshes(
                                 ],
                             });
 
-                            let triangle_mesh_handle = meshes.add(triangle_mesh);
-
-                            commands.spawn((
-                                Mesh3d(triangle_mesh_handle.clone()),
-                            ));
-
+                            new_meshes.push((entity, triangle_mesh));
                         }
                     }
                 }
             }
-            commands.entity(entity).despawn(); // Supprime l'entité temporaire
         }
     }
+
+    for (entity, triangle_mesh) in new_meshes {
+        let triangle_mesh_handle = meshes.add(triangle_mesh);
+        commands.spawn((Mesh3d(triangle_mesh_handle.clone()),));
+        commands.entity(entity).despawn(); // Supprime l'entité temporaire
+    }
 }
+
 
 
 
