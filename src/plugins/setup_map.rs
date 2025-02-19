@@ -19,6 +19,15 @@ struct Game {
 
 
 
+
+#[derive(Clone, Eq, PartialEq, Debug, Hash, Default, States)]
+enum GameState {
+    #[default]
+    Loading,
+    Next
+}
+
+
 pub struct SetupMapPlugin;
 
 impl Plugin for SetupMapPlugin {
@@ -28,7 +37,8 @@ impl Plugin for SetupMapPlugin {
         .add_systems(Startup, load_gltf_meshes)
         .add_systems(Startup, cubemap_setup)
         
-        .add_systems(Update, process_gltf_meshes)
+        
+        .add_systems(Startup, process_gltf_meshes.run_if(in_state(GameState::Next)))
         ;
     }
 }
