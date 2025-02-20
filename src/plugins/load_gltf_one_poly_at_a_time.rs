@@ -172,74 +172,93 @@ fn load_level_2(
     mut commands: Commands,
     mut loading_data: ResMut<LoadingData>,
     asset_server: Res<AssetServer>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
     mut meshes: ResMut<Assets<Mesh>>, // ))=3
 ) {
 
+    // Save the asset into the `loading_assets` vector.
+    // let map1 = asset_server.load(GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Mesh0/Primitive0"));
+    // loading_data.loading_assets.push(map1.clone().into());
 
     // Save the asset into the `loading_assets` vector.
-    let map2 = asset_server.load(GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Mesh0/Primitive0"));
+    let asset_path_static_map = GltfAssetLabel::Mesh(0).from_asset("nulMap4.gltf#Mesh0/Primitive0");
+    let map2 = asset_server.load(asset_path_static_map);
     loading_data.loading_assets.push(map2.clone().into());
 
+
+    // Spawn the map2.
+    commands.spawn((
+        Mesh3d(map2.clone()),
+        Transform::from_xyz(0.0, 0.0, 0.0),
+        LevelComponents,
+    ));
+
+
+    
+
+// // vas chier, il faut un handle de bevy::prelude::Handle<_> et l'exemple donne un [bevy::prelude::UntypedHandle]
+// // Mais putain pourquoi vous utilisez pas un Assets<Mesh> pour stoquer vos maps de merde, il est fait pour ça ptn
+// // 
+        // let mut new_meshes = Vec::new();
+        // println!("0");
+        // if let Some(mesh) = meshes.get(&map2) {
+        //     // mesh.duplicate_vertices();
+        //     println!("1");
+        //     if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) {
+        //         println!("2");
+        //         // Stop here for some reason
+        //         // if let Some(Indices::U32(indices)) = mesh.indices() {
+        //             println!("3");
+        //             for triangle in positions {
+        //                 // println!("4");
+        //                 if let [i0, i1, i2] = triangle {
+        //                     // println!("5");
+        //                     let v0 = positions[*i0 as usize];
+        //                     let v1 = positions[*i1 as usize];
+        //                     let v2 = positions[*i2 as usize];
+        //                     // println!("{:?}", v0);
+
+        //                     let triangle_mesh = Mesh::from(Triangle3d {
+        //                         vertices: [
+        //                             Vec3::from(v0),
+        //                             Vec3::from(v1),
+        //                             Vec3::from(v2),
+        //                         ],
+        //                     });
+
+        //                     new_meshes.push(triangle_mesh);
+
+        //                 }
+        //             }
+        //         // }
+        //     }
+        // }
+
+//         // println!("{:?}", new_meshes);
+//         println!(":)");
+
+//         // for ( triangle_mesh) in new_meshes {
+//         //     let triangle_mesh_handle = meshes.add(triangle_mesh);
+//         //     commands.spawn((
+//         //         Mesh3d(triangle_mesh_handle.clone()),
+//         //         MeshMaterial3d(materials.add(Color::srgb(1., 1., 1.))),
+//         //         // Collider::triangle(v0,v1,v2),
+//         //     ));
+//         // }
+
+
     // Spawn the light.
-    // commands.spawn((
-    //     DirectionalLight {
-    //         shadows_enabled: true,
-    //         ..default()
-    //     },
-    //     Transform::from_xyz(3.0, 3.0, 2.0).looking_at(Vec3::ZERO, Vec3::Y),
-    //     LevelComponents,
-    // ));
+    commands.spawn(( 
+        DirectionalLight {
+            shadows_enabled: true,
+            ..default()
+        },
+        Transform::from_xyz(3.0, 3.0, 2.0).looking_at(Vec3::ZERO, Vec3::Y),
+        LevelComponents,
+    ));
 
-// vas chier, il faut un handle de bevy::prelude::Handle<_> et l'exemple donne un [bevy::prelude::UntypedHandle]
-// Mais putain pourquoi vous utilisez pas un Assets<Mesh> pour stoquer vos maps de merde, il est fait pour ça ptn
-// 
-        let mut new_meshes = Vec::new();
-        println!("0");
-        if let Some(mesh) = meshes.get(&map2) {
-            // mesh.duplicate_vertices();
-            println!("1");
-            if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) {
-                println!("2");
-                // Stop here for some reason
-                // if let Some(Indices::U32(indices)) = mesh.indices() {
-                    println!("3");
-                    for triangle in positions {
-                        // println!("4");
-                        if let [i0, i1, i2] = triangle {
-                            // println!("5");
-                            let v0 = positions[*i0 as usize];
-                            let v1 = positions[*i1 as usize];
-                            let v2 = positions[*i2 as usize];
-                            // println!("{:?}", v0);
 
-                            let triangle_mesh = Mesh::from(Triangle3d {
-                                vertices: [
-                                    Vec3::from(v0),
-                                    Vec3::from(v1),
-                                    Vec3::from(v2),
-                                ],
-                            });
 
-                            new_meshes.push((triangle_mesh, Vec3::from(v0), Vec3::from(v1), Vec3::from(v2)));
-
-                        }
-                    }
-                // }
-            }
-        }
-
-        // println!("{:?}", new_meshes);
-        println!(":)");
-
-        for ( triangle_mesh, v0,v1,v2) in new_meshes {
-            let triangle_mesh_handle = meshes.add(triangle_mesh);
-            commands.spawn((
-                Mesh3d(triangle_mesh_handle.clone()),
-                // Collider::triangle(v0,v1,v2),
-            ));
-        }
-
-        
 
 }
 
