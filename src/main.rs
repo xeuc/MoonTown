@@ -16,7 +16,7 @@ mod plugins {
     pub mod additional_crate_ui;
     pub mod app_state;
     pub mod spawn_terrain;
-    pub mod load_gltf_one_poly_at_a_time;
+    // pub mod load_gltf_one_poly_at_a_time;
 }
 
 fn main() {
@@ -37,7 +37,7 @@ fn main() {
             plugins::additional_crate_ui::UiPlugin,
             plugins::app_state::AppStatePlugin,
             // plugins::spawn_terrain::SpawnTerrainPlugin,
-            plugins::load_gltf_one_poly_at_a_time::LoadGLTF2Plugin,
+            // plugins::load_gltf_one_poly_at_a_time::LoadGLTF2Plugin,
         ))
         .run();
 }

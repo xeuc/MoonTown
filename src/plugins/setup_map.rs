@@ -38,7 +38,7 @@ impl Plugin for SetupMapPlugin {
         .add_systems(Startup, cubemap_setup)
         
         
-        .add_systems(Startup, process_gltf_meshes.run_if(in_state(GameState::Next)))
+        .add_systems(Update, process_gltf_meshes)
         ;
     }
 }
@@ -67,33 +67,38 @@ fn cubemap_setup(
 }
 
 
-#[derive(Resource)]
-struct GltfMeshHandle {
-    handle: Handle<Mesh>,
-}
-
-
-
 fn load_gltf_meshes(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let mesh_handle: Handle<Mesh> = asset_server.load("nulMap4.gltf#Mesh0/Primitive0");
-    commands.insert_resource(GltfMeshHandle { handle: mesh_handle });
+    // Spawn the map
+    commands.spawn((
+        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0/Primitive0"),)),
+        MeshMaterial3d(materials.add(Color::srgb(1., 1., 1.))),
+    ));
 }
 
+// Random colored python
+#[derive(Component)]
+struct DoIHaveToBreakItDown;
+// Retrieve the map
 fn process_gltf_meshes(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
-    gltf_mesh_handle: Option<Res<GltfMeshHandle>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+    query: Query<(Entity, &Mesh3d), Without<DoIHaveToBreakItDown>>,
 ) {
-    println!("-1");
-    if let Some(gltf_mesh_handle) = &gltf_mesh_handle {
+    // for element in the map
+    println!("-2");
+    for (entity, mesh_no_handle) in query.iter() {
+        println!("-1");
         let mut new_meshes = Vec::new();
         println!("0");
-        if let Some(mesh) = meshes.get(&gltf_mesh_handle.handle) {
-            // mesh.duplicate_vertices();
-            println!("1");
+        // mesh.duplicate_vertices();
+        println!("1");
+        if let Some(mesh) = meshes.get_mut(mesh_no_handle) {
+
             if let Some(VertexAttributeValues::Float32x3(positions)) = mesh.attribute(Mesh::ATTRIBUTE_POSITION) {
                 println!("2");
                 // Stop here for some reason
@@ -117,11 +122,10 @@ fn process_gltf_meshes(
                             });
 
                             new_meshes.push((triangle_mesh, Vec3::from(v0), Vec3::from(v1), Vec3::from(v2)));
-                            commands.remove_resource::<GltfMeshHandle>();
 
                         }
                     }
-                // }
+            // }
             }
         }
 
@@ -132,12 +136,14 @@ fn process_gltf_meshes(
             let triangle_mesh_handle = meshes.add(triangle_mesh);
             commands.spawn((
                 Mesh3d(triangle_mesh_handle.clone()),
-                Collider::triangle(v0,v1,v2),
+                MeshMaterial3d(materials.add(Color::srgb(1., 0., 0.))),
+                // Collider::triangle(v0,v1,v2),
+                DoIHaveToBreakItDown,
             ));
         }
-
+            
+        commands.entity(entity).despawn();
         
-
     }
 }
 

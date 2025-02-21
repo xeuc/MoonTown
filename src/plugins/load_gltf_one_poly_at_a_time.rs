@@ -177,18 +177,27 @@ fn load_level_2(
 ) {
 
     // Save the asset into the `loading_assets` vector.
-    // let map1 = asset_server.load(GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Mesh0/Primitive0"));
-    // loading_data.loading_assets.push(map1.clone().into());
+    let handle_map1 = GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Mesh0/Primitive0");
+    println!("handle_map1: {:?}", handle_map1);
+
+    let map1: Handle<Scene> = asset_server.load(handle_map1);
+    let spawn1 = SceneRoot(map1.clone());
+    println!("spawn1: {:?}", spawn1);
+
+    loading_data.loading_assets.push(map1.clone().into());
 
     // Save the asset into the `loading_assets` vector.
-    let asset_path_static_map = GltfAssetLabel::Mesh(0).from_asset("nulMap4.gltf#Mesh0/Primitive0");
+    let asset_path_static_map = GltfAssetLabel::Mesh(0).from_asset("two_polygons.glb");
+    println!("asset_path_static_map: {:?}", asset_path_static_map);
+    
     let map2 = asset_server.load(asset_path_static_map);
     loading_data.loading_assets.push(map2.clone().into());
-
+    let spawn2 = Mesh3d(map2.clone());
+    println!("spawn2: {:?}", spawn2);
 
     // Spawn the map2.
     commands.spawn((
-        Mesh3d(map2.clone()),
+        spawn2,
         Transform::from_xyz(0.0, 0.0, 0.0),
         LevelComponents,
     ));
