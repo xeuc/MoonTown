@@ -8,24 +8,7 @@ use bevy::core_pipeline::Skybox;
 
 use bevy_rapier3d::prelude::Collider;
 
-#[derive(Default)]
-struct Player {
-    entity: Option<Entity>,
-}
-#[derive(Resource, Default)]
-struct Game {
-    player: Player,
-}
 
-
-
-
-#[derive(Clone, Eq, PartialEq, Debug, Hash, Default, States)]
-enum GameState {
-    #[default]
-    Loading,
-    Next
-}
 
 
 pub struct SetupMapPlugin;
@@ -33,20 +16,34 @@ pub struct SetupMapPlugin;
 impl Plugin for SetupMapPlugin {
     fn build(&self, app: &mut App) {
         app
-        .init_resource::<Game>()
         .add_systems(Startup, load_gltf_meshes)
         .add_systems(Startup, cubemap_setup)
         
         
-        .add_systems(Update, process_gltf_meshes)
+        // .add_systems(Update, process_gltf_meshes)
+        .add_systems(Update, check_mesh_from_resource)
         ;
     }
 }
 
+#[derive(Resource)]
+struct MyMeshHandle(Mesh3d);
+
+fn check_mesh_from_resource(
+    assets: Res<Assets<Mesh>>,
+    handle_res: Res<MyMeshHandle>,
+) {
+    if assets.get(&handle_res.0).is_some() {
+        println!("✅ Mesh chargé !");
+    } else {
+        println!("⏳ Mesh en cours de chargement...");
+    }
+}
+
+
 fn cubemap_setup(
     mut commands: Commands,
     assets: Res<AssetServer>,
-    mut game: ResMut<Game>,
 ) {
     let skybox_handle = assets.load(super::skybox::CUBEMAPS[0].0); // TODO
     let entity_player = commands.spawn((
@@ -63,7 +60,6 @@ fn cubemap_setup(
     .id()
     ;
 
-    game.player.entity = Some(entity_player);
 }
 
 
@@ -72,25 +68,39 @@ fn load_gltf_meshes(
     asset_server: Res<AssetServer>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    // Spawn the map
-    commands.spawn((
-        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0/Primitive0"),)),
-        MeshMaterial3d(materials.add(Color::srgb(1., 1., 1.))),
-    ));
+
+    let temp_1 = "two_polygons.gltf";
+    let temp_2 = GltfAssetLabel::Mesh(0);
+    let temp_3 = temp_2.from_asset(temp_1);
+    let temp_4 = asset_server.load(temp_3,);
+    let temp_5 = Mesh3d(temp_4);
+
+    commands.insert_resource(MyMeshHandle(temp_5)); 
+
+
+    // // Spawn the map
+    // commands.spawn((
+    //     // SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0/Primitive0"),)),
+    //     temp_5,
+    //     MeshMaterial3d(materials.add(Color::srgb(1., 1., 1.))),
+    //     PleaseBreackIt,
+    // ));
 }
 
 // Random colored python
 #[derive(Component)]
-struct DoIHaveToBreakItDown;
+struct PleaseBreackIt;
 // Retrieve the map
 fn process_gltf_meshes(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    query: Query<(Entity, &Mesh3d), Without<DoIHaveToBreakItDown>>,
+    query: Query<(Entity, &Mesh3d), With<PleaseBreackIt>>,
+    assets: Res<Assets<Mesh>>,
 ) {
     // for element in the map
     println!("-2");
+    println!("{:?}", query);
     for (entity, mesh_no_handle) in query.iter() {
         println!("-1");
         let mut new_meshes = Vec::new();
@@ -121,30 +131,32 @@ fn process_gltf_meshes(
                                 ],
                             });
 
-                            new_meshes.push((triangle_mesh, Vec3::from(v0), Vec3::from(v1), Vec3::from(v2)));
+                            new_meshes.push(triangle_mesh);
 
                         }
                     }
             // }
+                commands.entity(entity).despawn();
+
             }
         }
 
-        // println!("{:?}", new_meshes);
+        println!("{:?}", new_meshes);
         println!(":)");
 
-        for ( triangle_mesh, v0,v1,v2) in new_meshes {
+        for triangle_mesh in new_meshes {
             let triangle_mesh_handle = meshes.add(triangle_mesh);
+            println!("I SPAWN");
             commands.spawn((
                 Mesh3d(triangle_mesh_handle.clone()),
                 MeshMaterial3d(materials.add(Color::srgb(1., 0., 0.))),
                 // Collider::triangle(v0,v1,v2),
-                DoIHaveToBreakItDown,
             ));
         }
             
-        commands.entity(entity).despawn();
         
     }
+
 }
 
 
