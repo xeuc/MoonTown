@@ -95,3 +95,8 @@ fn main() {
 
 
 // Do INDEPENDANT plugins or look for plugins dependancies
+
+// Perfs:
+//           | ⧖ debug plugin | ϟ no debug plugin |
+// ⧖ no opti |         10 fps |           100 fps |
+// ϟ -o3     |        140 fps |           140 fps |

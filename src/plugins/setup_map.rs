@@ -148,6 +148,9 @@ fn update_colliders(
             commands.entity(entity).insert(
                 Collider::from_bevy_mesh(&map_mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap()
             );
+            commands.entity(entity).insert(
+                Collider::from_bevy_mesh(&map_mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap()
+            );
             // commands.entity(entity).insert(RigidBody::Fixed);
             // commands.entity(entity).insert(
             //     Transform {
