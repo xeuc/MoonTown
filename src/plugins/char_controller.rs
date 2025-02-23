@@ -77,18 +77,18 @@ fn movement(
         match event {
             MovementAction::Move(direction) => {
                 for mut transform in &mut transform_of_player.iter_mut() {
-                    transform.translation.x += direction.x * delta_time * 5.;
-                    transform.translation.z += direction.y * delta_time * 5.;
+                    transform.translation.x += direction.x * delta_time * 10.;
+                    transform.translation.z += direction.y * delta_time * 10.;
                 }
             }
             MovementAction::Jump => {
                 for mut transform in &mut transform_of_player.iter_mut() {
-                    transform.translation.y += 0.1;
+                    transform.translation.y += 0.2;
                 }
             }
             MovementAction::DeJump => {
                 for mut transform in &mut transform_of_player.iter_mut() {
-                    transform.translation.y -= 0.1;
+                    transform.translation.y -= 0.2;
                 }
             }
         }

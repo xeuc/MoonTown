@@ -15,7 +15,8 @@ mod plugins {
     pub mod light;
     pub mod additional_crate_ui;
     pub mod app_state;
-    pub mod spawn_terrain;
+    pub mod spawn_player_ball;
+    pub mod controls_player_ball;
 }
 
 fn main() {
@@ -23,6 +24,8 @@ fn main() {
         .add_plugins((
             DefaultPlugins,
             FrameTimeDiagnosticsPlugin,
+        ))
+        .add_plugins((
             plugins::char_controller::CharacterControllerPlugin,
             plugins::lost_player::LostPlayerPlugin,
             plugins::screenshot::ScreenshotPlugin,
@@ -35,7 +38,8 @@ fn main() {
             plugins::additional_crate_ui::UiPlugin,
             plugins::app_state::AppStatePlugin,
             plugins::setup_map::SetupMapPlugin,
-            plugins::spawn_terrain::SpawnTerrainPlugin,
+            plugins::spawn_player_ball::SpawnPlayerBallPlugin,
+            plugins::controls_player_ball::ControlsPlayerBallPlugin,
         ))
         .run();
 }
@@ -100,3 +104,7 @@ fn main() {
 //           | ⧖ debug plugin | ϟ no debug plugin |
 // ⧖ no opti |         10 fps |           100 fps |
 // ϟ -o3     |        140 fps |           140 fps |
+
+
+// change map 
+// Resolve light problem
