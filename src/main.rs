@@ -1,46 +1,31 @@
 use bevy::prelude::*;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 
-
-mod plugins {
-    pub mod lost_player;
-    pub mod fps; 
-    pub mod screenshot;
-    pub mod char_controller;
-    pub mod pause;
-    pub mod cursor_as_movement;
-    pub mod keyboard;
-    pub mod setup_map;
-    pub mod skybox;
-    pub mod light;
-    pub mod additional_crate_ui;
-    pub mod app_state;
-    pub mod spawn_player_ball;
-    pub mod controls_player_ball;
-}
+pub mod plugins;
 
 fn main() {
     App::new()
         .add_plugins((
             DefaultPlugins,
             FrameTimeDiagnosticsPlugin,
+            plugins::Plugins,
         ))
-        .add_plugins((
-            plugins::char_controller::CharacterControllerPlugin,
-            plugins::lost_player::LostPlayerPlugin,
-            plugins::screenshot::ScreenshotPlugin,
-            plugins::cursor_as_movement::RotateHeadPlugin,
-            plugins::pause::PausePlugin,
-            plugins::keyboard::KeyboardPlugin,
-            plugins::skybox::SkyboxPlugin,
-            plugins::light::LightPlugin,
-            plugins::fps::FpsPlugin,
-            plugins::additional_crate_ui::UiPlugin,
-            plugins::app_state::AppStatePlugin,
-            plugins::setup_map::SetupMapPlugin,
-            plugins::spawn_player_ball::SpawnPlayerBallPlugin,
-            plugins::controls_player_ball::ControlsPlayerBallPlugin,
-        ))
+        // .add_plugins((
+        //     plugins::char_controller::CharacterControllerPlugin,
+        //     plugins::lost_player::LostPlayerPlugin,
+        //     plugins::screenshot::ScreenshotPlugin,
+        //     plugins::cursor_as_movement::RotateHeadPlugin,
+        //     plugins::pause::PausePlugin,
+        //     plugins::keyboard::KeyboardPlugin,
+        //     plugins::skybox::SkyboxPlugin,
+        //     plugins::light::LightPlugin,
+        //     plugins::fps::FpsPlugin,
+        //     plugins::additional_crate_ui::UiPlugin,
+        //     plugins::app_state::AppStatePlugin,
+        //     plugins::setup_map::SetupMapPlugin,
+        //     plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
+        //     plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
+        // ))
         .run();
 }
 
