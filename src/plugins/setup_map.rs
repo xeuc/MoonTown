@@ -78,13 +78,49 @@ fn load_gltf_meshes(
     commands.insert_resource(MyMeshHandle(temp_5)); 
 
 
-    // // Spawn the map
-    // commands.spawn((
-    //     // SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("nulMap4.gltf#Scene0/Primitive0"),)),
-    //     temp_5,
-    //     MeshMaterial3d(materials.add(Color::srgb(1., 1., 1.))),
-    //     PleaseBreackIt,
-    // ));
+// "scale":[
+//     1024,
+//     1,
+//     1024
+// ],
+// "translation":[
+//     -215.70999145507812,
+//     0,
+//     0
+// ]
+
+fn update_colliders(
+    mut commands: Commands,
+    meshes: Res<Assets<Mesh>>,
+    query: Query<(Entity, &Mesh3d), With<ColliderWaitingForMesh>>,
+) {
+    for (entity, mesh_handle) in query.iter() {
+        if let Some(mesh) = meshes.get(mesh_handle) {
+            let map_transform = Transform {
+                translation: Vec3::new(-215.70999145507812, 0.0, 0.0), // Déplacement
+                scale: Vec3::new(1024.0, 1.0, 1024.0), // Échelle correcte
+                ..Default::default() // Garder la rotation par défaut
+            };
+            let map_mesh = mesh.clone().transformed_by(map_transform);
+            commands.entity(entity).insert(
+                Collider::from_bevy_mesh(&map_mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap()
+            );
+            commands.entity(entity).insert(
+                Collider::from_bevy_mesh(&map_mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap()
+            );
+            // commands.entity(entity).insert(RigidBody::Fixed);
+            // commands.entity(entity).insert(
+            //     Transform {
+            //         translation: Vec3::new(-215.70999145507812, 0.0, 0.0), // Déplacement
+            //         scale: Vec3::new(1024.0, 1.0, 1024.0), // Échelle correcte
+            //         ..Default::default() // Garder la rotation par défaut
+            //     }
+            // );
+            // commands.entity(entity).insert(GlobalTransform::IDENTITY);
+
+            commands.entity(entity).remove::<ColliderWaitingForMesh>();
+        }
+    }
 }
 
 // Random colored python
