@@ -24,9 +24,10 @@ pub struct SliderValueSmiley{
 
 fn ui_example_system(
     mut query: Query<&mut Transform, With<Camera>>,
+    // mut query2: Query<&mut Transform, With<super::super::Player>>,
     mut slider_value_smiley: ResMut<SliderValueSmiley>,
     mut contexts: EguiContexts,
-    controllers: Query<(Entity, &KinematicCharacterControllerOutput, &Transform), Without<Camera>>,
+    // controllers: Query<(Entity, &KinematicCharacterControllerOutput, &Transform), Without<Camera>>,
 ) {
     egui::Window::new("Hello")
         .fixed_pos(Pos2::new(0., 40.))
@@ -53,13 +54,31 @@ fn ui_example_system(
                 );
                 ui.label(position_text.clone());
             }
-            for (entity, output, transform2) in controllers.iter() {
-                let ball_info_text = format!(
-                    "Entity: {:?}, Moved by {:?}, Grounded: {:?}, Position: {:?}",
-                    entity, output.effective_translation, output.grounded, transform2.translation
-                );
-                ui.label(ball_info_text);
-            }
+            // for transform in &mut query2 {
+            //     let position_text = format!(
+            //         "Player position is x={}, y={}, z={}",
+            //         transform.translation.x,
+            //         transform.translation.y,
+            //         transform.translation.z
+            //     );
+            //     ui.label(position_text.clone());
+
+            //     let position_text = format!(
+            //         "Player rotation is x={}, y={}, z={}",
+            //         transform.rotation.x,
+            //         transform.rotation.y,
+            //         transform.rotation.z
+            //     );
+            //     ui.label(position_text.clone());
+            // }
+            
+            // for (entity, output, transform2) in controllers.iter() {
+            //     let ball_info_text = format!(
+            //         "Entity: {:?}, Moved by {:?}, Grounded: {:?}, Position: {:?}",
+            //         entity, output.effective_translation, output.grounded, transform2.translation
+            //     );
+            //     ui.label(ball_info_text);
+            // }
 
         }
     );

@@ -3,6 +3,9 @@ use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 
 pub mod plugins;
 
+#[derive(Component)]
+struct PlayerRotation;
+
 fn main() {
     App::new()
         .add_plugins((

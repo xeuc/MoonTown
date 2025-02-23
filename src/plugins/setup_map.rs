@@ -1,7 +1,6 @@
 
 use bevy::prelude::*;
 use bevy::asset::{AssetServer, Assets};
-use bevy::core_pipeline::Skybox;
 use bevy_rapier3d::prelude::{Collider, ComputedColliderShape, TriMeshFlags};
 
 pub struct SetupMapPlugin;
@@ -9,30 +8,12 @@ pub struct SetupMapPlugin;
 impl Plugin for SetupMapPlugin {
     fn build(&self, app: &mut App) {
         app
-        .add_systems(Startup, cubemap_setup)
         .add_systems(Startup, spawn_gltf_map)
         .add_systems(Update, update_colliders)
         ;
     }
 }
 
-fn cubemap_setup(
-    mut commands: Commands,
-    assets: Res<AssetServer>,
-) {
-    let skybox_handle = assets.load(super::skybox::CUBEMAPS[0].0); // TODO
-    commands.spawn((
-        Camera3d {
-            // transform: Transform::from_xyz(0.0, 100., 0.0),
-            ..default()
-        },
-        Skybox {
-            image: skybox_handle.clone(),
-            brightness: 1000.0,
-            rotation:  Quat::IDENTITY,
-            },
-    ));
-}
 
 
 

@@ -6,32 +6,16 @@ pub struct CharacterControllerPlugin;
 
 impl Plugin for CharacterControllerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<MovementAction>().add_systems(
-            Update,
-            (
-                keyboard_input,
-                movement,
-            ).run_if(in_state(AppState::Running))
-        );
+        // app.add_systems(Update,player_controller.run_if(in_state(AppState::Running)));
     }
 }
 
-/// An event sent for a movement input action.
-#[derive(Event)]
-pub enum MovementAction {
-    Move(Vec2),
-    Jump,
-    DeJump,
-}
 
-
-
-
-/// Sends [`MovementAction`] events based on keyboard input.
-fn keyboard_input(
-    mut movement_event_writer: EventWriter<MovementAction>,
+// Not sending events be I don't want to decorrelate user input from motion processing, yet
+fn player_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<&mut Transform, With<Camera>>,
+    mut query: Query<&mut Transform, With<Camera3d>>,
+    time: Res<Time>,
 ) {
     let mut trans_rot= Quat::from_xyzw(0., 0., 0., 0.);
     for transform in &mut query.iter_mut() {
@@ -49,50 +33,31 @@ fn keyboard_input(
 
     let direction = Vec2::new(direction.x, direction.z); // no need to direction.clamp_length_max(1.0) as it's already normalized
 
-
-    
-    if direction != Vec2::ZERO {
-        movement_event_writer.send(MovementAction::Move(direction));
-    }
-
-    if keyboard_input.pressed(KeyCode::ShiftLeft) {
-        movement_event_writer.send(MovementAction::Jump);
-    }
-
-    if keyboard_input.pressed(KeyCode::KeyF) {
-        movement_event_writer.send(MovementAction::DeJump);
-    }
-}
-
-
-/// Responds to [`MovementAction`] events and moves character controllers accordingly.
-fn movement(
-    time: Res<Time>,
-    mut movement_event_reader: EventReader<MovementAction>,
-    mut transform_of_player: Query<&mut Transform, With<Camera>>,
-) {
     let delta_time = time.delta_secs();
 
-    for event in movement_event_reader.read() {
-        match event {
-            MovementAction::Move(direction) => {
-                for mut transform in &mut transform_of_player.iter_mut() {
-                    transform.translation.x += direction.x * delta_time * 10.;
-                    transform.translation.z += direction.y * delta_time * 10.;
-                }
-            }
-            MovementAction::Jump => {
-                for mut transform in &mut transform_of_player.iter_mut() {
-                    transform.translation.y += 0.2;
-                }
-            }
-            MovementAction::DeJump => {
-                for mut transform in &mut transform_of_player.iter_mut() {
-                    transform.translation.y -= 0.2;
-                }
-            }
+    // Aply Movement
+    if direction != Vec2::ZERO {
+        for mut transform in &mut query.iter_mut() {
+            transform.translation.x += direction.x * delta_time * 10.;
+            transform.translation.z += direction.y * delta_time * 10.;
         }
     }
+
+    // Jump
+    if keyboard_input.pressed(KeyCode::ShiftLeft) {
+        for mut transform in &mut query.iter_mut() {
+            transform.translation.y += 0.2;
+        }
+    }
+
+    // De-Jump
+    if keyboard_input.pressed(KeyCode::KeyF) {
+        for mut transform in &mut query.iter_mut() {
+            transform.translation.y -= 0.2;
+        }
+    }
+
+
 }
 
 

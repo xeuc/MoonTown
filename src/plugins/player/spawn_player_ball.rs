@@ -1,4 +1,4 @@
-use bevy::{asset::RenderAssetUsages, prelude::*, render::render_resource::{Extent3d, TextureDimension, TextureFormat}};
+use bevy::{asset::RenderAssetUsages, core_pipeline::Skybox, prelude::*, render::render_resource::{Extent3d, TextureDimension, TextureFormat}};
 use bevy_rapier3d::prelude::*;
 
 pub struct SpawnPlayerBallPlugin;
@@ -45,17 +45,22 @@ fn uv_debug_texture() -> Image {
 }
 
 
+
 fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut images: ResMut<Assets<Image>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    assets: Res<AssetServer>,
 ) {
     let debug_material = materials.add(StandardMaterial {
         base_color_texture: Some(images.add(uv_debug_texture())),
         ..default()
     });
 
+    let skybox_handle = assets.load(super::super::skybox::CUBEMAPS[0].0); // TODO
+
+    
     // spawn ball player (numpad)
     commands
         .spawn(Mesh3d(meshes.add(Sphere::default().mesh().uv(32, 18))))
@@ -63,7 +68,21 @@ fn setup(
         .insert(RigidBody::KinematicPositionBased)
         .insert(Collider::ball(0.5))
         .insert(Transform::from_xyz(0.0, 10.0, 0.0))
+        .insert(super::super::super::PlayerRotation)// TODO fix the super super super...
         .insert(KinematicCharacterController {
             ..KinematicCharacterController::default()
+        })
+        .with_children(|parent| {
+            parent.spawn((
+                Transform::from_xyz(1.0, 1.0, 2.0),
+                Camera3d {
+                    ..default()
+                },
+                Skybox {
+                    image: skybox_handle.clone(),
+                    brightness: 1000.0,
+                    rotation:  Quat::IDENTITY,
+                    },
+            ));
         });
 }
