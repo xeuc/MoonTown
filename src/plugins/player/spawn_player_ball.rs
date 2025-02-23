@@ -7,7 +7,9 @@ impl Plugin for SpawnPlayerBallPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())
-            // .add_plugins(RapierDebugRenderPlugin::default())
+            // Enable this will show you gizmos of the colider, but will slow down the game
+            // (slow down more with high number of polygons)
+            .add_plugins(RapierDebugRenderPlugin::default())
             .add_systems(Startup, setup)
             ;
     }
@@ -60,7 +62,7 @@ fn setup(
         .insert(MeshMaterial3d(debug_material.clone()),)
         .insert(RigidBody::KinematicPositionBased)
         .insert(Collider::ball(0.5))
-        .insert(Transform::from_xyz(0.0, 20.0, -20.0))
+        .insert(Transform::from_xyz(0.0, 10.0, 0.0))
         .insert(KinematicCharacterController {
             ..KinematicCharacterController::default()
         });

@@ -8,24 +8,23 @@ fn main() {
         .add_plugins((
             DefaultPlugins,
             FrameTimeDiagnosticsPlugin,
-            plugins::Plugins,
         ))
-        // .add_plugins((
-        //     plugins::char_controller::CharacterControllerPlugin,
-        //     plugins::lost_player::LostPlayerPlugin,
-        //     plugins::screenshot::ScreenshotPlugin,
-        //     plugins::cursor_as_movement::RotateHeadPlugin,
-        //     plugins::pause::PausePlugin,
-        //     plugins::keyboard::KeyboardPlugin,
-        //     plugins::skybox::SkyboxPlugin,
-        //     plugins::light::LightPlugin,
-        //     plugins::fps::FpsPlugin,
-        //     plugins::additional_crate_ui::UiPlugin,
-        //     plugins::app_state::AppStatePlugin,
-        //     plugins::setup_map::SetupMapPlugin,
-        //     plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
-        //     plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
-        // ))
+        .add_plugins((
+            plugins::char_controller::CharacterControllerPlugin,
+            plugins::lost_player::LostPlayerPlugin,
+            plugins::screenshot::ScreenshotPlugin,
+            plugins::cursor_as_movement::RotateHeadPlugin,
+            plugins::pause::PausePlugin,
+            plugins::keyboard::KeyboardPlugin,
+            plugins::skybox::SkyboxPlugin,
+            plugins::light::LightPlugin,
+            plugins::fps::FpsPlugin,
+            plugins::egui::UiPlugin,
+            plugins::app_state::AppStatePlugin,
+            plugins::setup_map::SetupMapPlugin,
+            plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
+            plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
+        ))
         .run();
 }
 
