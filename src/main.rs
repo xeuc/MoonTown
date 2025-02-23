@@ -16,7 +16,6 @@ mod plugins {
     pub mod additional_crate_ui;
     pub mod app_state;
     pub mod spawn_terrain;
-    // pub mod load_gltf_one_poly_at_a_time;
 }
 
 fn main() {
@@ -30,14 +29,13 @@ fn main() {
             plugins::cursor_as_movement::RotateHeadPlugin,
             plugins::pause::PausePlugin,
             plugins::keyboard::KeyboardPlugin,
-            plugins::setup_map::SetupMapPlugin,
             plugins::skybox::SkyboxPlugin,
             plugins::light::LightPlugin,
             plugins::fps::FpsPlugin,
             plugins::additional_crate_ui::UiPlugin,
             plugins::app_state::AppStatePlugin,
-            // plugins::spawn_terrain::SpawnTerrainPlugin,
-            // plugins::load_gltf_one_poly_at_a_time::LoadGLTF2Plugin,
+            plugins::setup_map::SetupMapPlugin,
+            plugins::spawn_terrain::SpawnTerrainPlugin,
         ))
         .run();
 }
