@@ -63,10 +63,10 @@ fn setup(
     
     // spawn ball player (numpad)
     commands
-        .spawn(Mesh3d(meshes.add(Sphere::default().mesh().uv(32, 18))))
+        .spawn(Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))))
         .insert(MeshMaterial3d(debug_material.clone()),)
         .insert(RigidBody::KinematicPositionBased)
-        .insert(Collider::ball(0.5))
+        .insert(Collider::ball(0.1))
         .insert(Transform::from_xyz(0.0, 10.0, 0.0))
         .insert(super::super::super::Player)// TODO fix the super super super...
         .insert(KinematicCharacterController {

@@ -94,3 +94,4 @@ fn main() {
 
 // change map 
 // Resolve light problem
+// generate tree procedurally ? (No)
