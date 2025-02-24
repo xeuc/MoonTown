@@ -3,7 +3,7 @@ use bevy_egui::egui::Pos2;
 // use bevy_egui::*;
 
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
-use bevy_rapier3d::prelude::KinematicCharacterControllerOutput;
+// use bevy_rapier3d::prelude::KinematicCharacterControllerOutput;
 
 
 pub struct UiPlugin;

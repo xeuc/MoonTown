@@ -61,20 +61,31 @@ fn setup(
     let skybox_handle = assets.load(super::super::skybox::CUBEMAPS[0].0); // TODO
 
     
+    /* Create the bouncing ball. */
+    commands
+        .spawn(RigidBody::Dynamic)
+        .insert(Collider::ball(0.1))
+        .insert(Restitution::coefficient(0.7))
+        .insert(Transform::from_xyz(0.0, 4.0, 0.0));
+
+
+
+
     // spawn ball player (numpad)
     commands
-        .spawn(Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))))
+        .spawn(Visibility::default())
+        // .spawn(Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))))
         .insert(MeshMaterial3d(debug_material.clone()),)
         .insert(RigidBody::KinematicPositionBased)
-        .insert(Collider::ball(0.1))
-        .insert(Transform::from_xyz(0.0, 10.0, 0.0))
+        .insert(Collider::capsule_y(1., 0.5))
+        .insert(Transform::from_xyz(0.0, 5.0, 0.0).with_scale(Vec3::splat(0.001)))
         .insert(super::super::super::Player)// TODO fix the super super super...
         .insert(KinematicCharacterController {
             ..KinematicCharacterController::default()
         })
         .with_children(|parent| {
             parent.spawn((
-                Transform::from_xyz(1.0, 1.0, 2.0),
+                Transform::from_xyz(1., 1., 5.),
                 Camera3d {
                     ..default()
                 },

@@ -1,8 +1,9 @@
 use bevy::prelude::*;
+use bevy_rapier3d::prelude::*;
 
-const SPEED: f32 = 10.0;
-const JUMP_FORCE: f32 = 10.0;
-const GRAVITY: f32 = -9.81;
+// const SPEED: f32 = 10.0;
+// const JUMP_FORCE: f32 = 10.0;
+// const GRAVITY: f32 = -9.81;
 
 pub struct ControlsPlayerBallPlugin;
 
@@ -10,6 +11,7 @@ impl Plugin for ControlsPlayerBallPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_systems(Update, player_controller)
+            // .add_systems(Update, gravity)
             ;
     }
 }
@@ -19,47 +21,52 @@ impl Plugin for ControlsPlayerBallPlugin {
 
 fn player_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<&mut Transform, With<super::super::super::Player>>, // TODO fix the super super super...
+    mut query: Query<(&mut Transform, &mut KinematicCharacterController), With<super::super::super::Player>>, // TODO fix the super super super...
     time: Res<Time>,
 ) {
-    let mut trans_rot= Quat::from_xyzw(0., 0., 0., 0.);
-    for transform in &mut query.iter_mut() {
+    for (transform, mut kinematic_character_controller) in &mut query.iter_mut() {
+        let mut trans_rot= Quat::from_xyzw(0., 0., 0., 0.);
         trans_rot = transform.rotation;
-        // println!("trans_rot: {:?}", trans_rot)
-    }
 
-    let  left = keyboard_input.pressed(KeyCode::KeyA);
-    let right = keyboard_input.pressed(KeyCode::KeyD);
-    let  down = keyboard_input.pressed(KeyCode::KeyS);
-    let    up = keyboard_input.pressed(KeyCode::KeyW);
+        let  left = keyboard_input.pressed(KeyCode::KeyA);
+        let right = keyboard_input.pressed(KeyCode::KeyD);
+        let  down = keyboard_input.pressed(KeyCode::KeyS);
+        let    up = keyboard_input.pressed(KeyCode::KeyW);
 
-    let direction = 
-          (trans_rot * Vec3::X).normalize()*Vec3::new((right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32)
-        + (trans_rot * Vec3::Z).normalize()*Vec3::new((down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32);
+        let mut direction = 
+            (trans_rot * Vec3::X).normalize()*Vec3::new((right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32)
+            + (trans_rot * Vec3::Z).normalize()*Vec3::new((down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32);
 
-    let direction = Vec2::new(direction.x, direction.z); // no need to direction.clamp_length_max(1.0) as it's already normalized
+        // let direction = Vec2::new(direction.x, direction.z); // no need to direction.clamp_length_max(1.0) as it's already normalized
 
-    let delta_time = time.delta_secs();
+        direction = direction.normalize_or_zero() * time.delta_secs() * 0.5;
 
-    // Apply Movement
-    if direction != Vec2::ZERO {
-        for mut transform in &mut query.iter_mut() {
-            transform.translation.x += direction.x * delta_time * 10.;
-            transform.translation.z += direction.y * delta_time * 10.;
+        // Jump
+        if keyboard_input.just_pressed(KeyCode::ShiftLeft) {
+            direction.y = 10.;
         }
+
+        // De-Jump
+        if keyboard_input.pressed(KeyCode::KeyF) {
+            direction.y = -1.;
+        }
+
+        // Apply Movement
+        direction.y += -10. * time.delta_secs();
+        kinematic_character_controller.translation = Some(direction);
+
     }
 
-    // Jump
-    if keyboard_input.pressed(KeyCode::ShiftLeft) {
-        for mut transform in &mut query.iter_mut() {
-            transform.translation.y += 0.2;
-        }
-    }
-
-    // De-Jump
-    if keyboard_input.pressed(KeyCode::KeyF) {
-        for mut transform in &mut query.iter_mut() {
-            transform.translation.y -= 0.2;
-        }
-    }
 }
+
+
+
+
+// fn gravity(
+//     mut query: Query<&mut Transform, With<Collider>>, // TODO fix the super super super...
+// ) {
+//     // Gravity
+//     for mut transform in &mut query.iter_mut() {
+//         transform.translation.y -= 0.01;
+//     }
+// }
