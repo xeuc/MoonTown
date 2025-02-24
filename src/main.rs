@@ -13,7 +13,6 @@ fn main() {
             FrameTimeDiagnosticsPlugin,
         ))
         .add_plugins((
-            plugins::char_controller::CharacterControllerPlugin,
             plugins::lost_player::LostPlayerPlugin,
             plugins::screenshot::ScreenshotPlugin,
             plugins::cursor_as_movement::RotateHeadPlugin,
