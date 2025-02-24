@@ -68,7 +68,7 @@ fn setup(
         .insert(RigidBody::KinematicPositionBased)
         .insert(Collider::ball(0.5))
         .insert(Transform::from_xyz(0.0, 10.0, 0.0))
-        .insert(super::super::super::PlayerRotation)// TODO fix the super super super...
+        .insert(super::super::super::Player)// TODO fix the super super super...
         .insert(KinematicCharacterController {
             ..KinematicCharacterController::default()
         })

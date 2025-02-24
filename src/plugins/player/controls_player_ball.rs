@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::*;
 
 const SPEED: f32 = 10.0;
 const JUMP_FORCE: f32 = 10.0;
@@ -46,7 +45,7 @@ impl Plugin for ControlsPlayerBallPlugin {
 
 fn player_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<&mut Transform, With<super::super::super::PlayerRotation>>, // TODO fix the super super super...
+    mut query: Query<&mut Transform, With<super::super::super::Player>>, // TODO fix the super super super...
     time: Res<Time>,
 ) {
     let mut trans_rot= Quat::from_xyzw(0., 0., 0., 0.);

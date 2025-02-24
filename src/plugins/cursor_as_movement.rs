@@ -1,7 +1,5 @@
 use bevy::prelude::*;
 
-use crate::PlayerRotation;
-
 pub struct RotateHeadPlugin;
 
 
@@ -16,7 +14,7 @@ impl Plugin for RotateHeadPlugin {
 
 fn cursor_as_movement(
     time: Res<Time>,
-    mut query: Query<&mut Transform, With<super::super::PlayerRotation>>,
+    mut query: Query<&mut Transform, With<super::super::Player>>,
     mut windows: Query<&mut Window>,
 ) {
     let delta_time = time.delta_secs();
