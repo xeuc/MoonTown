@@ -25,8 +25,7 @@ fn player_controller(
     time: Res<Time>,
 ) {
     for (transform, mut kinematic_character_controller) in &mut query.iter_mut() {
-        let mut trans_rot= Quat::from_xyzw(0., 0., 0., 0.);
-        trans_rot = transform.rotation;
+        let trans_rot= transform.rotation;
 
         let  left = keyboard_input.pressed(KeyCode::KeyA);
         let right = keyboard_input.pressed(KeyCode::KeyD);
