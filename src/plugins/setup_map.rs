@@ -21,6 +21,7 @@ impl Plugin for SetupMapPlugin {
 struct ColliderWaitingForMesh;
 
 // const MAP_PATH: &str = "nulMap4.gltf#Mesh0/Primitive0";
+// const MAP_PATH: &str = "creative_map.gltf#Mesh0/Primitive0";
 const MAP_PATH: &str = "creative_map.gltf#Mesh0/Primitive0";
 
 
@@ -30,14 +31,28 @@ fn spawn_gltf_map(
 ) {
 
     // let mesh_handle: Mesh3d = Mesh3d(asset_server.load(MAP_PATH));
-    let mesh_handle: Mesh3d = Mesh3d(asset_server.load("creative_map.gltf#Mesh1/Primitive0"));
+    let mesh_handles: Vec<Mesh3d> = vec![
+        Mesh3d(asset_server.load("creative_map.gltf#Mesh0/Primitive0")),
+        // The commented one is a LARGE plan, so player clip really easily through it. 
+        // Mesh3d(asset_server.load("creative_map2.gltf#Mesh1/Primitive0")),
+        // Mesh3d(asset_server.load("creative_map3.gltf#Mesh1/Primitive0")),
+        Mesh3d(asset_server.load("creative_map.gltf#Mesh1/Primitive0")),
+        Mesh3d(asset_server.load("creative_map.gltf#Mesh2/Primitive0")),
+        Mesh3d(asset_server.load("creative_map.gltf#Mesh3/Primitive0")),
+    ];
 
+    for mesh_handle in &mesh_handles {
+        commands.spawn((
+            mesh_handle.clone(),
+            ColliderWaitingForMesh,
+        ));
+    }
     commands.spawn((
         SceneRoot(asset_server.load(
             GltfAssetLabel::Scene(0).from_asset(MAP_PATH),
         )),
-        mesh_handle.clone(), // ???
-        ColliderWaitingForMesh,
+        // mesh_handle.clone(), // ???
+        // ColliderWaitingForMesh,
     ));
 }
 
