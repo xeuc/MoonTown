@@ -36,7 +36,7 @@ fn spawn_gltf_map(
         // The commented one is a LARGE plan, so player clip really easily through it. 
         // Mesh3d(asset_server.load("creative_map2.gltf#Mesh1/Primitive0")),
         // Mesh3d(asset_server.load("creative_map3.gltf#Mesh1/Primitive0")),
-        Mesh3d(asset_server.load("creative_map.gltf#Mesh1/Primitive0")),
+        Mesh3d(asset_server.load("creative_map2.gltf#Mesh1/Primitive0")),
         Mesh3d(asset_server.load("creative_map.gltf#Mesh2/Primitive0")),
         Mesh3d(asset_server.load("creative_map.gltf#Mesh3/Primitive0")),
     ];
@@ -75,7 +75,7 @@ fn update_colliders(
             
             let map_mesh = mesh.clone();
             commands.entity(entity).insert(
-                Collider::from_bevy_mesh(&map_mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(1u16).unwrap())).unwrap()
+                Collider::from_bevy_mesh(&map_mesh, &ComputedColliderShape::TriMesh(TriMeshFlags::from_bits(7u16).unwrap())).unwrap()
             );
 
             commands.entity(entity).remove::<ColliderWaitingForMesh>();
