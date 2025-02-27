@@ -11,3 +11,4 @@ pub mod skybox;
 pub mod light;
 pub mod egui;
 pub mod app_state;
+pub mod debug;

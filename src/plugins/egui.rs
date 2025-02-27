@@ -11,7 +11,7 @@ pub struct UiPlugin;
 impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
         app
-        .add_plugins(EguiPlugin)
+        // .add_plugins(EguiPlugin)
         .init_resource::<SliderValueSmiley>()
             .add_systems(Update, ui_example_system);
     }

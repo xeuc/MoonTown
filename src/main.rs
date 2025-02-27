@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 pub mod plugins;
 
@@ -11,6 +12,7 @@ fn main() {
         .add_plugins((
             DefaultPlugins,
             FrameTimeDiagnosticsPlugin,
+            WorldInspectorPlugin::new(),
         ))
         .add_plugins((
             plugins::lost_player::LostPlayerPlugin,
@@ -26,11 +28,10 @@ fn main() {
             plugins::setup_map::SetupMapPlugin,
             plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
             plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
+            plugins::debug::DebugPlugin,
         ))
         .run();
 }
-
-
 
 
 
