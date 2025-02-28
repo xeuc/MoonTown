@@ -28,6 +28,7 @@ const MAP_PATH: &str = "creative_map.gltf#Mesh0/Primitive0";
 fn spawn_gltf_map(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
 
     // let mesh_handle: Mesh3d = Mesh3d(asset_server.load(MAP_PATH));
@@ -41,20 +42,52 @@ fn spawn_gltf_map(
         // Mesh3d(asset_server.load("creative_map.gltf#Mesh2/Primitive0")),
         // Mesh3d(asset_server.load("creative_map.gltf#Mesh3/Primitive0")),
     ];
+    // let mesh_handle =
+    //     asset_server.load(GltfAssetLabel::Primitive{mesh: 0, primitive: 0}.from_asset("creative_map.gltf"))
+    //     //asset_server.load(GltfAssetLabel::Mesh(0).from_asset("../../../assets/cube.gltf"))
+    //     //meshes.add(Cuboid::new(1.0, 1.0, 1.0)).into()
+    // ;
 
-    for mesh_handle in &mesh_handles {
-        commands.spawn((
-            mesh_handle.clone(),
-            ColliderWaitingForMesh,
-        ));
-    }
+    // for mesh_handle in &mesh_handles {
+    //     commands.spawn((
+    //         mesh_handle.clone(),
+    //         ColliderWaitingForMesh,
+    //     ));
+    // }
+    // commands.spawn((
+    //     SceneRoot(asset_server.load(
+    //         GltfAssetLabel::Scene(0).from_asset(MAP_PATH),
+    //     )),
+    //     Name::new("map_scene"),
+    //     // mesh_handle.clone(), // ???
+    //     // ColliderWaitingForMesh,
+    // ));
+
+    // Cube
     commands.spawn((
-        SceneRoot(asset_server.load(
-            GltfAssetLabel::Scene(0).from_asset(MAP_PATH),
-        )),
-        // mesh_handle.clone(), // ???
-        // ColliderWaitingForMesh,
+        Mesh3d(asset_server.load(GltfAssetLabel::Primitive{mesh: 0, primitive: 0}.from_asset("creative_map.gltf"))),
+        MeshMaterial3d(materials.add(Color::srgb(0.3, 0.5, 0.3))),
+        Name::new("cube_mesh"),
+        ColliderWaitingForMesh,
+        // AsyncSceneCollider { ..default() },
     ));
+
+    // Plane map
+    commands.spawn((
+        Mesh3d(asset_server.load(GltfAssetLabel::Primitive{mesh: 1, primitive: 0}.from_asset("creative_map.gltf"))),
+        MeshMaterial3d(materials.add(Color::srgb(0.3, 0.5, 0.3))),
+        // Transform(GltfAssetLabel::)
+        Name::new("map_mesh"),
+        ColliderWaitingForMesh,
+        // AsyncSceneCollider { ..default() },
+    ));
+
+    // commands.spawn((
+    //     Mesh3d(asset_server.load(GltfAssetLabel::Primitive{mesh: 2, primitive: 0}.from_asset("creative_map.gltf"))),
+    //     MeshMaterial3d(materials.add(Color::srgb(0.3, 0.5, 0.3))),
+    //     Name::new("map_mesh"),
+    //     ColliderWaitingForMesh,
+    // ));
 }
 
 // fn update_colliders(
@@ -95,11 +128,11 @@ fn update_colliders(
 
             println!("{:?}", global_transform);
 
-            let map_transform = Transform {
-                translation: Vec3::new(0.0625,-0.25,0.65625),
-                // scale: Vec3::new(1024.0, 1.0, 1024.0),
-                ..Default::default()
-            };
+            // let map_transform = Transform {
+            //     translation: Vec3::new(0.0625,-0.25,0.65625),
+            //     // scale: Vec3::new(1024.0, 1.0, 1024.0),
+            //     ..Default::default()
+            // };
             // Appliquer le Transform au mesh
             // let transformed_mesh = map_mesh.transformed_by(map_transform);
             let transformed_mesh = map_mesh.transformed_by((*global_transform).into());
