@@ -1,5 +1,5 @@
 use bevy::{prelude::*, window::PrimaryWindow};
-use bevy_egui::{egui, EguiContext, EguiPlugin};
+use bevy_egui::{egui, EguiContext};
 
 
 pub struct DebugPlugin;
@@ -31,7 +31,7 @@ fn inspector_ui(world: &mut World) {
             });
 
             ui.heading("Entities");
-            bevy_inspector_egui::bevy_inspector::ui_for_world_entities(world, ui);
+            bevy_inspector_egui::bevy_inspector::ui_for_entities(world, ui);
         });
     });
 }
