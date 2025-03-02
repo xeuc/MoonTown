@@ -58,41 +58,35 @@ fn setup(
     });
 
     let skybox_handle = assets.load(super::super::skybox::CUBEMAPS[0].0); // TODO
-
     
-    /* Create the bouncing ball. */
+    
+    // Collider::cylinder(0.5, 0.25),
+
+
+    // spawn capsule player (numpad)
     commands
-        .spawn(RigidBody::Dynamic)
-        .insert(Collider::ball(0.1))
-        .insert(Restitution::coefficient(0.7))
-        .insert(Transform::from_xyz(0.0, 4.0, 0.0));
-
-
-
-
-    // spawn ball player (numpad)
-    commands
-        .spawn(Visibility::default())
-        // .spawn(Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))))
-        .insert(MeshMaterial3d(debug_material.clone()),)
-        .insert(RigidBody::KinematicPositionBased)
-        .insert(Collider::capsule_y(1., 0.5))
-        .insert(Transform::from_xyz(0.0, 5.0, 0.0).with_scale(Vec3::splat(0.001)))
-        .insert(super::super::super::Player)// TODO fix the super super super...
-        .insert(KinematicCharacterController {
-            ..KinematicCharacterController::default()
-        })
-        .with_children(|parent| {
-            parent.spawn((
-                Transform::from_xyz(1., 1., 5.),
-                Camera3d {
-                    ..default()
-                },
-                Skybox {
-                    image: skybox_handle.clone(),
-                    brightness: 1000.0,
-                    rotation:  Quat::IDENTITY,
-                    },
-            ));
-        });
+        .spawn((
+            // Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))),
+            Visibility::default(),
+            // ContactSkin(0.2),
+            // SoftCcd { prediction: 200. },
+            MeshMaterial3d(debug_material.clone()),
+            RigidBody::KinematicPositionBased,
+            Collider::capsule_y(1., 0.5),
+            Transform::from_xyz(0.0, 3.0, 0.0).with_scale(Vec3::splat(0.001)),
+            super::super::super::Player, // TODO fix the super super super...
+            KinematicCharacterController { ..KinematicCharacterController::default() },
+        ))
+        .with_child((
+            Transform::from_xyz(1., 1., 5.),
+            Camera3d {
+                ..default()
+            },
+            Skybox {
+                image: skybox_handle.clone(),
+                brightness: 1000.0,
+                rotation:  Quat::IDENTITY,
+            },
+        ))
+        ;
 }

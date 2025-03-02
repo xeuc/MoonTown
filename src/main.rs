@@ -29,6 +29,7 @@ fn main() {
             plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
             plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
             plugins::debug::DebugPlugin,
+            plugins::pokeball::SpawnPokeBallPlugin,
         ))
         .run();
 }
