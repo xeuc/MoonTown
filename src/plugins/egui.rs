@@ -3,6 +3,8 @@ use bevy_egui::egui::Pos2;
 // use bevy_egui::*;
 
 use bevy_egui::{egui, EguiContexts};
+
+use crate::Player;
 // use bevy_rapier3d::prelude::KinematicCharacterControllerOutput;
 
 
@@ -23,7 +25,7 @@ pub struct SliderValueSmiley{
 }
 
 fn ui_example_system(
-    mut query: Query<&mut Transform, With<Camera>>,
+    mut query: Query<&mut Transform, With<Player>>,
     // mut query2: Query<&mut Transform, With<super::super::Player>>,
     mut slider_value_smiley: ResMut<SliderValueSmiley>,
     mut contexts: EguiContexts,

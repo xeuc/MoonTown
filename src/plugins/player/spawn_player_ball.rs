@@ -1,4 +1,4 @@
-use bevy::{asset::RenderAssetUsages, core_pipeline::Skybox, prelude::*, render::render_resource::{Extent3d, TextureDimension, TextureFormat}};
+use bevy::{asset::RenderAssetUsages, core::Name, core_pipeline::Skybox, prelude::*, render::render_resource::{Extent3d, TextureDimension, TextureFormat}};
 use bevy_rapier3d::prelude::*;
 
 pub struct SpawnPlayerBallPlugin;
@@ -63,21 +63,28 @@ fn setup(
     // Collider::cylinder(0.5, 0.25),
 
 
-    // spawn capsule player (numpad)
+    // spawn capsule player (wasd)
     commands
         .spawn((
             // Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))),
             Visibility::default(),
-            // ContactSkin(0.2),
-            // SoftCcd { prediction: 200. },
             MeshMaterial3d(debug_material.clone()),
             RigidBody::KinematicPositionBased,
-            Collider::capsule_y(1., 0.5),
+            // Collider::capsule_y(1., 0.5),
+            Collider::ball(1.),
             Transform::from_xyz(0.0, 3.0, 0.0).with_scale(Vec3::splat(0.001)),
             super::super::super::Player, // TODO fix the super super super...
-            KinematicCharacterController { ..KinematicCharacterController::default() },
+            Name::new("Player"),
+            // ContactSkin(0.2),
+            SoftCcd { prediction: 5.0 },
+            KinematicCharacterController {
+                offset: CharacterLength::Relative(0.01),
+                snap_to_ground: Some(CharacterLength::Absolute(0.5)),
+                ..KinematicCharacterController::default()
+            },
         ))
         .with_child((
+            // Transform::from_xyz(1., 1., 5.).looking_at(Vec3::from_array([1., -55., 5.]), Vec3::Y),
             Transform::from_xyz(1., 1., 5.),
             Camera3d {
                 ..default()

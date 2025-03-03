@@ -37,8 +37,11 @@ fn player_controller(
             + (trans_rot * Vec3::Z).normalize()*Vec3::new((down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32);
 
         // let direction = Vec2::new(direction.x, direction.z); // no need to direction.clamp_length_max(1.0) as it's already normalized
+        
 
+        direction.y = 0.;
         direction = direction.normalize_or_zero() * time.delta_secs() * 0.5;
+        direction.y = 0.;
 
         // Jump
         if keyboard_input.just_pressed(KeyCode::ShiftLeft) {
@@ -54,7 +57,10 @@ fn player_controller(
         }
 
         // Apply Movement
-        direction.y += -0.5 * time.delta_secs();
+        if !left && !right && !down && !up {
+            direction.y += -0.5 * time.delta_secs();
+        } // I clipped again on a move
+        
         kinematic_character_controller.translation = Some(direction);
 
     }

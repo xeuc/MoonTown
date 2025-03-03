@@ -1,5 +1,6 @@
 use bevy::prelude::*;
-use bevy_rapier3d::{geometry::*, prelude::SoftCcd};
+use bevy_rapier3d::geometry::*;
+// use bevy_rapier3d::prelude::SoftCcd;
 
 pub struct SetupMapPlugin;
 
