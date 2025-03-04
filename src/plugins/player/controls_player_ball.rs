@@ -40,7 +40,7 @@ fn player_controller(
         
 
         direction.y = 0.;
-        direction = direction.normalize_or_zero() * time.delta_secs() * 0.5;
+        direction = direction.normalize_or_zero() * time.delta_secs() * 50.;
         direction.y = 0.;
 
         // Jump
@@ -57,9 +57,7 @@ fn player_controller(
         }
 
         // Apply Movement
-        if !left && !right && !down && !up {
             direction.y += -0.5 * time.delta_secs();
-        } // I clipped again on a move
         
         kinematic_character_controller.translation = Some(direction);
 

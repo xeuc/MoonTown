@@ -19,7 +19,7 @@ fn setup_map(
 ) {
     // Spawn the map
     commands.spawn((
-        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("creative_map_simple.gltf")),),
+        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("creative_map_simple3.gltf")),),
         // ContactSkin(0.2),
         // SoftCcd { prediction: 200. },
         AsyncSceneCollider::default(),
