@@ -15,7 +15,7 @@ impl Plugin for SpawnPlayerBallPlugin {
     }
 }
 
-/// Creates a colorful test pattern
+// Creates a colorful test pattern
 fn uv_debug_texture() -> Image {
     const TEXTURE_SIZE: usize = 8;
 
@@ -63,6 +63,27 @@ fn setup(
     // Collider::cylinder(0.5, 0.25),
 
 
+
+
+    // commands.insert_resource(RapierConfiguration {
+    //     timestep_mode: TimestepMode::Fixed {
+    //         dt: 1.0 / 120.0, // Augmente la fréquence de mise à jour
+    //         substeps: 8,     // Augmente le nombre de sous-pas de collision
+    //     },
+    //     ..Default::default()
+    // });
+
+
+    // .insert(Collider::capsule_y(0.5, 0.3)) 
+    // .insert(RigidBody::KinematicPositionBased)
+    // .insert(ColliderMassProperties::Density(1.0))
+    // .insert(ActiveCollisionTypes::default())
+    // .insert(ActiveEvents::COLLISION_EVENTS)
+    // .insert(ColliderFlags {
+    //     active_hooks: ActiveHooks::FILTER_CONTACT_PAIRS,
+    //     active_events: ActiveEvents::COLLISION_EVENTS,
+    //     ..Default::default()
+    // })
     // spawn capsule player (wasd)
     commands
         .spawn((
@@ -70,64 +91,66 @@ fn setup(
             Visibility::default(),
             MeshMaterial3d(debug_material.clone()),
             RigidBody::KinematicPositionBased,
+            // RigidBody::KinematicVelocityBased,
             // Collider::capsule_y(1., 0.5),
             Collider::ball(1.),
             Transform::from_xyz(0.0, 3.0, 0.0).with_scale(Vec3::splat(1.)),
             super::super::super::Player, // TODO fix the super super super...
             Name::new("Player"),
             // ContactSkin(0.2),
+            Ccd { enabled: true },
             SoftCcd { prediction: 5.0 },
             KinematicCharacterController {
-                /// The translations we desire the character to move by if it doesn’t meet any obstacle.
+                // The translations we desire the character to move by if it doesn’t meet any obstacle.
                 // translation: Option<Vect>,
-                /// The shape, and its position, to be used instead of the shape of the collider attached to
-                /// the same entity is this `KinematicCharacterController`.
+                // The shape, and its position, to be used instead of the shape of the collider attached to
+                // the same entity is this `KinematicCharacterController`.
                 // custom_shape: Option<(Collider, Vect, Rot)>,
-                /// The mass to be used for impulse of dynamic bodies. This replaces the mass of the rigid-body
-                /// potentially associated to the collider attached to the same entity as this
-                /// `KinematicCharacterController`.
-                ///
-                /// This field isn’t used if `Self::apply_impulse_to_dynamic_bodies` is set to `false`.
+                // The mass to be used for impulse of dynamic bodies. This replaces the mass of the rigid-body
+                // potentially associated to the collider attached to the same entity as this
+                // `KinematicCharacterController`.
+                //
+                // This field isn’t used if `Self::apply_impulse_to_dynamic_bodies` is set to `false`.
                 // custom_mass: Option<Real>,
-                /// The direction that goes "up". Used to determine where the floor is, and the floor’s angle.
+                // The direction that goes "up". Used to determine where the floor is, and the floor’s angle.
                 // up: Vect,
-                /// A small gap to preserve between the character and its surroundings.
-                ///
-                /// This value should not be too large to avoid visual artifacts, but shouldn’t be too small
-                /// (must not be zero) to improve numerical stability of the character controller.
+                // A small gap to preserve between the character and its surroundings.
+                //
+                // This value should not be too large to avoid visual artifacts, but shouldn’t be too small
+                // (must not be zero) to improve numerical stability of the character controller.
                 // offset: CharacterLength,
-                /// Should the character try to slide against the floor if it hits it?
+                // Should the character try to slide against the floor if it hits it?
                 // slide: bool,
-                /// Should the character automatically step over small obstacles?
+                // Should the character automatically step over small obstacles?
                 // autostep: Option<CharacterAutostep>,
-                /// The maximum angle (radians) between the floor’s normal and the `up` vector that the
-                /// character is able to climb.
+                // The maximum angle (radians) between the floor’s normal and the `up` vector that the
+                // character is able to climb.
                 // max_slope_climb_angle: Real,
-                /// The minimum angle (radians) between the floor’s normal and the `up` vector before the
-                /// character starts to slide down automatically.
+                // The minimum angle (radians) between the floor’s normal and the `up` vector before the
+                // character starts to slide down automatically.
                 // min_slope_slide_angle: Real,
-                /// Should the character apply forces to dynamic bodies in its path?
+                // Should the character apply forces to dynamic bodies in its path?
                 // apply_impulse_to_dynamic_bodies: bool,
-                /// Should the character be automatically snapped to the ground if the distance between
-                /// the ground and its feet are smaller than the specified threshold?
-                snap_to_ground: Some(CharacterLength::Relative(20.)),
-                /// Flags for filtering-out some categories of entities from the environment seen by the
-                /// character controller.
+                // Should the character be automatically snapped to the ground if the distance between
+                // the ground and its feet are smaller than the specified threshold?
+                // snap_to_ground: Some(CharacterLength::Relative(20.)),
+                // Flags for filtering-out some categories of entities from the environment seen by the
+                // character controller.
                 // filter_flags: QueryFilterFlags,
-                /// Groups for filtering-out some colliders from the environment seen by the character
-                /// controller.
+                // Groups for filtering-out some colliders from the environment seen by the character
+                // controller.
                 // filter_groups: Option<CollisionGroups>,
-                /// Increase this number if your character appears to get stuck when sliding against surfaces.
-                ///
-                /// This is a small distance applied to the movement toward the contact normals of shapes hit
-                /// by the character controller. This helps shape-casting not getting stuck in an always-penetrating
-                /// state during the sliding calculation.
-                ///
-                /// This value should remain fairly small since it can introduce artificial "bumps" when sliding
-                /// along a flat surface.
+                // Increase this number if your character appears to get stuck when sliding against surfaces.
+                //
+                // This is a small distance applied to the movement toward the contact normals of shapes hit
+                // by the character controller. This helps shape-casting not getting stuck in an always-penetrating
+                // state during the sliding calculation.
+                //
+                // This value should remain fairly small since it can introduce artificial "bumps" when sliding
+                // along a flat surface.
                 // normal_nudge_factor: Real,
 
-                offset: CharacterLength::Relative(0.5),
+                // offset: CharacterLength::Relative(0.5),
                 // snap_to_ground: Some(CharacterLength::Absolute(0.5)),
                 
                 ..KinematicCharacterController::default()

@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_rapier3d::geometry::*;
+use bevy_rapier3d::{geometry::*, prelude::RigidBody};
 // use bevy_rapier3d::prelude::SoftCcd;
 
 pub struct SetupMapPlugin;
@@ -12,6 +12,7 @@ impl Plugin for SetupMapPlugin {
     }
 }
 
+
 // Setup System
 fn setup_map(
     mut commands: Commands,
@@ -19,9 +20,12 @@ fn setup_map(
 ) {
     // Spawn the map
     commands.spawn((
-        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("creative_map_simple3.gltf")),),
+        // SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("creative_map_simple3.gltf")),),
+        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("stress_map_65536x65536.gltf")),),
         // ContactSkin(0.2),
         // SoftCcd { prediction: 200. },
+        // ColliderScale(1.2),
         AsyncSceneCollider::default(),
+        RigidBody::Fixed,
     ));
 }
