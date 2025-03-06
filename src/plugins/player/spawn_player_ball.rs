@@ -15,86 +15,27 @@ impl Plugin for SpawnPlayerBallPlugin {
     }
 }
 
-// Creates a colorful test pattern
-fn uv_debug_texture() -> Image {
-    const TEXTURE_SIZE: usize = 8;
-
-    let mut palette: [u8; 32] = [
-        255, 102, 159, 255, 255, 159, 102, 255, 236, 255, 102, 255, 121, 255, 102, 255, 102, 255,
-        198, 255, 102, 198, 255, 255, 121, 102, 255, 255, 236, 102, 255, 255,
-    ];
-
-    let mut texture_data = [0; TEXTURE_SIZE * TEXTURE_SIZE * 4];
-    for y in 0..TEXTURE_SIZE {
-        let offset = TEXTURE_SIZE * y * 4;
-        texture_data[offset..(offset + TEXTURE_SIZE * 4)].copy_from_slice(&palette);
-        palette.rotate_right(4);
-    }
-
-    Image::new_fill(
-        Extent3d {
-            width: TEXTURE_SIZE as u32,
-            height: TEXTURE_SIZE as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        &texture_data,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::RENDER_WORLD,
-    )
-}
-
 
 
 fn setup(
     mut commands: Commands,
     mut images: ResMut<Assets<Image>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    assets: Res<AssetServer>,
+    asset_server: Res<AssetServer>,
 ) {
-    let debug_material = materials.add(StandardMaterial {
-        base_color_texture: Some(images.add(uv_debug_texture())),
-        ..default()
-    });
 
-    let skybox_handle = assets.load(super::super::skybox::CUBEMAPS[0].0); // TODO
+    let skybox_handle = asset_server.load(super::super::skybox::CUBEMAPS[0].0); // TODO
     
-    
-    // Collider::cylinder(0.5, 0.25),
-
-
-
-
-    // commands.insert_resource(RapierConfiguration {
-    //     timestep_mode: TimestepMode::Fixed {
-    //         dt: 1.0 / 120.0, // Augmente la fréquence de mise à jour
-    //         substeps: 8,     // Augmente le nombre de sous-pas de collision
-    //     },
-    //     ..Default::default()
-    // });
-
-
-    // .insert(Collider::capsule_y(0.5, 0.3)) 
-    // .insert(RigidBody::KinematicPositionBased)
-    // .insert(ColliderMassProperties::Density(1.0))
-    // .insert(ActiveCollisionTypes::default())
-    // .insert(ActiveEvents::COLLISION_EVENTS)
-    // .insert(ColliderFlags {
-    //     active_hooks: ActiveHooks::FILTER_CONTACT_PAIRS,
-    //     active_events: ActiveEvents::COLLISION_EVENTS,
-    //     ..Default::default()
-    // })
-    // spawn capsule player (wasd)
     commands
         .spawn((
+            SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("player.gltf")),),
             // Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))),
             Visibility::default(),
-            MeshMaterial3d(debug_material.clone()),
-            RigidBody::KinematicPositionBased,
+            // RigidBody::KinematicPositionBased,
             // RigidBody::KinematicVelocityBased,
-            // Collider::capsule_y(1., 0.5),
-            Collider::ball(1.),
-            Transform::from_xyz(0.0, 3.0, 0.0).with_scale(Vec3::splat(1.)),
+            Collider::capsule_y(1., 0.5),
+            // Collider::ball(1.),
+            Transform::from_xyz(0.0, 5.0, 0.0).with_scale(Vec3::splat(1.)),
             super::super::super::Player, // TODO fix the super super super...
             Name::new("Player"),
             // ContactSkin(0.2),
@@ -170,3 +111,7 @@ fn setup(
         ))
         ;
 }
+
+
+// try to reach animation.................
+// https://bevyengine.org/examples/animation/animated-fox/ dont help

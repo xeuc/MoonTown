@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
+use bevy_rapier3d::plugin::TimestepMode;
 
 pub mod plugins;
 
@@ -31,6 +32,10 @@ fn main() {
             plugins::debug::DebugPlugin,
             plugins::pokeball::SpawnPokeBallPlugin,
         ))
+        .insert_resource(TimestepMode::Fixed {
+            dt: 1.0 / 240.0,
+            substeps: 64,
+        })// Clip using "f" key
         .run();
 }
 

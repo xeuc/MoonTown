@@ -23,8 +23,8 @@ fn setup_pokeball(
         RigidBody::Dynamic,
         Collider::ball(2.),
         Restitution::coefficient(0.7),
-        GravityScale(0.05),
-        Transform::from_xyz(0.2,2., 0.2).with_scale(Vec3::splat(0.01)),
+        GravityScale(1.),
+        Transform::from_xyz(10.,2., 10.).with_scale(Vec3::splat(1.)),
         // AsyncSceneCollider::default(),
     ));
 }

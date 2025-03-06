@@ -21,10 +21,12 @@ fn setup_map(
     // Spawn the map
     commands.spawn((
         // SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("creative_map_simple3.gltf")),),
-        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("stress_map_65536x65536.gltf")),),
+        SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("playtest_map.gltf")),),
         // ContactSkin(0.2),
         // SoftCcd { prediction: 200. },
         // ColliderScale(1.2),
+        Transform::from_xyz(0.2,2., 0.2).with_scale(Vec3::splat(20.)),
+
         AsyncSceneCollider::default(),
         RigidBody::Fixed,
     ));
