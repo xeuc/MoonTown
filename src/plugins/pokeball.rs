@@ -24,7 +24,7 @@ fn setup_pokeball(
         Collider::ball(2.),
         Restitution::coefficient(0.7),
         GravityScale(1.),
-        Transform::from_xyz(10.,2., 10.).with_scale(Vec3::splat(1.)),
+        Transform::from_xyz(10.,7., 10.).with_scale(Vec3::splat(1.)),
         // AsyncSceneCollider::default(),
     ));
 }

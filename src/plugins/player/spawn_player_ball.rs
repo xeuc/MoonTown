@@ -1,4 +1,4 @@
-use bevy::{asset::RenderAssetUsages, core::Name, core_pipeline::Skybox, prelude::*, render::render_resource::{Extent3d, TextureDimension, TextureFormat}};
+use bevy::{core::Name, core_pipeline::Skybox, prelude::*};
 use bevy_rapier3d::prelude::*;
 
 pub struct SpawnPlayerBallPlugin;
@@ -19,8 +19,6 @@ impl Plugin for SpawnPlayerBallPlugin {
 
 fn setup(
     mut commands: Commands,
-    mut images: ResMut<Assets<Image>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
     asset_server: Res<AssetServer>,
 ) {
 
@@ -28,7 +26,7 @@ fn setup(
     
     commands
         .spawn((
-            SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("player.gltf")),),
+            SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("avatar_model_test_16x16_scale16.gltf")),),
             // Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))),
             Visibility::default(),
             // RigidBody::KinematicPositionBased,
@@ -99,7 +97,7 @@ fn setup(
         ))
         .with_child((
             // Transform::from_xyz(1., 1., 5.).looking_at(Vec3::from_array([1., -55., 5.]), Vec3::Y),
-            Transform::from_xyz(1., 1., 5.),
+            Transform::from_xyz(2., 1., 5.),
             Camera3d {
                 ..default()
             },
