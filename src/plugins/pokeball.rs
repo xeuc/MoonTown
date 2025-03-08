@@ -11,8 +11,6 @@ impl Plugin for SpawnPokeBallPlugin {
     }
 }
 
-
-
 fn setup_pokeball(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
@@ -22,7 +20,7 @@ fn setup_pokeball(
         SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("pokeball.gltf")),),
         RigidBody::Dynamic,
         Collider::ball(2.),
-        Restitution::coefficient(0.7),
+        // Restitution::coefficient(0.7),
         GravityScale(1.),
         Transform::from_xyz(10.,7., 10.).with_scale(Vec3::splat(1.)),
         // AsyncSceneCollider::default(),

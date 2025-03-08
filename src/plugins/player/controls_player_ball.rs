@@ -44,10 +44,11 @@ fn player_controller(
 
         // Jump
         if keyboard_input.just_pressed(KeyCode::ShiftLeft) {
-            direction.y = 0.25;
-        }
-        if keyboard_input.just_pressed(KeyCode::Space) {
             direction.y = 10.;
+        }
+        if keyboard_input.pressed(KeyCode::Space) {
+            direction.x *= 2.;
+            direction.z *= 2.;
         }
 
         // De-Jump
@@ -56,7 +57,7 @@ fn player_controller(
         }
 
         // Apply Movement
-        direction.y += -0.5 * time.delta_secs();
+        direction.y += -10. * time.delta_secs();
         
         kinematic_character_controller.translation = Some(direction);
 

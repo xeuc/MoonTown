@@ -1,7 +1,6 @@
 use bevy::prelude::*;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
-use bevy_rapier3d::plugin::TimestepMode;
 
 pub mod plugins;
 
@@ -23,82 +22,79 @@ fn main() {
             plugins::keyboard::KeyboardPlugin,
             plugins::skybox::SkyboxPlugin,
             plugins::light::LightPlugin,
-            plugins::fps::FpsPlugin,
-            plugins::egui::UiPlugin,
+            // plugins::fps::FpsPlugin,
+            // plugins::egui::UiPlugin,
             plugins::app_state::AppStatePlugin,
             plugins::setup_map::SetupMapPlugin,
             plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
             plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
-            plugins::debug::DebugPlugin,
+            // plugins::debug::DebugPlugin,
             plugins::pokeball::SpawnPokeBallPlugin,
         ))
-        .insert_resource(TimestepMode::Fixed {
-            dt: 1.0 / 240.0,
-            substeps: 64,
-        })// Clip using "f" key
+        .add_plugins((
+            plugins::animation::AnimationPlugin,
+        ))
+
+        // .insert_resource(TimestepMode::Fixed {
+        //     dt: 1.0 / 240.0,
+        //     substeps: 64,
+        // })// Clip using "f" key
         .run();
 }
 
-
-
 // TODO
 // BUG
-// * les plugins devrait pas s'appeler les uns les autres, mais plutot utiliser des querries (genge skybox est appelé par setup_maps)
-// fix "ERROR present_frames: log: No work has been submitted for this frame" when taking screenshot (to be continued)
+// * Plugins should not call each other, but rather use queries (e.g., skybox is called by setup_maps)
+// Fix "ERROR present_frames: log: No work has been submitted for this frame" when taking a screenshot (to be continued)
 
 // MAP
-// import camera as gltf
-// import light as gltf
-// save gltf modified by game map
-// Blennder same dynamic scene https://www.youtube.com/watch?v=PRDUH0JUS_A
-// [OPTI] MAKE check_mesh_ready_no_rapier CALLED ONCE (or not avter the thing being done)
-// [OPTI] ne pas voir ce qui est derriere sois 
+// Import camera as glTF
+// Import light as glTF
+// Save glTF modified by game map
+// Blender same dynamic scene https://www.youtube.com/watch?v=PRDUH0JUS_A
+// [OPTI] MAKE check_mesh_ready_no_rapier CALLED ONCE (or not after the thing is done)
+// [OPTI] Do not see what is behind you
 
 // FEATURE
 // Config file
-// split screen
-// threads?
-// portail like realist nether portail
-// dimention 
+// Split screen
+// Threads?
+// Portal-like realistic Nether portal
+// Dimension
 
 // COLLISION
-// Au lieu d'utiliser des collision group, juste, désactive ceux qui sont pas dans le chunk
-// stp fix le perso savonette
-// rapier https://rapier.rs/docs/user_guides/bevy_plugin/getting_started_bevy/
+// Instead of using collision groups, just disable those that are not in the chunk
+// Please fix the slippery character
+// Rapier https://rapier.rs/docs/user_guides/bevy_plugin/getting_started_bevy/
 
     // DONE
-    // import gltf background
-    // finish the tuto
-    // change all to plugin 
-    // créer un plugin pour setup comme ça le main fait 100 lignes :)
-    // y<1 => TP player
-    // enlever le publique (pub) des plugins
+    // Import glTF background (glTF file itself does not directly support a background)
+    // Finish the tutorial (???)
+    // Change everything to plugins
+    // Create a plugin for setup so that main is only 100 lines :)
+    // y < 1 => TP player
+    // Remove public (pub) from plugins
     // UI log position + DEBUG
-    // remet la lumiere stp
-    // remettre ui mais en tant que plugin
-    // fix screenshot folder not exist error
-
-
-
+    // Please put the light back
+    // Put UI back but as a plugin
+    // Fix screenshot folder not existing error
 
 // https://github.com/bevyengine/bevy/discussions/5522
 // egui is an immediate mode UI library.
 // This means that the state of the UI is built from scratch every frame,
 // but it also means the state is entirely transparent, without the need for propagating state through a retained tree.
-// In bevy, using bevy_egui, this state is accessed through the EguiContext resource - a single struct that contains the entire UI state.
+// In Bevy, using bevy_egui, this state is accessed through the EguiContext resource - a single struct that contains the entire UI state.
 // When you have mutable access to the EguiContext, you can add widgets, updating the state.
 
+// Create INDEPENDENT plugins or look for plugin dependencies
 
-
-
-// Do INDEPENDANT plugins or look for plugins dependancies
-
-// Perfs:
+// Performance:
 //           | ⧖ debug plugin | ϟ no debug plugin |
 // ⧖ no opti |         10 fps |           100 fps |
 // ϟ -o3     |        140 fps |           140 fps |
 
-
-// change map 
+// Change map
 // Resolve light problem
-// generate tree procedurally ? (No)
+// Generate trees procedurally? (No)
+
+// we should not draw polygons whose normals match the camera's view direction.
