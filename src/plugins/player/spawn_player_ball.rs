@@ -1,6 +1,8 @@
 use bevy::{core::Name, core_pipeline::Skybox, prelude::*};
 use bevy_rapier3d::prelude::*;
 
+use super::controls_player_ball::{PlayerMovement, PlayerState};
+
 pub struct SpawnPlayerBallPlugin;
 
 impl Plugin for SpawnPlayerBallPlugin {
@@ -24,11 +26,15 @@ fn setup(
 
     let skybox_handle = asset_server.load(super::super::skybox::CUBEMAPS[0].0); // TODO
     
+    // Spawn player (with cam)
     commands
         .spawn((
             SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("avatar_model_test_16x16_scale16.gltf")),),
             // Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))),
             Visibility::default(),
+            PlayerMovement {
+                state: PlayerState::Idle,
+            },
             // RigidBody::KinematicPositionBased,
             // RigidBody::KinematicVelocityBased,
             Collider::capsule_y(1., 0.5),

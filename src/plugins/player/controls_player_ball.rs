@@ -13,22 +13,35 @@ impl Plugin for ControlsPlayerBallPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_systems(Update, player_controller)
+            .add_systems(Update, change_detection)
             // .add_systems(Update, gravity)
             ;
     }
 }
 
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PlayerState {
+    Idle,
+    Running,
+    Jumping,
+    Sleepy,
+}
+#[derive(Component)]
+pub struct PlayerMovement {
+    pub state: PlayerState,
+}
+
+
 
 fn player_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<(&mut Transform, &mut KinematicCharacterController), With<super::super::super::Player>>, // TODO fix the super super super...
+    mut query: Query<(&mut Transform, &mut KinematicCharacterController, &mut PlayerMovement), With<super::super::super::Player>>, // TODO fix the super super super...
     time: Res<Time>,
-    mut animation_players: Query<(&mut AnimationPlayer, &mut AnimationTransitions)>,
-    animations: Res<crate::plugins::animation::Animations>,
+
 ) {
 
-    for (transform, mut kinematic_character_controller) in &mut query.iter_mut() {
+    for (transform, mut kinematic_character_controller, mut pm) in &mut query.iter_mut() {
         
                 
         let trans_rot= transform.rotation;
@@ -38,21 +51,21 @@ fn player_controller(
         let  down = keyboard_input.pressed(KeyCode::KeyS);
         let    up = keyboard_input.pressed(KeyCode::KeyW);
 
+        if left || right || down || up {
+            // println!("run");
+            if pm.state != PlayerState::Running {
+            pm.state = PlayerState::Running;
 
-        // change animation
-        for (mut player, mut transitions) in &mut animation_players {
-            // Set the animation if it's not already the one curently executed 
-            if left || right || down || up {
-                transitions
-                    .play(
-                        &mut player,
-                        animations.animations[3], // 2 is runnin animation
-                        Duration::from_millis(250),
-                    )
-                    .repeat();
-            } 
+            }
+             
+        } else {
+            // println!("idls");
+            if pm.state != PlayerState::Idle {
+                pm.state = PlayerState::Idle;
+    
+                }
+                 
         }
-
 
         let mut direction = 
             (trans_rot * Vec3::X).normalize()*Vec3::new((right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32)
@@ -89,12 +102,39 @@ fn player_controller(
 
 
 
+fn change_detection(
+    mut animation_players: Query<(&mut AnimationPlayer, &mut AnimationTransitions)>,
+    mut pms: Query<&mut PlayerMovement, Changed<PlayerMovement>>,
+    animations: Res<crate::plugins::animation::Animations>,
+) {
+    for pm in &mut pms {
+        // println!("{:?}", pm.state);
 
-// fn gravity(
-//     mut query: Query<&mut Transform, With<Collider>>, // TODO fix the super super super...
-// ) {
-//     // Gravity
-//     for mut transform in &mut query.iter_mut() {
-//         transform.translation.y -= 0.01;
-//     }
-// }
+
+    // change animation
+    for (mut player, mut transitions) in &mut animation_players {
+        if pm.state == PlayerState::Running {
+            transitions
+                .play(
+                    &mut player,
+                    animations.animations[3], // Running animation
+                    Duration::from_millis(250),
+                )
+                .repeat();
+        } else {
+            transitions
+                .play(
+                    &mut player,
+                    animations.animations[0], // idle animation
+                    Duration::from_millis(250),
+                )
+                .repeat();
+        }
+       
+    }
+
+
+
+}
+
+}
