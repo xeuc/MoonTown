@@ -18,7 +18,7 @@ impl Plugin for AnimationPlugin {
         app
             .add_systems(Startup, setup)
             .add_systems(Update, setup_scene_once_loaded)
-            // .add_systems(Update, keyboard_animation_control)
+            .add_systems(Update, keyboard_animation_control)
             ;
     }
 }
