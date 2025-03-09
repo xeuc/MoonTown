@@ -26,13 +26,13 @@ fn main() {
             // plugins::egui::UiPlugin,
             plugins::app_state::AppStatePlugin,
             plugins::setup_map::SetupMapPlugin,
-            plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
             plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
             // plugins::debug::DebugPlugin,
             plugins::pokeball::SpawnPokeBallPlugin,
         ))
         .add_plugins((
             plugins::animation::AnimationPlugin,
+            plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
         ))
 
         // .insert_resource(TimestepMode::Fixed {

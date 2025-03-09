@@ -8,7 +8,7 @@ use bevy::{
     prelude::*,
 };
 
-const FOX_PATH: &str = "avatar_model_test_16x16_scale16.gltf";
+const PLAYER_MODEL_PATH: &str = "avatar_model_test_16x16_scale16.gltf";
 
 
 pub struct AnimationPlugin;
@@ -24,8 +24,8 @@ impl Plugin for AnimationPlugin {
 }
 
 #[derive(Resource)]
-struct Animations {
-    animations: Vec<AnimationNodeIndex>,
+pub struct Animations {
+    pub animations: Vec<AnimationNodeIndex>,
     graph: Handle<AnimationGraph>,
 }
 
@@ -40,8 +40,10 @@ fn setup(
 ) {
     // Build the animation graph
     let (graph, node_indices) = AnimationGraph::from_clips([
-        asset_server.load(GltfAssetLabel::Animation(0).from_asset(FOX_PATH)),
-        // Add jump animation
+        asset_server.load(GltfAssetLabel::Animation(0).from_asset(PLAYER_MODEL_PATH)), // idle
+        asset_server.load(GltfAssetLabel::Animation(1).from_asset(PLAYER_MODEL_PATH)), // jump
+        asset_server.load(GltfAssetLabel::Animation(2).from_asset(PLAYER_MODEL_PATH)), // zzz
+        asset_server.load(GltfAssetLabel::Animation(3).from_asset(PLAYER_MODEL_PATH)), // running
     ]);
 
     // Insert a resource with the current scene information
@@ -110,7 +112,7 @@ fn setup_scene_once_loaded(
 
 
 
-fn _keyboard_animation_control(
+fn keyboard_animation_control(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut animation_players: Query<(&mut AnimationPlayer, &mut AnimationTransitions)>,
     animations: Res<Animations>,
@@ -160,7 +162,7 @@ fn _keyboard_animation_control(
         }
 
         // change animation
-        if keyboard_input.just_pressed(KeyCode::Enter) {
+        if keyboard_input.just_pressed(KeyCode::KeyE) {
             *current_animation = (*current_animation + 1) % animations.animations.len();
 
             transitions

@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
@@ -18,19 +20,39 @@ impl Plugin for ControlsPlayerBallPlugin {
 
 
 
-
 fn player_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut query: Query<(&mut Transform, &mut KinematicCharacterController), With<super::super::super::Player>>, // TODO fix the super super super...
     time: Res<Time>,
+    mut animation_players: Query<(&mut AnimationPlayer, &mut AnimationTransitions)>,
+    animations: Res<crate::plugins::animation::Animations>,
 ) {
+
     for (transform, mut kinematic_character_controller) in &mut query.iter_mut() {
+        
+                
         let trans_rot= transform.rotation;
 
         let  left = keyboard_input.pressed(KeyCode::KeyA);
         let right = keyboard_input.pressed(KeyCode::KeyD);
         let  down = keyboard_input.pressed(KeyCode::KeyS);
         let    up = keyboard_input.pressed(KeyCode::KeyW);
+
+
+        // change animation
+        for (mut player, mut transitions) in &mut animation_players {
+            // Set the animation if it's not already the one curently executed 
+            if left || right || down || up {
+                transitions
+                    .play(
+                        &mut player,
+                        animations.animations[3], // 2 is runnin animation
+                        Duration::from_millis(250),
+                    )
+                    .repeat();
+            } 
+        }
+
 
         let mut direction = 
             (trans_rot * Vec3::X).normalize()*Vec3::new((right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32)
