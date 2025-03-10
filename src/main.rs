@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
+// use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 pub mod plugins;
 
@@ -12,7 +12,7 @@ fn main() {
         .add_plugins((
             DefaultPlugins,
             FrameTimeDiagnosticsPlugin,
-            WorldInspectorPlugin::new(),
+            // WorldInspectorPlugin::new(),
         ))
         .add_plugins((
             plugins::lost_player::LostPlayerPlugin,
@@ -33,6 +33,7 @@ fn main() {
         .add_plugins((
             plugins::animation::AnimationPlugin,
             plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
+            plugins::iyes_perf_ui::IvesPerfUIPlugin,
         ))
 
         // .insert_resource(TimestepMode::Fixed {
@@ -52,7 +53,6 @@ fn main() {
 // Import light as glTF
 // Save glTF modified by game map
 // Blender same dynamic scene https://www.youtube.com/watch?v=PRDUH0JUS_A
-// [OPTI] MAKE check_mesh_ready_no_rapier CALLED ONCE (or not after the thing is done)
 // [OPTI] Do not see what is behind you
 
 // FEATURE
@@ -78,6 +78,9 @@ fn main() {
     // Please put the light back
     // Put UI back but as a plugin
     // Fix screenshot folder not existing error
+    // [OPTI] MAKE check_mesh_ready_no_rapier CALLED ONCE (or not after the thing is done) (gamestate or component)
+    // Resolve light problem
+    // Generate trees procedurally? (No)
 
 // https://github.com/bevyengine/bevy/discussions/5522
 // egui is an immediate mode UI library.
@@ -94,7 +97,10 @@ fn main() {
 // ϟ -o3     |        140 fps |           140 fps |
 
 // Change map
-// Resolve light problem
-// Generate trees procedurally? (No)
 
 // we should not draw polygons whose normals match the camera's view direction.
+
+
+// Create a Blockbench plugin to allow "extras" like Blender do with "custom properties" that can be reached from bevy using GltfExtras
+// camera should turn arond player without player turning as well 
+

@@ -75,15 +75,15 @@ fn player_controller(
         
 
         direction.y = 0.;
-        direction = direction.normalize_or_zero() * time.delta_secs() * 50.;
+        direction = direction.normalize_or_zero() * time.delta_secs() * 10.;
 
         // Jump
         if keyboard_input.just_pressed(KeyCode::ShiftLeft) {
             direction.y = 10.;
         }
         if keyboard_input.pressed(KeyCode::Space) {
-            direction.x *= 2.;
-            direction.z *= 2.;
+            direction.x *= 10.;
+            direction.z *= 10.;
         }
 
         // De-Jump

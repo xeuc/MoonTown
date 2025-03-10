@@ -14,3 +14,4 @@ pub mod app_state;
 pub mod debug;
 pub mod pokeball;
 pub mod animation;
+pub mod iyes_perf_ui;
