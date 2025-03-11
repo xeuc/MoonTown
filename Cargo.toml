@@ -24,3 +24,4 @@ features = ["std"]
 #lto = "fat" # Link Time Optimization
 #codegen-units = 1 # Compile All same time
 #panic = "abort"
+

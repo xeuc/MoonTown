@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use iyes_perf_ui::{entries::PerfUiAllEntries, prelude::PerfUiDefaultEntries, PerfUiPlugin};
+use iyes_perf_ui::{entries::PerfUiAllEntries, PerfUiPlugin};
 
 pub struct IvesPerfUIPlugin;
 
