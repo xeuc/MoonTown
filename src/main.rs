@@ -104,3 +104,14 @@ fn main() {
 // Create a Blockbench plugin to allow "extras" like Blender do with "custom properties" that can be reached from bevy using GltfExtras
 // camera should turn arond player without player turning as well 
 
+
+
+// I need a way to avoid using the mouse (for multi-screen).
+// I need controller support.
+// I need dynamic player addition by pressing a key.
+// I need a client-server implementation.
+// I need a way to switch between security and performance.
+// I need camera collision handling.
+// I need to manage other players, including non-local ones.
+
+
