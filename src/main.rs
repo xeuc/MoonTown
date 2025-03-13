@@ -105,3 +105,11 @@ fn main() {
 // camera should turn arond player without player turning as well 
 
 // Build for android is impossible (now)
+
+// I need a way to avoid using the mouse (for multi-screen).
+// I need controller support.
+// I need dynamic player addition by pressing a key.
+// I need a client-server implementation.
+// I need a way to switch between security and performance. (for server)
+// I need camera collision handling.
+// I need to manage other players, including non-local ones.
