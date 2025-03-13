@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+use crate::Player;
+
 pub struct RotateHeadPlugin;
 
 
@@ -12,11 +14,19 @@ impl Plugin for RotateHeadPlugin {
     }
 }
 
+
+
+
 fn cursor_as_movement(
     time: Res<Time>,
-    mut query: Query<&mut Transform, With<super::super::Player>>,
+    mut player_query: Query<(&mut Transform), (With<Player>, Without<Camera3d>)>,
+    mut camera_query: Query<(&mut Transform), (With<Camera3d>, Without<Player>)>,
     mut windows: Query<&mut Window>,
 ) {
+    let mut camera_transform = camera_query.single_mut();
+    let mut player_transform = player_query.single_mut();
+
+
     let delta_time = time.delta_secs();
     let mut window = windows.single_mut();
 
@@ -24,11 +34,28 @@ fn cursor_as_movement(
     let height_div_2 = window.resolution.height()/2.;
 
     // Games typically only have one window (the primary window)
-    if let Some(position) = window.cursor_position() {
-        for mut transform in &mut query.iter_mut() {
-            transform.rotate_y( delta_time * 50. * (width_div_2  - position.x)/360.);
-            transform.rotate_local_x(delta_time * 50. * (height_div_2 - position.y)/360.);
-        }
+    if let Some(cursor_position) = window.cursor_position() {
+
+
+        let yaw = Quat::from_rotation_y(
+            delta_time * 50.0 * (width_div_2 - cursor_position.x) / 360.,
+        );
+        camera_transform.rotate_around(player_transform.translation, yaw);
+        // camera_transform.rotate_y( delta_time * 50. * (width_div_2  - cursor_position.x)/360.);
+
+
+        let cam_local_x = camera_transform.right().as_vec3();
+        let pitch = Quat::from_axis_angle(cam_local_x, 
+            delta_time * 50.0 * (height_div_2 - cursor_position.y) / 360.
+        );
+
+        camera_transform.rotate_around(player_transform.translation, pitch);
+        // camera_transform.rotate_local_x(delta_time * 50. * (height_div_2 - cursor_position.y)/360.);
+
+        // camera_transform.rotate_local_x( pitch);
+
+        
+        camera_transform.look_at(player_transform.translation, Vec3::Y);
     } else {
         println!("Cursor is not in the game window.");
     }
@@ -36,6 +63,7 @@ fn cursor_as_movement(
     window.set_cursor_position(Some((width_div_2, height_div_2).into()));
     // window.set_physical_cursor_position(Some((0.0, 0.0).into()));
 }
+
 
 
 // fn rstick_as_movement(

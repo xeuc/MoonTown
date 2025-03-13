@@ -39,7 +39,7 @@ fn setup(
             // RigidBody::KinematicVelocityBased,
             Collider::capsule_y(1., 0.5),
             // Collider::ball(1.),
-            Transform::from_xyz(0.0, 5.0, 0.0).with_scale(Vec3::splat(1.)),
+            Transform::from_xyz(-2.0, 10.0, -2.0).with_scale(Vec3::splat(1.)),
             super::super::super::Player, // TODO fix the super super super...
             Name::new("Player"),
             // ContactSkin(0.2),
@@ -101,19 +101,25 @@ fn setup(
                 ..KinematicCharacterController::default()
             },
         ))
-        .with_child((
-            // Transform::from_xyz(1., 1., 5.).looking_at(Vec3::from_array([1., -55., 5.]), Vec3::Y),
-            Transform::from_xyz(2., 1., 5.),
-            Camera3d {
-                ..default()
-            },
-            Skybox {
-                image: skybox_handle.clone(),
-                brightness: 1000.0,
-                rotation:  Quat::IDENTITY,
-            },
-        ))
         ;
+
+    commands.spawn((
+        // Transform::from_xyz(1., 1., 5.).looking_at(Vec3::from_array([1., -55., 5.]), Vec3::Y),
+        Transform::from_xyz(2., 10., 2.),
+        Camera3d {
+            ..default()
+        },
+        Skybox {
+            image: skybox_handle.clone(),
+            brightness: 1000.0,
+            rotation:  Quat::IDENTITY,
+        },
+        // Collider::ball(1.),
+        // KinematicCharacterController {
+        //     ..KinematicCharacterController::default()
+        // },
+    ))
+    ;
 }
 
 

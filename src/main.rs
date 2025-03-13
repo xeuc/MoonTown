@@ -104,3 +104,4 @@ fn main() {
 // Create a Blockbench plugin to allow "extras" like Blender do with "custom properties" that can be reached from bevy using GltfExtras
 // camera should turn arond player without player turning as well 
 
+// Build for android is impossible (now)
