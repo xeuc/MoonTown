@@ -53,11 +53,11 @@ fn player_controller(
     time: Res<Time>,
 ) {
     // kcc stand for KinematicCharacterController
-    let mut camera_transform = camera_query.single_mut();
+    let camera_transform = camera_query.single_mut();
     let (mut player_kcc, mut pm, mut player_transform, mut pp) = player_query.single_mut();
 
-    let vect_play_cam = camera_transform.translation - player_transform.translation;
-    let old_play_trans = player_transform.translation;
+    // let vect_play_cam = camera_transform.translation - player_transform.translation;
+    // let old_play_trans = player_transform.translation;
     pp.0 = player_transform.translation;
 
     let trans_rot= camera_transform.rotation;
@@ -89,24 +89,33 @@ fn player_controller(
     direction.y = 0.;
     direction = direction.normalize_or_zero() * time.delta_secs() * 10.;
 
+    
+    // run fast
+    if keyboard_input.pressed(KeyCode::Space) {
+        direction.x *= 10.;
+        direction.z *= 10.;
+    }
+
+    // We don't want the player return back to look 0 0 0 while no key pressed
+    if direction != Vec3::ZERO {
+        // Apply oriantation so player will look at dirrection he look at
+        // So it will not get hurt hitting an obstacle <3
+        player_transform.look_to(direction, Vec3::Y); // Do not want the Y component bc id down pressed, player will lay down on the floor
+    }
+
     // Jump
     if keyboard_input.just_pressed(KeyCode::ShiftLeft) {
         pm.state = PlayerState::Jumping;
         direction.y = 10.;
     }
-    if keyboard_input.pressed(KeyCode::Space) {
-        direction.x *= 10.;
-        direction.z *= 10.;
-    }
+
 
     // De-Jump
     if keyboard_input.pressed(KeyCode::KeyF) {
         direction.y = -1.;
     }
 
-    // Apply oriantation so player will look at dirrection he look at
-    // So it will not get hurt hitting an obstacle <3
-    player_transform.look_to(direction, Vec3::Y);
+
 
     // gravity lvl1
     direction.y += -10. * time.delta_secs();
@@ -175,7 +184,7 @@ fn apply_movement(
     mut query: Query<(&mut Transform, &PreviousPosition), With<Player>>,
     mut camera_query: Query<&mut Transform, (With<Camera>, Without<Player>)>,
 ) {
-    if let Ok((mut player_transform, prev_pos)) = query.get_single_mut() {
+    if let Ok((player_transform, prev_pos)) = query.get_single_mut() {
         let new_position = player_transform.translation;
         let old_position = prev_pos.0;
 

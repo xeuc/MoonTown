@@ -1,6 +1,8 @@
 use bevy::{core::Name, core_pipeline::Skybox, prelude::*};
 use bevy_rapier3d::prelude::*;
 
+use crate::Player;
+
 use super::controls_player_ball::{PlayerMovement, PlayerState};
 
 pub struct SpawnPlayerBallPlugin;
@@ -33,7 +35,7 @@ fn setup(
         .spawn((
             SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("avatar_model_test_16x16_scale16.gltf")),),
             // Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))),
-            Visibility::default(),
+            // Visibility::default(),z
             PlayerMovement {
                 state: PlayerState::Idle,
             },
@@ -43,11 +45,11 @@ fn setup(
             Collider::capsule_y(1., 0.5),
             // Collider::ball(1.),
             Transform::from_xyz(-2.0, 10.0, -2.0).with_scale(Vec3::splat(1.)),
-            super::super::super::Player, // TODO fix the super super super...
+            Player,
             Name::new("Player"),
             // ContactSkin(0.2),
-            Ccd { enabled: true },
-            SoftCcd { prediction: 5.0 },
+            // Ccd { enabled: true },
+            // SoftCcd { prediction: 5.0 },
             KinematicCharacterController {
                 // The translations we desire the character to move by if it doesn’t meet any obstacle.
                 // translation: Option<Vect>,
@@ -66,11 +68,17 @@ fn setup(
                 //
                 // This value should not be too large to avoid visual artifacts, but shouldn’t be too small
                 // (must not be zero) to improve numerical stability of the character controller.
-                // offset: CharacterLength,
+                // offset: CharacterLength::Relative(0.5),
                 // Should the character try to slide against the floor if it hits it?
                 // slide: bool,
                 // Should the character automatically step over small obstacles?
                 // autostep: Option<CharacterAutostep>,
+                    // autostep: Some(CharacterAutostep {
+                    //     max_height: CharacterLength::Absolute(0.5),
+                    //     min_width: CharacterLength::Absolute(0.2),
+                    //     include_dynamic_bodies: true,
+                    // }),
+
                 // The maximum angle (radians) between the floor’s normal and the `up` vector that the
                 // character is able to climb.
                 // max_slope_climb_angle: Real,
@@ -100,7 +108,7 @@ fn setup(
 
                 // offset: CharacterLength::Relative(0.5),
                 // snap_to_ground: Some(CharacterLength::Absolute(0.5)),
-                
+                apply_impulse_to_dynamic_bodies: true,
                 ..KinematicCharacterController::default()
             },
         ))
