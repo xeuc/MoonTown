@@ -18,6 +18,8 @@ impl Plugin for SpawnPlayerBallPlugin {
 }
 
 
+#[derive(Component)]
+pub struct PreviousPosition(pub Vec3);
 
 fn setup(
     mut commands: Commands,
@@ -26,7 +28,7 @@ fn setup(
 
     let skybox_handle = asset_server.load(super::super::skybox::CUBEMAPS[0].0); // TODO
     
-    // Spawn player (with cam)
+    // Spawn player
     commands
         .spawn((
             SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("avatar_model_test_16x16_scale16.gltf")),),
@@ -35,6 +37,7 @@ fn setup(
             PlayerMovement {
                 state: PlayerState::Idle,
             },
+            PreviousPosition(Vec3::ZERO),
             // RigidBody::KinematicPositionBased,
             // RigidBody::KinematicVelocityBased,
             Collider::capsule_y(1., 0.5),
@@ -103,6 +106,7 @@ fn setup(
         ))
         ;
 
+    // Cam
     commands.spawn((
         // Transform::from_xyz(1., 1., 5.).looking_at(Vec3::from_array([1., -55., 5.]), Vec3::Y),
         Transform::from_xyz(2., 10., 2.),

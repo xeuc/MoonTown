@@ -19,12 +19,12 @@ impl Plugin for RotateHeadPlugin {
 
 fn cursor_as_movement(
     time: Res<Time>,
-    mut player_query: Query<(&mut Transform), (With<Player>, Without<Camera3d>)>,
-    mut camera_query: Query<(&mut Transform), (With<Camera3d>, Without<Player>)>,
+    mut player_query: Query<&mut Transform, (With<Player>, Without<Camera3d>)>,
+    mut camera_query: Query<&mut Transform, (With<Camera3d>, Without<Player>)>,
     mut windows: Query<&mut Window>,
 ) {
     let mut camera_transform = camera_query.single_mut();
-    let mut player_transform = player_query.single_mut();
+    let player_transform = player_query.single_mut();
 
 
     let delta_time = time.delta_secs();

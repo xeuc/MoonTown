@@ -5,6 +5,8 @@ use bevy_rapier3d::prelude::*;
 
 use crate::Player;
 
+use super::spawn_player_ball::PreviousPosition;
+
 // const SPEED: f32 = 10.0;
 // const JUMP_FORCE: f32 = 10.0;
 // const GRAVITY: f32 = -9.81;
@@ -16,6 +18,7 @@ impl Plugin for ControlsPlayerBallPlugin {
         app
             .add_systems(Update, player_controller)
             .add_systems(Update, change_detection)
+            .add_systems(Update, apply_movement)
             ;
     }
 }
@@ -45,17 +48,19 @@ pub struct PlayerMovement {
 
 fn player_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut player_query: Query<(&mut KinematicCharacterController, &mut PlayerMovement, &Transform), (With<Player>, Without<Camera3d>)>, // TODO fix the super super super...
-    mut camera_query: Query<(&mut Transform), (With<Camera3d>, Without<Player>)>,
+    mut player_query: Query<(&mut KinematicCharacterController, &mut PlayerMovement, &mut Transform, &mut PreviousPosition), (With<Player>, Without<Camera3d>)>, // TODO fix the super super super...
+    mut camera_query: Query<&mut Transform, (With<Camera3d>, Without<Player>)>,
     time: Res<Time>,
 ) {
     // kcc stand for KinematicCharacterController
     let mut camera_transform = camera_query.single_mut();
-    let (mut player_kcc, mut pm, player_transform) = player_query.single_mut();
+    let (mut player_kcc, mut pm, mut player_transform, mut pp) = player_query.single_mut();
 
+    let vect_play_cam = camera_transform.translation - player_transform.translation;
+    let old_play_trans = player_transform.translation;
+    pp.0 = player_transform.translation;
 
-        
-    let trans_rot= camera_transform.rotation.clone();
+    let trans_rot= camera_transform.rotation;
 
     let  left = keyboard_input.pressed(KeyCode::KeyA);
     let right = keyboard_input.pressed(KeyCode::KeyD);
@@ -99,35 +104,87 @@ fn player_controller(
         direction.y = -1.;
     }
 
-    // Apply Movement
+    // Apply oriantation so player will look at dirrection he look at
+    // So it will not get hurt hitting an obstacle <3
+    player_transform.look_to(direction, Vec3::Y);
+
+    // gravity lvl1
     direction.y += -10. * time.delta_secs();
     
+    // Apply Movement
     player_kcc.translation = Some(direction);
 
 
-    //
-    // Fix cam position
-    let dir = camera_transform.forward();
-    let player_position = player_transform.translation;
-    let camera_position = camera_transform.translation;
-    let distance_play_cam = player_position.distance(camera_position);
-    let distance_i_want_between_the_cam_and_the_player = 10.;
-    let delta_distance = distance_i_want_between_the_cam_and_the_player - distance_play_cam;
-    // let camera_direction = (camera_rotation * Vec3::X).normalize() + (camera_rotation * Vec3::Z).normalize();
+    // don't work
+    // if old_play_trans != player_transform.translation {
+    //     println!("different")
+    // } else {
+    //     println!("same")
+    // }
+    // camera_transform.translation = vect_play_cam + player_transform.translation;
 
-    if distance_play_cam > distance_i_want_between_the_cam_and_the_player {
-        // camera_transform.translation += camera_direction * (distance_play_cam - 50.);
-        camera_transform.translation += dir * (distance_play_cam - distance_i_want_between_the_cam_and_the_player);
+
+
+    // // Fix cam position
+    // let dir = camera_transform.forward();
+    // let player_position = player_transform.translation;
+    // let camera_position = camera_transform.translation;
+    // let distance_play_cam = player_position.distance(camera_position);
+    // let distance_i_want_between_the_cam_and_the_player = 10.;
+    // let delta_distance = distance_i_want_between_the_cam_and_the_player - distance_play_cam;
+    // // let camera_direction = (camera_rotation * Vec3::X).normalize() + (camera_rotation * Vec3::Z).normalize();
+
+    // if distance_play_cam > distance_i_want_between_the_cam_and_the_player {
+    //     // camera_transform.translation += camera_direction * (distance_play_cam - 50.);
+    //     camera_transform.translation += dir * (distance_play_cam - distance_i_want_between_the_cam_and_the_player);
         
-    } else if distance_play_cam < distance_i_want_between_the_cam_and_the_player {
-        camera_transform.translation -= dir * (delta_distance);
-        // let target_position = camera_transform.translation - dir * (delta_distance);
-        // camera_transform.translation = camera_transform.translation.lerp(target_position, 0.1); // Smooth follow
+    // } else if distance_play_cam < distance_i_want_between_the_cam_and_the_player {
+    //     camera_transform.translation -= dir * (delta_distance);
+    //     // let target_position = camera_transform.translation - dir * (delta_distance);
+    //     // camera_transform.translation = camera_transform.translation.lerp(target_position, 0.1); // Smooth follow
+    // }
 
-    }
+    // Actually cam is programmed to keep the same distance player-camera
+    // But this behavior is wrong bc it generate a bug:
+    // when cam look at handsome side of player + user touch "d" button,
+    // player will turn around camera (which will remain fix)
+    // Instead, the camera should follow the player
+
+    // + The player shake for no reason
+
+    // + I want to use lerp()
 
 }
 
+
+// fn syn_cam_and_player(
+//     old_player_pos: pos,
+//     mut player_query: Query<(&mut KinematicCharacterController, &mut PlayerMovement, &mut Transform), (With<Player>, Without<Camera3d>)>, // TODO fix the super super super...
+//     mut camera_query: Query<&mut Transform, (With<Camera3d>, Without<Player>)>,
+// ) {
+//     let mut camera_transform = camera_query.single_mut();
+//     let (mut player_kcc, mut pm, mut player_transform) = player_query.single_mut();
+
+//     camera_transform.translation += player_transform.translation - old_player_pos;
+// }
+
+
+
+
+fn apply_movement(
+    mut query: Query<(&mut Transform, &PreviousPosition), With<Player>>,
+    mut camera_query: Query<&mut Transform, (With<Camera>, Without<Player>)>,
+) {
+    if let Ok((mut player_transform, prev_pos)) = query.get_single_mut() {
+        let new_position = player_transform.translation;
+        let old_position = prev_pos.0;
+
+        // Appliquer ce delta à la caméra
+        if let Ok(mut camera_transform) = camera_query.get_single_mut() {
+            camera_transform.translation -= old_position - new_position;
+        }
+    }
+}
 
 
 fn change_detection(
