@@ -16,9 +16,9 @@ pub struct ControlsPlayerBallPlugin;
 impl Plugin for ControlsPlayerBallPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Update, player_controller)
+            .add_systems(FixedUpdate, player_controller)
             .add_systems(Update, change_detection)
-            .add_systems(Update, apply_movement)
+            .add_systems(FixedUpdate, apply_movement)
             ;
     }
 }

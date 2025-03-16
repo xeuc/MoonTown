@@ -8,7 +8,7 @@ pub struct RotateHeadPlugin;
 impl Plugin for RotateHeadPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Update, cursor_as_movement.run_if(in_state(super::app_state::AppState::Running)))
+            .add_systems(FixedUpdate, cursor_as_movement.run_if(in_state(super::app_state::AppState::Running)))
             // .add_systems(Update, rstick_as_movement.run_if(in_state(super::app_state::AppState::Running)))
             ;
     }
