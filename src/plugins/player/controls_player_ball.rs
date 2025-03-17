@@ -1,9 +1,8 @@
-use std::time::Duration;
 
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::Player;
+use crate::{plugins::app_state::AppState, Player};
 
 use super::spawn_player_ball::PreviousPosition;
 
@@ -16,9 +15,7 @@ pub struct ControlsPlayerBallPlugin;
 impl Plugin for ControlsPlayerBallPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(FixedUpdate, player_controller)
-            .add_systems(Update, change_detection)
-            .add_systems(FixedUpdate, apply_movement)
+            .add_systems(FixedUpdate, player_controller.run_if(in_state(AppState::Running)))
             ;
     }
 }
@@ -32,35 +29,33 @@ pub enum PlayerState {
     Sleepy,
 }
 #[derive(Component)]
-pub struct PlayerMovement {
+pub struct PlayerAnimationState {
     pub state: PlayerState,
 }
 
 
-
-
-
-
-
-
-
-
-
 fn player_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut player_query: Query<(&mut KinematicCharacterController, &mut PlayerMovement, &mut Transform, &mut PreviousPosition), (With<Player>, Without<Camera3d>)>, // TODO fix the super super super...
+    mut player_query: Query<(&mut KinematicCharacterController, &mut PlayerAnimationState, &mut Transform, &mut PreviousPosition), (With<Player>, Without<Camera3d>)>, // TODO fix the super super super...
     mut camera_query: Query<&mut Transform, (With<Camera3d>, Without<Player>)>,
     time: Res<Time>,
+    mut windows: Query<&mut Window>,
 ) {
+    let delta_time = time.delta_secs();
     // kcc stand for KinematicCharacterController
-    let camera_transform = camera_query.single_mut();
-    let (mut player_kcc, mut pm, mut player_transform, mut pp) = player_query.single_mut();
+    let mut camera_transform = camera_query.single_mut();
+    let (
+        mut player_kcc,
+        mut player_movement,
+        mut player_transform,
+        mut prev_pos
+    ) = player_query.single_mut();
+
+    println!("player_transform.translation.y: {:?}", player_transform.translation.y);
 
     // let vect_play_cam = camera_transform.translation - player_transform.translation;
     // let old_play_trans = player_transform.translation;
-    pp.0 = player_transform.translation;
-
-    let trans_rot= camera_transform.rotation;
+    // prev_pos.0 = player_transform.translation;
 
     let  left = keyboard_input.pressed(KeyCode::KeyA);
     let right = keyboard_input.pressed(KeyCode::KeyD);
@@ -69,25 +64,25 @@ fn player_controller(
 
     if left || right || down || up {
         // println!("run");
-        if pm.state != PlayerState::Running {
-            pm.state = PlayerState::Running;
+        if player_movement.state != PlayerState::Running {
+            player_movement.state = PlayerState::Running;
         }
     } else {
         // println!("idls");
-        if pm.state != PlayerState::Idle {
-            pm.state = PlayerState::Idle;
+        if player_movement.state != PlayerState::Idle {
+            player_movement.state = PlayerState::Idle;
         }
     }
 
     let mut direction = 
-        (trans_rot * Vec3::X).normalize()*Vec3::new((right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32)
-        + (trans_rot * Vec3::Z).normalize()*Vec3::new((down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32);
+        (camera_transform.rotation * Vec3::X).normalize()*Vec3::new((right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32, (right as i8 - left as i8) as f32)
+        + (camera_transform.rotation * Vec3::Z).normalize()*Vec3::new((down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32, (down as i8 - up as i8) as f32);
 
     // let direction = Vec2::new(direction.x, direction.z); // no need to direction.clamp_length_max(1.0) as it's already normalized
     
 
     direction.y = 0.;
-    direction = direction.normalize_or_zero() * time.delta_secs() * 10.;
+    direction = direction.normalize_or_zero() * delta_time * 10.;
 
     
     // run fast
@@ -105,7 +100,7 @@ fn player_controller(
 
     // Jump
     if keyboard_input.just_pressed(KeyCode::ShiftLeft) {
-        pm.state = PlayerState::Jumping;
+        player_movement.state = PlayerState::Jumping;
         direction.y = 10.;
     }
 
@@ -118,122 +113,67 @@ fn player_controller(
 
 
     // gravity lvl1
-    direction.y += -10. * time.delta_secs();
+    direction.y += -5. * delta_time;
     
     // Apply Movement
     player_kcc.translation = Some(direction);
 
 
-    // don't work
-    // if old_play_trans != player_transform.translation {
-    //     println!("different")
-    // } else {
-    //     println!("same")
-    // }
-    // camera_transform.translation = vect_play_cam + player_transform.translation;
+    // FUNCTION
+    let new_position = player_transform.translation;
+    let old_position = prev_pos.0;
+    camera_transform.translation -= old_position - new_position;
+    prev_pos.0 = new_position;
 
 
 
-    // // Fix cam position
-    // let dir = camera_transform.forward();
-    // let player_position = player_transform.translation;
-    // let camera_position = camera_transform.translation;
-    // let distance_play_cam = player_position.distance(camera_position);
-    // let distance_i_want_between_the_cam_and_the_player = 10.;
-    // let delta_distance = distance_i_want_between_the_cam_and_the_player - distance_play_cam;
-    // // let camera_direction = (camera_rotation * Vec3::X).normalize() + (camera_rotation * Vec3::Z).normalize();
 
-    // if distance_play_cam > distance_i_want_between_the_cam_and_the_player {
-    //     // camera_transform.translation += camera_direction * (distance_play_cam - 50.);
-    //     camera_transform.translation += dir * (distance_play_cam - distance_i_want_between_the_cam_and_the_player);
+
+
+    // FUNCTION 2
+    let mut window = windows.single_mut();
+
+    let width_div_2 = window.resolution.width()/2.;
+    let height_div_2 = window.resolution.height()/2.;
+
+    // Games typically only have one window (the primary window)
+    if let Some(cursor_position) = window.cursor_position() {
+
+
+        let yaw = Quat::from_rotation_y(
+            delta_time * 50.0 * (width_div_2 - cursor_position.x) / 360.,
+        );
+        camera_transform.rotate_around(player_transform.translation, yaw);
+        // camera_transform.rotate_y( delta_time * 50. * (width_div_2  - cursor_position.x)/360.);
+
+
+        let cam_local_x = camera_transform.right().as_vec3();
+        let pitch = Quat::from_axis_angle(cam_local_x, 
+            delta_time * 50.0 * (height_div_2 - cursor_position.y) / 360.
+        );
+
+        camera_transform.rotate_around(player_transform.translation, pitch);
+        // camera_transform.rotate_local_x(delta_time * 50. * (height_div_2 - cursor_position.y)/360.);
+
+        // camera_transform.rotate_local_x( pitch);
+
         
-    // } else if distance_play_cam < distance_i_want_between_the_cam_and_the_player {
-    //     camera_transform.translation -= dir * (delta_distance);
-    //     // let target_position = camera_transform.translation - dir * (delta_distance);
-    //     // camera_transform.translation = camera_transform.translation.lerp(target_position, 0.1); // Smooth follow
-    // }
-
-    // Actually cam is programmed to keep the same distance player-camera
-    // But this behavior is wrong bc it generate a bug:
-    // when cam look at handsome side of player + user touch "d" button,
-    // player will turn around camera (which will remain fix)
-    // Instead, the camera should follow the player
-
-    // + The player shake for no reason
-
-    // + I want to use lerp()
-
-}
-
-
-// fn syn_cam_and_player(
-//     old_player_pos: pos,
-//     mut player_query: Query<(&mut KinematicCharacterController, &mut PlayerMovement, &mut Transform), (With<Player>, Without<Camera3d>)>, // TODO fix the super super super...
-//     mut camera_query: Query<&mut Transform, (With<Camera3d>, Without<Player>)>,
-// ) {
-//     let mut camera_transform = camera_query.single_mut();
-//     let (mut player_kcc, mut pm, mut player_transform) = player_query.single_mut();
-
-//     camera_transform.translation += player_transform.translation - old_player_pos;
-// }
-
-
-
-
-fn apply_movement(
-    mut query: Query<(&mut Transform, &PreviousPosition), With<Player>>,
-    mut camera_query: Query<&mut Transform, (With<Camera>, Without<Player>)>,
-) {
-    if let Ok((player_transform, prev_pos)) = query.get_single_mut() {
-        let new_position = player_transform.translation;
-        let old_position = prev_pos.0;
-
-        // Appliquer ce delta à la caméra
-        if let Ok(mut camera_transform) = camera_query.get_single_mut() {
-            camera_transform.translation -= old_position - new_position;
-        }
+        camera_transform.look_at(player_transform.translation, Vec3::Y);
+    } else {
+        println!("Cursor is not in the game window.");
     }
+
+    window.set_cursor_position(Some((width_div_2, height_div_2).into()));
+    // window.set_physical_cursor_position(Some((0.0, 0.0).into()));
+
+
+
 }
 
 
-fn change_detection(
-    mut animation_players: Query<(&mut AnimationPlayer, &mut AnimationTransitions)>,
-    mut pms: Query<&mut PlayerMovement, Changed<PlayerMovement>>,
-    animations: Res<crate::plugins::animation::Animations>,
-) {
-    for pm in &mut pms {
-        // println!("{:?}", pm.state);
-        // change animation
-        for (mut player, mut transitions) in &mut animation_players {
-            match pm.state {
-                PlayerState::Running => {
-                    transitions
-                    .play(
-                        &mut player,
-                        animations.animations[3], // Running animation
-                        Duration::from_millis(250),
-                    )
-                    .repeat();
-                },
-                PlayerState::Jumping => {
-                    transitions
-                    .play(
-                        &mut player,
-                        animations.animations[1],
-                        Duration::from_millis(250),
-                    )
-                    .repeat();
-                },
-                _ => {
-                    transitions
-                    .play(
-                        &mut player,
-                        animations.animations[0],
-                        Duration::from_millis(250),
-                    )
-                    .repeat();
-                },
-            }
-        }
-    }
-}
+
+
+
+
+
+

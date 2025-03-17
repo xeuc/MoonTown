@@ -1,6 +1,9 @@
+use std::time::Duration;
+
 use bevy::prelude::*;
 
-use crate::Player;
+
+use super::player::controls_player_ball::{PlayerAnimationState, PlayerState};
 
 pub struct RotateHeadPlugin;
 
@@ -8,7 +11,7 @@ pub struct RotateHeadPlugin;
 impl Plugin for RotateHeadPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(FixedUpdate, cursor_as_movement.run_if(in_state(super::app_state::AppState::Running)))
+            .add_systems(Update, animation_change)
             // .add_systems(Update, rstick_as_movement.run_if(in_state(super::app_state::AppState::Running)))
             ;
     }
@@ -17,52 +20,49 @@ impl Plugin for RotateHeadPlugin {
 
 
 
-fn cursor_as_movement(
-    time: Res<Time>,
-    mut player_query: Query<&mut Transform, (With<Player>, Without<Camera3d>)>,
-    mut camera_query: Query<&mut Transform, (With<Camera3d>, Without<Player>)>,
-    mut windows: Query<&mut Window>,
+fn animation_change(
+    mut animation_players: Query<(&mut AnimationPlayer, &mut AnimationTransitions)>,
+    mut pms: Query<&mut PlayerAnimationState, Changed<PlayerAnimationState>>,
+    animations: Res<crate::plugins::animation::Animations>,
 ) {
-    let mut camera_transform = camera_query.single_mut();
-    let player_transform = player_query.single_mut();
-
-
-    let delta_time = time.delta_secs();
-    let mut window = windows.single_mut();
-
-    let width_div_2 = window.resolution.width()/2.;
-    let height_div_2 = window.resolution.height()/2.;
-
-    // Games typically only have one window (the primary window)
-    if let Some(cursor_position) = window.cursor_position() {
-
-
-        let yaw = Quat::from_rotation_y(
-            delta_time * 50.0 * (width_div_2 - cursor_position.x) / 360.,
-        );
-        camera_transform.rotate_around(player_transform.translation, yaw);
-        // camera_transform.rotate_y( delta_time * 50. * (width_div_2  - cursor_position.x)/360.);
-
-
-        let cam_local_x = camera_transform.right().as_vec3();
-        let pitch = Quat::from_axis_angle(cam_local_x, 
-            delta_time * 50.0 * (height_div_2 - cursor_position.y) / 360.
-        );
-
-        camera_transform.rotate_around(player_transform.translation, pitch);
-        // camera_transform.rotate_local_x(delta_time * 50. * (height_div_2 - cursor_position.y)/360.);
-
-        // camera_transform.rotate_local_x( pitch);
-
-        
-        camera_transform.look_at(player_transform.translation, Vec3::Y);
-    } else {
-        println!("Cursor is not in the game window.");
+    for pm in &mut pms {
+        // println!("{:?}", pm.state);
+        // change animation
+        for (mut player, mut transitions) in &mut animation_players {
+            match pm.state {
+                PlayerState::Running => {
+                    transitions
+                    .play(
+                        &mut player,
+                        animations.animations[3], // Running animation
+                        Duration::from_millis(250),
+                    )
+                    .repeat();
+                },
+                PlayerState::Jumping => {
+                    transitions
+                    .play(
+                        &mut player,
+                        animations.animations[1],
+                        Duration::from_millis(250),
+                    )
+                    .repeat();
+                },
+                _ => {
+                    transitions
+                    .play(
+                        &mut player,
+                        animations.animations[0],
+                        Duration::from_millis(250),
+                    )
+                    .repeat();
+                },
+            }
+        }
     }
-
-    window.set_cursor_position(Some((width_div_2, height_div_2).into()));
-    // window.set_physical_cursor_position(Some((0.0, 0.0).into()));
 }
+
+
 
 
 

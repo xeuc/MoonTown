@@ -3,7 +3,7 @@ use bevy_rapier3d::prelude::*;
 
 use crate::Player;
 
-use super::controls_player_ball::{PlayerMovement, PlayerState};
+use super::controls_player_ball::{PlayerAnimationState, PlayerState};
 
 pub struct SpawnPlayerBallPlugin;
 
@@ -36,7 +36,7 @@ fn setup(
             SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset("avatar_model_test_16x16_scale16.gltf")),),
             // Mesh3d(meshes.add(Sphere::default().mesh().uv(16, 10))),
             // Visibility::default(),z
-            PlayerMovement {
+            PlayerAnimationState {
                 state: PlayerState::Idle,
             },
             PreviousPosition(Vec3::ZERO),
