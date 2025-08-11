@@ -1,17 +1,19 @@
 [package]
 name = "MoonTown"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-bevy = { version = "0.15.2", features = ["bevy_dev_tools"] }
-bevy-inspector-egui = "0.29.1"
-bevy_ecs = "0.15.2"
-bevy_egui = "0.32.0"
-bevy_rapier3d = "0.28.0"
-chrono = "0.4.39"
-iyes_perf_ui = "0.4.0"
-rand = "0.8.5"
+bevy = { version = "0.16.1", features = ["bevy_dev_tools"] }
+bevy_rapier3d = "0.30.0"
+
+# bevy-inspector-egui = "0.29.1"
+# bevy_ecs = "0.15.2"
+# bevy_egui = "0.32.0"
+# bevy_rapier3d = "0.28.0"
+# chrono = "0.4.39"
+# iyes_perf_ui = "0.4.0"
+# rand = "0.8.5"
 
 [dependencies.async-std]
 version = "1.13.0"
@@ -19,9 +21,9 @@ default-features = true
 features = ["std"]
 
 
-#[profile.release]
-#opt-level = 3
-#lto = "fat" # Link Time Optimization
-#codegen-units = 1 # Compile All same time
-#panic = "abort"
+[profile.release]
+opt-level = 3
+lto = "fat" # Link Time Optimization
+codegen-units = 1 # Compile All same time
+panic = "abort"
 

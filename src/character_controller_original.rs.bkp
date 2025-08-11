@@ -10,27 +10,25 @@ const MOVEMENT_SPEED: f32 = 8.0;
 const JUMP_SPEED: f32 = 20.0;
 const GRAVITY: f32 = -9.81;
 
-pub struct CharacterControllerPlugin;
-impl Plugin for CharacterControllerPlugin {
-    fn build(&self, app: &mut App) {
-        app
+fn main() {
+    App::new()
         .insert_resource(ClearColor(Color::srgb(
-                0x99 as f32 / 255.0,
-                0xAA as f32 / 255.0,
-                0xFF as f32 / 255.0,
-            )))
-            .init_resource::<MovementInput>()
-            .init_resource::<LookInput>()
-            .add_plugins((
-                RapierPhysicsPlugin::<NoUserData>::default(),
-                RapierDebugRenderPlugin::default(),
-            ))
-            .add_systems(Startup, (setup_player, setup_map))
-            .add_systems(PreUpdate, handle_input.after(InputSystem))
-            .add_systems(FixedUpdate, player_look)
-            .add_systems(FixedUpdate, player_movement)
-            ;
-    }
+            0xF9 as f32 / 255.0,
+            0xF9 as f32 / 255.0,
+            0xFF as f32 / 255.0,
+        )))
+        .init_resource::<MovementInput>()
+        .init_resource::<LookInput>()
+        .add_plugins((
+            DefaultPlugins,
+            RapierPhysicsPlugin::<NoUserData>::default(),
+            RapierDebugRenderPlugin::default(),
+        ))
+        .add_systems(Startup, (setup_player, setup_map))
+        .add_systems(PreUpdate, handle_input.after(InputSystem))
+        .add_systems(Update, player_look)
+        .add_systems(FixedUpdate, player_movement)
+        .run();
 }
 
 pub fn setup_player(mut commands: Commands) {
@@ -58,30 +56,10 @@ pub fn setup_player(mut commands: Commands) {
                 ..default()
             },
         ))
-        // .with_children(|b| {
-        //     // FPS Camera
-        //     b.spawn((Camera3d::default(), Transform::from_xyz(0.0, 0.2, -0.1)));
-        // });
-        ;
-            // Spawn cam
-    commands.spawn((
-        Camera3d::default(),
-        Transform::from_xyz(10.0, 5.0, 10.0),
-        KinematicCharacterController {
-            custom_mass: Some(0.),
-            up: Vec3::Y,
-            offset: CharacterLength::Absolute(0.01),
-            slide: false,
-            autostep: Some(CharacterAutostep {
-                max_height: CharacterLength::Relative(0.3),
-                min_width: CharacterLength::Relative(0.5),
-                include_dynamic_bodies: false,
-            }),
-            apply_impulse_to_dynamic_bodies: false,
-            snap_to_ground: None,
-            ..default()
-        },
-    ));
+        .with_children(|b| {
+            // FPS Camera
+            b.spawn((Camera3d::default(), Transform::from_xyz(0.0, 0.2, -0.1)));
+        });
 }
 
 fn setup_map(mut commands: Commands) {
@@ -170,12 +148,11 @@ fn player_movement(
         &mut Transform,
         &mut KinematicCharacterController,
         Option<&KinematicCharacterControllerOutput>,
-    ), Without<Camera3d>>,
-
+    )>,
     mut vertical_movement: Local<f32>,
     mut grounded_timer: Local<f32>,
 ) {
-    let Ok((transform, mut controller, output)) = player.get_single_mut() else {
+    let Ok((transform, mut controller, output)) = player.single_mut() else {
         return;
     };
     let delta_time = time.delta_secs();
@@ -203,46 +180,17 @@ fn player_movement(
     controller.translation = Some(transform.rotation * (movement * delta_time));
 }
 
-
-
 fn player_look(
-    mut player_query: Query<&mut Transform, (With<KinematicCharacterController>, Without<Camera>)>,
-    mut camera_query: Query<&mut Transform, With<Camera>>,
-    time: Res<Time>,
-    mut windows: Query<&mut Window>,
+    mut player: Query<&mut Transform, (With<KinematicCharacterController>, Without<Camera>)>,
+    mut camera: Query<&mut Transform, With<Camera>>,
+    input: Res<LookInput>,
 ) {
-
-    let Ok(mut player_transform) = player_query.get_single_mut() else {
-        println!("ERROR: in func player_look, player_query not single mut");
+    let Ok(mut transform) = player.single_mut() else {
         return;
     };
-    let Ok(mut camera_transform) = camera_query.get_single_mut() else {
-        println!("ERROR: in func player_look, camera_query not single mut");
+    transform.rotation = Quat::from_axis_angle(Vec3::Y, input.x.to_radians());
+    let Ok(mut transform) = camera.single_mut() else {
         return;
     };
-
-    // let mut camera_transform = camera_query.single_mut();
-    // let player_transform = player_query.single_mut();
-    let delta_time = time.delta_secs();
-    let mut window = windows.single_mut();
-    let width_div_2 = window.resolution.width()/2.;
-    let height_div_2 = window.resolution.height()/2.;
-    // Games typically only have one window (the primary window)
-    if let Some(cursor_position) = window.cursor_position() {
-        let yaw = Quat::from_rotation_y(
-            delta_time * 50.0 * (width_div_2 - cursor_position.x) / 360.,
-        );
-        camera_transform.rotate_around(player_transform.translation, yaw);
-        let cam_local_x = camera_transform.right().as_vec3();
-        let pitch = Quat::from_axis_angle(cam_local_x, 
-            delta_time * 50.0 * (height_div_2 - cursor_position.y) / 360.
-        );
-        camera_transform.rotate_around(player_transform.translation, pitch);
-        camera_transform.look_at(player_transform.translation, Vec3::Y);
-    } else {
-        println!("Cursor is not in the game window.");
-    }
-    window.set_cursor_position(Some((width_div_2, height_div_2).into()));
+    transform.rotation = Quat::from_axis_angle(Vec3::X, input.y.to_radians());
 }
-
-
