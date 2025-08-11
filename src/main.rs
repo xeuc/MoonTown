@@ -12,6 +12,8 @@ use spawners::{
     CameraPosition, RotateCamera, TopLeftCamera, Direction,
 };
 
+use crate::spawners::{Player, PlayerCamera};
+
 const MOUSE_SENSITIVITY: f32 = 0.3;
 const GROUND_TIMER: f32 = 0.5;
 const MOVEMENT_SPEED: f32 = 8.0;
@@ -55,9 +57,10 @@ fn main() {
 
         .add_systems(PreUpdate, handle_input.after(InputSystem))
         .add_systems(FixedUpdate, translate_player)
-        // .add_systems(FixedUpdate, translate_cam.after(translate_player))
+        // .add_systems(FixedUpdate, cam_always_look_at_player)
+
         .add_systems(Update, (
-            rotate_player_and_cam,
+            rotate_cam_from_look_input,
             rotate_button_behavior,
             resize_little_rectangle,
         ))
@@ -92,7 +95,7 @@ struct LookInput(Vec2);
 
 
 // keyboard  => movement_input: ResMut<MovementInput> => for translate_player_and_cam()
-// mouse pos => look_input:     ResMut<LookInput>     => for rotate_player_and_cam()
+// mouse pos => look_input:     ResMut<LookInput>     => for rotate_cam_from_look_input()
 fn handle_input(
     keyboard: Res<ButtonInput<KeyCode>>,
     mut movement_input: ResMut<MovementInput>,
@@ -144,6 +147,9 @@ fn handle_input(
 
 
 
+
+
+
 // ACTUALLY TRANSLATE THE PLAYER AND THE CAMERA (6 directions)
 // no cam translate anymore
 // movement_input (keyboard)
@@ -154,103 +160,49 @@ fn translate_player(
         &mut Transform,
         &mut KinematicCharacterController,
         Option<&KinematicCharacterControllerOutput>,
-    ), Without<Camera>>,
+    ), (With<Player>, Without<PlayerCamera>)>,
+    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Player>)>,
     mut vertical_movement: Local<f32>,
     mut grounded_timer: Local<f32>,
 ) {
-    // let mut counter = 0; // first is cam, second is player
-    for (player_transform, mut player_controller, player_output) in player.iter_mut() {
-        // print!("------------------------------------------------\n");
-        // counter += 1;
-        // print!("counter: {:?}\n", counter);
-        // print!("player_transform: {:?}\n", player_transform);
-        // print!("player_controller: {:?}\n", player_controller);
-        // print!("player_output: {:?}\n", player_output);
+    let Ok((player_transform, mut player_controller, player_output)) = player.single_mut() else { return; };
+    let Ok(camera_transform) = camera.single_mut() else { return; };
 
-        // print!("movement_input: {:?}\n", movement_input[0]);
-        let delta_time = time.delta_secs();
-        // Retrieve input
-        let mut player_movement = Vec3::new(movement_input.x, 0.0, movement_input.z) * MOVEMENT_SPEED;
-        // print!("player_movement: {:?}\n", player_movement);
-        let jump_speed = movement_input.y * JUMP_SPEED;
-        // Clear input
-        // if counter == 2 {
-            **movement_input = Vec3::ZERO;
-        // }
-        // Check physics ground check
-        if player_output.map(|o| o.grounded).unwrap_or(false) {
-            *grounded_timer = GROUND_TIMER;
-            *vertical_movement = 0.0;
-        }
-        // If we are grounded we can jump
-        if *grounded_timer > 0.0 {
-            *grounded_timer -= delta_time;
-            // If we jump we clear the grounded tolerance
-            if jump_speed > 0.0 {
-                *vertical_movement = jump_speed;
-                *grounded_timer = 0.0;
-            }
-        }
-        player_movement.y = *vertical_movement;
-        *vertical_movement += GRAVITY * delta_time * player_controller.custom_mass.unwrap_or(1.0);
-        player_controller.translation = Some(player_transform.rotation * (player_movement * delta_time));
+    let delta_time = time.delta_secs();
 
+    // Get camera's forward and right vectors (ignoring Y for planar movement)
+    let mut cam_forward: Vec3 = camera_transform.forward().into();
+    cam_forward.y = 0.0;
+    cam_forward = cam_forward.normalize_or_zero();
+
+    let mut cam_right: Vec3 = camera_transform.right().into();
+    cam_right.y = 0.0;
+    cam_right = cam_right.normalize_or_zero();
+
+    // Movement relative to camera
+    let input = **movement_input;
+    let mut player_movement = (-cam_forward * input.z + cam_right * input.x) * MOVEMENT_SPEED;
+
+    let jump_speed = movement_input.y * JUMP_SPEED;
+    **movement_input = Vec3::ZERO;
+
+    // Ground check
+    if player_output.map(|o| o.grounded).unwrap_or(false) {
+        *grounded_timer = GROUND_TIMER;
+        *vertical_movement = 0.0;
     }
-
-}
-
-// ACTUALLY TRANSLATE THE PLAYER AND THE CAMERA (6 directions)
-// no cam translate anymore
-// movement_input (keyboard)
-fn _translate_cam(
-    time: Res<Time>,
-    mut movement_input: ResMut<MovementInput>,
-    mut player: Query<(
-        &mut Transform,
-        &mut KinematicCharacterController,
-        Option<&KinematicCharacterControllerOutput>,
-    ), (With<Camera3d>, Without<TopLeftCamera>)>,
-    mut vertical_movement: Local<f32>,
-    mut grounded_timer: Local<f32>,
-) {
-    // let mut counter = 0; // first is cam, second is player
-    for (player_transform, mut player_controller, player_output) in player.iter_mut() {
-        // print!("------------------------------------------------\n");
-        // counter += 1;
-        // print!("counter: {:?}\n", counter);
-        // print!("player_transform: {:?}\n", player_transform);
-        // print!("player_controller: {:?}\n", player_controller);
-        // print!("player_output: {:?}\n", player_output);
-
-        // print!("movement_input: {:?}\n", movement_input[0]);
-        let delta_time = time.delta_secs();
-        // Retrieve input
-        let mut player_movement = Vec3::new(movement_input.x, 0.0, movement_input.z) * MOVEMENT_SPEED;
-        // print!("player_movement: {:?}\n", player_movement);
-        let jump_speed = movement_input.y * JUMP_SPEED;
-        // Clear input
-        // if counter == 2 {
-            **movement_input = Vec3::ZERO;
-        // }
-        // Check physics ground check
-        if player_output.map(|o| o.grounded).unwrap_or(false) {
-            *grounded_timer = GROUND_TIMER;
-            *vertical_movement = 0.0;
+    if *grounded_timer > 0.0 {
+        *grounded_timer -= delta_time;
+        if jump_speed > 0.0 {
+            *vertical_movement = jump_speed;
+            *grounded_timer = 0.0;
         }
-        // If we are grounded we can jump
-        if *grounded_timer > 0.0 {
-            *grounded_timer -= delta_time;
-            // If we jump we clear the grounded tolerance
-            if jump_speed > 0.0 {
-                *vertical_movement = jump_speed;
-                *grounded_timer = 0.0;
-            }
-        }
-        player_movement.y = *vertical_movement;
-        *vertical_movement += GRAVITY * delta_time * player_controller.custom_mass.unwrap_or(1.0);
-        player_controller.translation = Some(player_transform.rotation * (player_movement * delta_time));
-
     }
+    player_movement.y = *vertical_movement;
+    *vertical_movement += GRAVITY * delta_time * player_controller.custom_mass.unwrap_or(1.0);
+
+    player_controller.translation = Some(player_transform.rotation * (player_movement * delta_time));
+
 
 }
 
@@ -278,17 +230,26 @@ fn _translate_cam(
 // btw should not code for Cam as Cam = child(Player)
 //   => Actually no, it's for the cam to say "yes" (up and down)
 // look_input (mouse)
-fn rotate_player_and_cam(
-    mut player: Query<&mut Transform, (With<KinematicCharacterController>, Without<Camera>)>,
-    mut camera: Query<&mut Transform, (With<Camera>, Without<TopLeftCamera>)>,
-    look_input: Res<LookInput>,
+fn rotate_cam_from_look_input(
+    mut player: Query<&mut Transform, (With<Player>, Without<PlayerCamera>)>,
+    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Player>)>,
+    mut look_input: ResMut<LookInput>,
 ) {
-    let Ok(mut player_transform) = player.single_mut() else { return; };
-    player_transform.rotation = Quat::from_axis_angle(Vec3::Y, look_input.x.to_radians());
     let Ok(mut camera_transform) = camera.single_mut() else { return;};
-    // camera_transform.rotation = Quat::from_axis_angle(Vec3::X, look_input.y.to_radians());
-    camera_transform.rotation = Quat::from_axis_angle(Vec3::Y, look_input.x.to_radians()) *
-        Quat::from_axis_angle(Vec3::X, look_input.y.to_radians());
+    let Ok(player_transform) = player.single_mut() else { return;};
+  
+    let target = player_transform.translation;
+    let yaw = Quat::from_axis_angle(Vec3::Y, look_input.x.to_radians());
+    let pitch = Quat::from_axis_angle(Vec3::X, look_input.y.to_radians());
+    let rotation = yaw * pitch;
+
+    // let offset = camera_transform.translation - target;
+    let offset = Vec3::new(0.0, 5.0, 10.0);
+    let rotated_offset = rotation * offset;
+
+    camera_transform.translation = target + rotated_offset;
+    camera_transform.look_at(target, Vec3::Y);
+    **look_input = Vec2::ZERO;
 }
 
 

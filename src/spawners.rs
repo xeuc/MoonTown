@@ -20,6 +20,12 @@ pub struct RotateCamera(pub Direction);
 #[derive(Component)]
 pub struct TopLeftCamera;
 
+#[derive(Component)]
+pub struct PlayerCamera;
+
+#[derive(Component)]
+pub struct Player;
+
 pub enum Direction {
     Left,
     Right,
@@ -54,9 +60,10 @@ pub fn cursor_grab(
 pub fn setup_player_camera_integrated(mut commands: Commands) {
     
     // Player
-    let player_entity = commands.spawn((
+    commands.spawn((
         Transform::from_xyz(0.0, 5.0, 0.0),
         Visibility::default(),
+        Player,
         Collider::round_cylinder(0.9, 0.3, 0.2),
         KinematicCharacterController {
             custom_mass: Some(5.0),
@@ -76,50 +83,21 @@ pub fn setup_player_camera_integrated(mut commands: Commands) {
             snap_to_ground: None,
             ..default()
         },
-    )).id();
-
-    
-    // FPS Camera
-    let index = 0; // this is the player 2, 3, and 4 Comented out later in the code
-    let joint = SphericalJointBuilder::new()
-        .local_anchor1(Vec3::new(0.0, 0.0, 0.0))
-        .local_anchor2(Vec3::new(0.0, 0.0, 0.0));
-    commands.spawn((
-        Camera3d::default(), 
-        Transform::from_xyz(0.0, 0.2, 5.0).looking_at((0.0, 5.0, 0.0).into(), Vec3::Y),
-        Camera {
-            // Renders cameras with different priorities to prevent ambiguities
-            order: index as isize,
-            ..default()
-        },
-        CameraPosition {
-            pos: UVec2::new((index % 2) as u32, (index / 2) as u32),
-        },
-        // I added that
-        Collider::round_cylinder(0.3, 0.3, 0.3),
-        // KinematicCharacterController {
-        //     // custom_mass: Some(5.0),
-        //     up: Vec3::Y,
-        //     offset: CharacterLength::Absolute(0.01),
-        //     slide: true,
-        //     autostep: Some(CharacterAutostep {
-        //         max_height: CharacterLength::Relative(0.3),
-        //         min_width: CharacterLength::Relative(0.5),
-        //         include_dynamic_bodies: false,
-        //     }),
-        //     // Don’t allow climbing slopes larger than 45 degrees.
-        //     max_slope_climb_angle: 45.0_f32.to_radians(),
-        //     // Automatically slide down on slopes smaller than 30 degrees.
-        //     min_slope_slide_angle: 30.0_f32.to_radians(),
-        //     apply_impulse_to_dynamic_bodies: true,
-        //     snap_to_ground: None,
-        //     ..default()
-        // },
-        RigidBody::Dynamic,
-        ImpulseJoint::new(player_entity, joint)
+        
     ));
 
-    
+    // Player Camera
+    commands.spawn((
+        PlayerCamera,
+        Camera3d::default(), 
+        Transform::from_xyz(0.0, 2.0, 5.0).looking_at((0.0, 5.0, 0.0).into(), Vec3::Y),
+        Camera {
+            // Renders cameras with different priorities to prevent ambiguities
+            order: 0,
+            ..default()
+        },
+    ));
+
 
     
 }
