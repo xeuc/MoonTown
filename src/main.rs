@@ -56,18 +56,33 @@ fn main() {
         ))
 
         .add_systems(PreUpdate, handle_input.after(InputSystem))
-        .add_systems(FixedUpdate, translate_player)
-        // .add_systems(FixedUpdate, cam_always_look_at_player)
-
+        .add_systems(FixedUpdate, rotate_button_behavior)
         .add_systems(Update, (
+            translate_player,
             rotate_cam_from_look_input,
-            rotate_button_behavior,
             resize_little_rectangle,
         ))
 
         .run();
 }
 
+// TODO: Put the main() in main.rs
+// TODO: Put struct definitions in utils.rs
+// TODO: Fix scheduler:
+//       from https://bevy-cheatbook.github.io/fundamentals/fixed-timestep.html
+//       The following things should probably be done in FixedUpdate:
+//         Physics and collision detection
+//         Networking / netcode
+//         AI for enemies and NPCs (pathfinding, decisions, etc.)
+//         Spawning/despawning gameplay-related entities
+//         Other simulation and decision-making
+//       The following things should probably be done in Update:        
+//         Camera movement and controls
+//         Animations
+//         UI
+//         Visual effects
+//         Anything that is part of your game's graphics/visuals or interactivity
+//         App state transitions
 
 /// Keyboard input vector
 #[derive(Default, Resource, Deref, DerefMut)]
