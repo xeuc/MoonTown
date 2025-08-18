@@ -8,17 +8,10 @@ use bevy::{
 
 
 mod spawners;
-use spawners::{
-    CameraPosition, RotateCamera, TopLeftCamera, Direction,
-};
-
-use crate::spawners::{Player, PlayerCamera};
-
-const MOUSE_SENSITIVITY: f32 = 0.3;
-const GROUND_TIMER: f32 = 0.5;
-const MOVEMENT_SPEED: f32 = 8.0;
-const JUMP_SPEED: f32 = 20.0;
-const GRAVITY: f32 = -9.81;
+mod utils;
+use utils::MovementInput;
+use utils::LookInput;
+use utils::{CameraPosition, RotateCamera, TopLeftCamera, PlayerCamera, Player, Direction, MOUSE_SENSITIVITY, GROUND_TIMER, MOVEMENT_SPEED, JUMP_SPEED, GRAVITY};
 
 fn main() {
     App::new()
@@ -83,14 +76,6 @@ fn main() {
 //         Visual effects
 //         Anything that is part of your game's graphics/visuals or interactivity
 //         App state transitions
-
-/// Keyboard input vector
-#[derive(Default, Resource, Deref, DerefMut)]
-struct MovementInput(Vec3);
-
-/// Mouse input vector
-#[derive(Default, Resource, Deref, DerefMut)]
-struct LookInput(Vec2);
 
 
 

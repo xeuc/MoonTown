@@ -3,33 +3,15 @@ use bevy::{prelude::*, pbr::CascadeShadowConfigBuilder};
 use bevy_rapier3d::{control::KinematicCharacterController, prelude::*};
 use std::f32::consts::PI;
 
+use crate::utils::{CameraPosition, Direction, Player, RotateCamera, TopLeftCamera};
+use crate::utils::PlayerCamera;
+
 
 
 
 /// ******************************************************************************
 /// ***  MISC  *******************************************************************
 /// ******************************************************************************
-
-#[derive(Component)]
-pub struct CameraPosition {
-    pub pos: UVec2,
-}
-#[derive(Component)]
-pub struct RotateCamera(pub Direction);
-
-#[derive(Component)]
-pub struct TopLeftCamera;
-
-#[derive(Component)]
-pub struct PlayerCamera;
-
-#[derive(Component)]
-pub struct Player;
-
-pub enum Direction {
-    Left,
-    Right,
-}
 
 // make cursor don't move and invisible
 pub fn cursor_grab( 
