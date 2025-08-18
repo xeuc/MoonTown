@@ -1,17 +1,19 @@
 use bevy::{
-    diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin}, input::{mouse::MouseMotion, InputSystem}, prelude::*
+    diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin}, input::InputSystem, prelude::*
 };
-use bevy_rapier3d::{control::KinematicCharacterController, prelude::*};
-use bevy::{
-    render::camera::Viewport, window::WindowResized,
-};
+use bevy_rapier3d::{prelude::*};
+
 
 
 mod spawners;
 mod utils;
+mod update;
 use utils::MovementInput;
 use utils::LookInput;
-use utils::{CameraPosition, RotateCamera, TopLeftCamera, PlayerCamera, Player, Direction, MOUSE_SENSITIVITY, GROUND_TIMER, MOVEMENT_SPEED, JUMP_SPEED, GRAVITY};
+use update::{handle_input, translate_player, rotate_cam_from_look_input, rotate_button_behavior, resize_little_rectangle};
+// use bevy_egui::EguiPlugin;
+
+// use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 fn main() {
     App::new()
@@ -26,15 +28,18 @@ fn main() {
             DefaultPlugins,
             RapierPhysicsPlugin::<NoUserData>::default(),
             RapierDebugRenderPlugin::default(),
+
+            // EguiPlugin::default(),
+            // WorldInspectorPlugin::new(),
             
             // The other diagnostics plugins can still be used without this if you want to use them in an ingame overlay for example.
-            LogDiagnosticsPlugin::default(),
-            // Adds frame time, FPS and frame count diagnostics.
-            FrameTimeDiagnosticsPlugin::default(),
-            // Adds an entity count diagnostic.
-            bevy::diagnostic::EntityCountDiagnosticsPlugin,
-            // Adds cpu and memory usage diagnostics for systems and the entire game process.
-            bevy::diagnostic::SystemInformationDiagnosticsPlugin,
+            // LogDiagnosticsPlugin::default(),
+            // // Adds frame time, FPS and frame count diagnostics.
+            // FrameTimeDiagnosticsPlugin::default(),
+            // // Adds an entity count diagnostic.
+            // bevy::diagnostic::EntityCountDiagnosticsPlugin,
+            // // Adds cpu and memory usage diagnostics for systems and the entire game process.
+            // bevy::diagnostic::SystemInformationDiagnosticsPlugin,
             // Forwards various diagnostics from the render app to the main app.
             // These are pretty verbose but can be useful to pinpoint performance issues.
             // bevy_render::diagnostic::RenderDiagnosticsPlugin,
@@ -59,8 +64,6 @@ fn main() {
         .run();
 }
 
-// TODO: Put the main() in main.rs
-// TODO: Put struct definitions in utils.rs
 // TODO: Fix scheduler:
 //       from https://bevy-cheatbook.github.io/fundamentals/fixed-timestep.html
 //       The following things should probably be done in FixedUpdate:
@@ -78,249 +81,3 @@ fn main() {
 //         App state transitions
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// keyboard  => movement_input: ResMut<MovementInput> => for translate_player_and_cam()
-// mouse pos => look_input:     ResMut<LookInput>     => for rotate_cam_from_look_input()
-fn handle_input(
-    keyboard: Res<ButtonInput<KeyCode>>,
-    mut movement_input: ResMut<MovementInput>,
-    mut look_input: ResMut<LookInput>,
-    mut mouse_events: EventReader<MouseMotion>,
-    mut app_exit_events: EventWriter<AppExit>,
-) {
-    if keyboard.pressed(KeyCode::KeyW) {
-        movement_input.z -= 1.0;
-    }
-    if keyboard.pressed(KeyCode::KeyS) {
-        movement_input.z += 1.0
-    }
-    if keyboard.pressed(KeyCode::KeyA) {
-        movement_input.x -= 1.0;
-    }
-    if keyboard.pressed(KeyCode::KeyD) {
-        movement_input.x += 1.0
-    }
-    **movement_input = movement_input.normalize_or_zero();
-    if keyboard.pressed(KeyCode::Space) {
-        **movement_input *= 2.0;
-    }
-    if keyboard.pressed(KeyCode::ShiftLeft) {
-        movement_input.y = 1.0;
-    }
-
-    if keyboard.pressed(KeyCode::Escape) {
-        app_exit_events.write(AppExit::Success);
-    }
-
-    for event in mouse_events.read() {
-        look_input.x -= event.delta.x * MOUSE_SENSITIVITY;
-        look_input.y -= event.delta.y * MOUSE_SENSITIVITY;
-        look_input.y = look_input.y.clamp(-89.9, 89.9); // Limit pitch
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ACTUALLY TRANSLATE THE PLAYER AND THE CAMERA (6 directions)
-// no cam translate anymore
-// movement_input (keyboard)
-fn translate_player(
-    time: Res<Time>,
-    mut movement_input: ResMut<MovementInput>,
-    mut player: Query<(
-        &mut Transform,
-        &mut KinematicCharacterController,
-        Option<&KinematicCharacterControllerOutput>,
-    ), (With<Player>, Without<PlayerCamera>)>,
-    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Player>)>,
-    mut vertical_movement: Local<f32>,
-    mut grounded_timer: Local<f32>,
-) {
-    let Ok((player_transform, mut player_controller, player_output)) = player.single_mut() else { return; };
-    let Ok(camera_transform) = camera.single_mut() else { return; };
-
-    let delta_time = time.delta_secs();
-
-    // Get camera's forward and right vectors (ignoring Y for planar movement)
-    let mut cam_forward: Vec3 = camera_transform.forward().into();
-    cam_forward.y = 0.0;
-    cam_forward = cam_forward.normalize_or_zero();
-
-    let mut cam_right: Vec3 = camera_transform.right().into();
-    cam_right.y = 0.0;
-    cam_right = cam_right.normalize_or_zero();
-
-    // Movement relative to camera
-    let input = **movement_input;
-    let mut player_movement = (-cam_forward * input.z + cam_right * input.x) * MOVEMENT_SPEED;
-
-    let jump_speed = movement_input.y * JUMP_SPEED;
-    **movement_input = Vec3::ZERO;
-
-    // Ground check
-    if player_output.map(|o| o.grounded).unwrap_or(false) {
-        *grounded_timer = GROUND_TIMER;
-        *vertical_movement = 0.0;
-    }
-    if *grounded_timer > 0.0 {
-        *grounded_timer -= delta_time;
-        if jump_speed > 0.0 {
-            *vertical_movement = jump_speed;
-            *grounded_timer = 0.0;
-        }
-    }
-    player_movement.y = *vertical_movement;
-    *vertical_movement += GRAVITY * delta_time * player_controller.custom_mass.unwrap_or(1.0);
-
-    player_controller.translation = Some(player_transform.rotation * (player_movement * delta_time));
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ACTUALLY ROTATE THE PLAYER (left and right) AND CAMERA (all 4 directions)
-// btw should not code for Cam as Cam = child(Player)
-//   => Actually no, it's for the cam to say "yes" (up and down)
-// look_input (mouse)
-fn rotate_cam_from_look_input(
-    mut player: Query<&mut Transform, (With<Player>, Without<PlayerCamera>)>,
-    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Player>)>,
-    mut look_input: ResMut<LookInput>,
-) {
-    let Ok(mut camera_transform) = camera.single_mut() else { return;};
-    let Ok(player_transform) = player.single_mut() else { return;};
-  
-    let target = player_transform.translation;
-    let yaw = Quat::from_axis_angle(Vec3::Y, look_input.x.to_radians());
-    let pitch = Quat::from_axis_angle(Vec3::X, look_input.y.to_radians());
-    let rotation = yaw * pitch;
-
-    // let offset = camera_transform.translation - target;
-    let offset = Vec3::new(0.0, 5.0, 10.0);
-    let rotated_offset = rotation * offset;
-
-    camera_transform.translation = target + rotated_offset;
-    camera_transform.look_at(target, Vec3::Y);
-    **look_input = Vec2::ZERO;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Osef
-// Rotate button behavior
-fn rotate_button_behavior(
-    interaction_query: Query<
-        (&Interaction, &ComputedNodeTarget, &RotateCamera),
-        (Changed<Interaction>, With<Button>),
-    >,
-    mut camera_query: Query<&mut Transform, With<Camera>>,
-) {
-    for (interaction, computed_target, RotateCamera(direction)) in &interaction_query {
-        if let Interaction::Pressed = *interaction {
-            // Since TargetCamera propagates to the children, we can use it to find
-            // which side of the screen the button is on.
-            if let Some(mut camera_transform) = computed_target
-                .camera()
-                .and_then(|camera| camera_query.get_mut(camera).ok())
-            {
-                let angle = match direction {
-                    Direction::Left => -0.1,
-                    Direction::Right => 0.1,
-                };
-                camera_transform.rotate_around(Vec3::ZERO, Quat::from_axis_angle(Vec3::Y, angle));
-            }
-        }
-    }
-}
-
-
-
-// Osef
-// If windows resize => Then update little rectangle
-fn resize_little_rectangle(
-    windows: Query<&Window>,
-    mut resize_events: EventReader<WindowResized>,
-    mut query: Query<(&CameraPosition, &mut Camera), With<TopLeftCamera>>,
-) {
-    // We need to dynamically resize the camera's viewports whenever the window size changes
-    // so then each camera always takes up half the screen.
-    // A resize_event is sent when the window is first created, allowing us to reuse this system for initial setup.
-    for resize_event in resize_events.read() {
-        let window = windows.get(resize_event.window).unwrap();
-        let size = window.physical_size()/4 ;
-        // let size = UVec2::new(size.x/2 as u32, size.y as u32);
-
-        for (camera_position, mut camera) in &mut query {
-            camera.viewport = Some(Viewport {
-                physical_position: camera_position.pos * size,
-                physical_size: size,
-                ..default()
-            });
-        }
-    }
-}

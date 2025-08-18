@@ -5,6 +5,7 @@ use std::f32::consts::PI;
 
 use crate::utils::{CameraPosition, Direction, Player, RotateCamera, TopLeftCamera};
 use crate::utils::PlayerCamera;
+use crate::utils::Anchor;
 
 
 
@@ -38,15 +39,25 @@ pub fn cursor_grab(
 /// ***  PLAYER + CAM0 ***********************************************************
 /// ******************************************************************************
 
+// ---ANCHOR---
+//    |     |
+//    V     V
+// PLAYER CAMERA
+
+//         | Translate                           | Rotate                      |
+// Player  | Translate anchor                    | Rotate Player               |
+// Camera  | Get closer/away of player, move cam | Rotate Camera around Anchor |
+
+
 // Setup player entity and its integrated camera
 pub fn setup_player_camera_integrated(mut commands: Commands) {
-    
-    // Player
+    // Anchor
     commands.spawn((
+        Anchor,
         Transform::from_xyz(0.0, 5.0, 0.0),
         Visibility::default(),
-        Player,
         Collider::round_cylinder(0.9, 0.3, 0.2),
+        Name::new("Anchor"),
         KinematicCharacterController {
             custom_mass: Some(5.0),
             up: Vec3::Y,
@@ -65,23 +76,27 @@ pub fn setup_player_camera_integrated(mut commands: Commands) {
             snap_to_ground: None,
             ..default()
         },
-        
+        Children::spawn((
+            Spawn((
+                Name::new("Player"),
+                Player,
+                Visibility::default(),
+                Transform::from_xyz(0.0, 5.0, 0.0),
+                
+            )),
+            Spawn((
+                Name::new("PlayerCamera"),
+                PlayerCamera,
+                Camera3d::default(), 
+                Transform::from_xyz(0.0, 2.0, 5.0).looking_at((0.0, 5.0, 0.0).into(), Vec3::Y),
+                Camera {
+                    // Renders cameras with different priorities to prevent ambiguities
+                    order: 0,
+                    ..default()
+                },
+            )),
+        )),
     ));
-
-    // Player Camera
-    commands.spawn((
-        PlayerCamera,
-        Camera3d::default(), 
-        Transform::from_xyz(0.0, 2.0, 5.0).looking_at((0.0, 5.0, 0.0).into(), Vec3::Y),
-        Camera {
-            // Renders cameras with different priorities to prevent ambiguities
-            order: 0,
-            ..default()
-        },
-    ));
-
-
-    
 }
 
 
@@ -108,6 +123,7 @@ pub fn setup_maps_elements(
     let ground_size = 50.0;
     let ground_height = 0.1;
     commands.spawn((
+        Name::new("Ground"),
         Mesh3d(meshes.add(Cuboid::new(2.0*ground_size, 2.0*ground_height, 2.0*ground_size))),
         // MeshMaterial3d(materials.add(Color::srgb_u8(124, 144, 255))),
         MeshMaterial3d(materials.add(Color::srgb(0.3, 0.5, 0.3))),
@@ -126,24 +142,28 @@ pub fn setup_maps_elements(
         let cuboid = Mesh3d(meshes.add(Cuboid::new(2.0*1.0, 2.0*step * stair_step, 2.0*1.0)));
         let material= MeshMaterial3d(materials.add(Color::srgb(153.0/255.0, 90.0/255.0, 50.0/255.0)));
         commands.spawn((
+            Name::new("Stair4"),
             Transform::from_xyz(40.0, step * stair_step, step * 2.0 - 20.0),
             cuboid.clone(),
             material.clone(),
             collider.clone(),
         ));
         commands.spawn((
+            Name::new("Stair3"),
             Transform::from_xyz(-40.0, step * stair_step, step * -2.0 + 20.0),
             cuboid.clone(),
             material.clone(),
             collider.clone(),
         ));
         commands.spawn((
+            Name::new("Stair2"),
             Transform::from_xyz(step * 2.0 - 20.0, step * stair_step, 40.0),
             cuboid.clone(),
             material.clone(),
             collider.clone(),
         ));
         commands.spawn((
+            Name::new("Stair1"),
             Transform::from_xyz(step * -2.0 + 20.0, step * stair_step, -40.0),
             cuboid.clone(),
             material.clone(),
@@ -153,6 +173,7 @@ pub fn setup_maps_elements(
 
     // Light
     commands.spawn((
+        Name::new("Light"),
         Transform::from_rotation(Quat::from_euler(EulerRot::ZYX, 0.0, 1.0, -PI / 4.)),
         DirectionalLight {
             shadows_enabled: true,
@@ -192,7 +213,7 @@ pub fn setup_ui(
     let camera = commands
         .spawn((
             Camera3d::default(),
-            Transform::from_translation(Vec3::new(0.0, 40.0, -60.0))
+            Transform::from_translation(Vec3::new(0.0, 5.0, -30.0))
                 .looking_at(Vec3::ZERO, Vec3::Y),
             Camera {
                 // Renders cameras with different priorities to prevent ambiguities

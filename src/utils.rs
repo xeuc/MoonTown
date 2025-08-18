@@ -1,11 +1,5 @@
 
-use bevy::{
-    diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin}, input::{mouse::MouseMotion, InputSystem}, prelude::*
-};
-use bevy_rapier3d::{control::KinematicCharacterController, prelude::*};
-use bevy::{
-    render::camera::Viewport, window::WindowResized,
-};
+use bevy::prelude::*;
 
 
 /// Keyboard input vector
@@ -32,6 +26,9 @@ pub struct PlayerCamera;
 
 #[derive(Component)]
 pub struct Player;
+
+#[derive(Component)]
+pub struct Anchor;
 
 pub enum Direction {
     Left,
