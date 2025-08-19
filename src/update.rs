@@ -185,6 +185,7 @@ pub fn rotate_cam_from_look_input(
     // 1)  asking the rapier's physics world to move    => Use anchor_output
     // 2)  not moving at all, anchor_output don't exist => Use anchor_transform.translation
     // Also see the discord bc the jitter doesn't make sence!
+    // Print the player's position
     let target = anchor_output.effective_translation.unwrap_or(anchor_controller.translation);
     let cam_local_x = camera_transform.right().as_vec3();
     let pitch = Quat::from_axis_angle(cam_local_x, look_input.y.to_radians());
