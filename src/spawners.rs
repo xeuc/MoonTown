@@ -44,10 +44,12 @@ pub fn cursor_grab(
 //    V     V
 // PLAYER CAMERA
 
-//         | Translate                           | Rotate                      |
-// Player  | Translate anchor                    | Rotate Player               |
-// Camera  | Get closer/away of player, move cam | Rotate Camera around Anchor |
-
+//         | Need to Translate?                  | Need to Rotate?               |
+// Player  | Translate the anchor                | Rotate the Player             |
+// Camera  | Get closer/away of player, move Cam | Rotate Camera around (Player) |
+// Note: To get the RIGHT position of the player, and avoid jitter and shaking from the player:
+//       PLEASE QUERRY THE PLAYER TRANSLATE. Not the anchor translate,
+//       not the anchor global transform, not the kcc, not the kcc output, bc they are all broken.
 
 // Setup player entity and its integrated camera
 pub fn setup_player_camera_integrated(mut commands: Commands) {
@@ -81,14 +83,14 @@ pub fn setup_player_camera_integrated(mut commands: Commands) {
                 Name::new("Player"),
                 Player,
                 Visibility::default(),
-                Transform::from_xyz(0.0, 5.0, 0.0),
+                Transform::from_xyz(0.0, 0.0, 0.0),
                 
             )),
             Spawn((
                 Name::new("PlayerCamera"),
                 PlayerCamera,
                 Camera3d::default(), 
-                Transform::from_xyz(0.0, 2.0, 5.0).looking_at((0.0, 5.0, 0.0).into(), Vec3::Y),
+                Transform::from_xyz(0.0, 1.0, 5.0).looking_at((0.0, 5.0, 0.0).into(), Vec3::Y),
                 Camera {
                     // Renders cameras with different priorities to prevent ambiguities
                     order: 0,
@@ -213,7 +215,7 @@ pub fn setup_ui(
     let camera = commands
         .spawn((
             Camera3d::default(),
-            Transform::from_translation(Vec3::new(0.0, 5.0, -30.0))
+            Transform::from_translation(Vec3::new(0.0, 3.0, -30.0))
                 .looking_at(Vec3::ZERO, Vec3::Y),
             Camera {
                 // Renders cameras with different priorities to prevent ambiguities
@@ -234,7 +236,7 @@ pub fn setup_ui(
     commands
         .spawn((
             UiTargetCamera(camera),
-            // if yo udon't put the node element,
+            // if you don't put the node element,
             // WARN bevy_ecs::hierarchy: warning[B0004]: 
             // Entity 134v1 with the GlobalTransform component has a parent without GlobalTransform
             // WARN bevy_ecs::hierarchy: warning[B0004]: 

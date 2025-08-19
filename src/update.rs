@@ -7,7 +7,7 @@ use bevy::{
     render::camera::Viewport, window::WindowResized,
 };
 
-use crate::utils::{Anchor, CameraPosition, Direction, LookInput, MovementInput, RotateCamera, TopLeftCamera, GRAVITY, GROUND_TIMER, JUMP_SPEED, MOUSE_SENSITIVITY, MOVEMENT_SPEED};
+use crate::utils::{Anchor, CameraPosition, Direction, LookInput, MovementInput, Player, RotateCamera, TopLeftCamera, GRAVITY, GROUND_TIMER, JUMP_SPEED, MOUSE_SENSITIVITY, MOVEMENT_SPEED};
 use crate::utils::PlayerCamera;
 
 
@@ -70,8 +70,7 @@ pub fn handle_input(
 
 
 // ACTUALLY TRANSLATE THE PLAYER AND THE CAMERA (6 directions)
-// no cam translate anymore
-// movement_input (keyboard)
+// movement_input come from keyboard
 pub fn translate_player(
     time: Res<Time>,
     mut movement_input: ResMut<MovementInput>,
@@ -144,56 +143,25 @@ pub fn translate_player(
 
 
 
-
-// ACTUALLY ROTATE THE PLAYER (left and right) AND CAMERA (all 4 directions)
-// btw should not code for Cam as Cam = child(Player)
-//   => Actually no, it's for the cam to say "yes" (up and down)
-// look_input (mouse)
+// take the input mouse from look_input, and use it to rotate the camera around the player
 pub fn rotate_cam_from_look_input(
-    mut anchor: Query<(
-        &mut Transform,
-        &mut KinematicCharacterController,
-        Option<&KinematicCharacterControllerOutput>,
-    ), (With<Anchor>, Without<PlayerCamera>),>,
-    // mut anchor: Query<&mut Transform, (With<Anchor>, Without<PlayerCamera>)>,
-    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Anchor>)>,
+    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Player>)>,
+    mut player: Query<&mut Transform, (With<Player>, Without<PlayerCamera>)>,
     mut look_input: ResMut<LookInput>,
 ) {
-    let Ok((anchor_transform, mut anchor_controller, anchor_output)) = anchor.single_mut() else { return; };
     let Ok(mut camera_transform) = camera.single_mut() else { return;};
-    // let Ok(anchor_transform) = anchor.single_mut() else { return;};
-//             .-"""-.
-//            '       \
-//           |,.  ,-.  |
-//           |()L( ()| |
-//           |,'  `".| |
-//           |.___.',| `
-//          .j `--"' `  `.
-//         / '        '   \
-//        / /          `   `.
-//       / /            `    .
-//      / /              l   |
-//     . ,               |   |
-//     ,"`.             .|   |
-//  _.'   ``.   o     | `..-'l
-// |       `.`,        |      `.
-// |         `.    __.j         )
-// |__        |--""___|      ,-'
-//    `"--...,+""""   `._,.-' mh
-    // HERE USES anchor_output.effective_translation, if not use anchor_controller.translation (?), or anchor_transform.translation
-    // There are 2 cases, the cam try to turn around a player that it:
-    // 1)  asking the rapier's physics world to move    => Use anchor_output
-    // 2)  not moving at all, anchor_output don't exist => Use anchor_transform.translation
-    // Also see the discord bc the jitter doesn't make sence!
-    // Print the player's position
-    let target = anchor_output.effective_translation.unwrap_or(anchor_controller.translation);
+    // I use player instead of anchor to avoid problem of jitter + problem of player shaking along Y ¯\_(ツ)_/¯
+    let Ok(player_transform) = player.single_mut() else { return;};
+
+    let target = player_transform.translation;
     let cam_local_x = camera_transform.right().as_vec3();
     let pitch = Quat::from_axis_angle(cam_local_x, look_input.y.to_radians());
-    let yaw = Quat::from_axis_angle(Vec3::Y, look_input.x.to_radians());
+    let yaw = Quat::from_rotation_y(look_input.x.to_radians());
     let rotation = yaw * pitch;
     camera_transform.rotate_around(target, rotation);
     camera_transform.look_at(target, Vec3::Y);
 
+    // Reset look input after applying it
     **look_input = Vec2::ZERO;
 }
 
