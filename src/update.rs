@@ -162,8 +162,30 @@ pub fn rotate_cam_from_look_input(
     let Ok((anchor_transform, mut anchor_controller, anchor_output)) = anchor.single_mut() else { return; };
     let Ok(mut camera_transform) = camera.single_mut() else { return;};
     // let Ok(anchor_transform) = anchor.single_mut() else { return;};
-  
-    let target = anchor_controller.translation.unwrap_or(anchor_transform.translation);
+//             .-"""-.
+//            '       \
+//           |,.  ,-.  |
+//           |()L( ()| |
+//           |,'  `".| |
+//           |.___.',| `
+//          .j `--"' `  `.
+//         / '        '   \
+//        / /          `   `.
+//       / /            `    .
+//      / /              l   |
+//     . ,               |   |
+//     ,"`.             .|   |
+//  _.'   ``.   o     | `..-'l
+// |       `.`,        |      `.
+// |         `.    __.j         )
+// |__        |--""___|      ,-'
+//    `"--...,+""""   `._,.-' mh
+    // HERE USES anchor_output.effective_translation, if not use anchor_controller.translation (?), or anchor_transform.translation
+    // There are 2 cases, the cam try to turn around a player that it:
+    // 1)  asking the rapier's physics world to move    => Use anchor_output
+    // 2)  not moving at all, anchor_output don't exist => Use anchor_transform.translation
+    // Also see the discord bc the jitter doesn't make sence!
+    let target = anchor_output.effective_translation.unwrap_or(anchor_controller.translation);
     let cam_local_x = camera_transform.right().as_vec3();
     let pitch = Quat::from_axis_angle(cam_local_x, look_input.y.to_radians());
     let yaw = Quat::from_axis_angle(Vec3::Y, look_input.x.to_radians());
