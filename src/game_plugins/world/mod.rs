@@ -11,9 +11,9 @@ pub struct WorldPlugin;
 impl Plugin for WorldPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Startup, (
-                setup_maps_elements,
-            ))
+            // .add_systems(Startup, setup_stairs_ground)
+            .add_systems(Startup, setup_light)
+            .add_systems(Startup, setup_map)
         ;
     }
 }
