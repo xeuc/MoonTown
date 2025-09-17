@@ -100,16 +100,17 @@ pub fn setup_light(
         Transform::from_rotation(Quat::from_euler(EulerRot::ZYX, 0.0, 1.0, -PI / 4.)),
         DirectionalLight {
             shadows_enabled: true,
+            // soft_shadow_size: 3.0,
+            shadow_depth_bias: 1000.0, // Avoid shadow acnes
             ..default()
         },
         CascadeShadowConfigBuilder {
             num_cascades: 2,
-            first_cascade_far_bound: 200.0,
-            maximum_distance: 280.0,
             ..default()
         }
         .build(),
     ));
+
 }
 
 
