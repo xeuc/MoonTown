@@ -77,7 +77,7 @@ pub fn setup_player_camera_integrated(mut commands: Commands) {
                 Name::new("PlayerCamera"),
                 PlayerCamera,
                 Camera3d::default(), 
-                Transform::from_xyz(0.0, 1.0, 5.0).looking_at((0.0, 5.0, 0.0).into(), Vec3::Y),
+                Transform::from_xyz(0.0, 1.0, 5.0).looking_at((0.0, 1.0, 0.0).into(), Vec3::Y),
                 Camera {
                     // Renders cameras with different priorities to prevent ambiguities
                     order: 0,
@@ -206,30 +206,31 @@ pub fn translate_player(
         &mut KinematicCharacterController,
         Option<&KinematicCharacterControllerOutput>,
     ), (With<Anchor>, Without<PlayerCamera>),>,
-    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Anchor>)>,
+    // mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Anchor>)>,
     mut vertical_movement: Local<f32>,
     mut grounded_timer: Local<f32>,
 ) {
-    let Ok((anchor_transform, mut anchor_controller, anchor_output)) = anchor.single_mut() else { return; };
-    let Ok(camera_transform) = camera.single_mut() else { return; };
+    // Get querrie's variables
+    let Ok((mut anchor_transform, mut anchor_controller, anchor_output)) = anchor.single_mut() else { return; };
+    // let Ok(camera_transform) = camera.single_mut() else { return; };
 
     let delta_time = time.delta_secs();
 
     // Get camera's forward and right vectors (ignoring Y for planar movement)
-    let mut cam_forward: Vec3 = camera_transform.forward().into();
-    cam_forward.y = 0.0;
-    cam_forward = cam_forward.normalize_or_zero();
+    // let mut cam_forward: Vec3 = camera_transform.forward().into();
+    // cam_forward.y = 0.0;
+    // cam_forward = cam_forward.normalize_or_zero();
 
-    let mut cam_right: Vec3 = camera_transform.right().into();
-    cam_right.y = 0.0;
-    cam_right = cam_right.normalize_or_zero();
+    // let mut cam_right: Vec3 = camera_transform.right().into();
+    // cam_right.y = 0.0;
+    // cam_right = cam_right.normalize_or_zero();
 
     // Movement relative to camera
     let input = **movement_input;
-    let mut anchor_movement = (-cam_forward * input.z + cam_right * input.x) * MOVEMENT_SPEED;
+    // let mut anchor_movement = (-cam_forward * input.z + cam_right * input.x) * MOVEMENT_SPEED;
+    let mut anchor_movement = vec3(0., 0., input.z) * MOVEMENT_SPEED;
 
     let jump_speed = movement_input.y * JUMP_SPEED;
-    **movement_input = Vec3::ZERO;
 
     // Ground check
     if anchor_output.map(|o| o.grounded).unwrap_or(false) {
@@ -246,6 +247,10 @@ pub fn translate_player(
     anchor_movement.y = *vertical_movement;
     *vertical_movement += GRAVITY * delta_time * anchor_controller.custom_mass.unwrap_or(1.0);
 
+    // Rotation
+    // anchor_transform.rotation.y += movement_input.z * delta_time;
+    anchor_transform.rotate_y(-movement_input.x * ROTATION_SPEED * delta_time);
+    **movement_input = Vec3::ZERO;
     anchor_controller.translation = Some(anchor_transform.rotation * (anchor_movement * delta_time));
 
 
