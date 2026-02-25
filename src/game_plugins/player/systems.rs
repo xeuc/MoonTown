@@ -206,6 +206,64 @@ pub fn translate_player(
         &mut KinematicCharacterController,
         Option<&KinematicCharacterControllerOutput>,
     ), (With<Anchor>, Without<PlayerCamera>),>,
+    mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Anchor>)>,
+    mut vertical_movement: Local<f32>,
+    mut grounded_timer: Local<f32>,
+) {
+
+    let Ok((anchor_transform, mut anchor_controller, anchor_output)) = anchor.single_mut() else { return; };
+    let Ok(camera_transform) = camera.single_mut() else { return; };
+
+    let delta_time = time.delta_secs();
+
+    // Get camera's forward and right vectors (ignoring Y for planar movement)
+    let mut cam_forward: Vec3 = camera_transform.forward().into();
+    cam_forward.y = 0.0;
+    cam_forward = cam_forward.normalize_or_zero();
+
+    let mut cam_right: Vec3 = camera_transform.right().into();
+    cam_right.y = 0.0;
+    cam_right = cam_right.normalize_or_zero();
+
+    // Movement relative to camera
+    let input = **movement_input;
+    let mut anchor_movement = (-cam_forward * input.z + cam_right * input.x) * MOVEMENT_SPEED;
+
+    let jump_speed = movement_input.y * JUMP_SPEED;
+    **movement_input = Vec3::ZERO;
+
+    // Ground check
+    if anchor_output.map(|o| o.grounded).unwrap_or(false) {
+        *grounded_timer = GROUND_TIMER;
+        *vertical_movement = 0.0;
+    }
+    if *grounded_timer > 0.0 {
+        *grounded_timer -= delta_time;
+        if jump_speed > 0.0 {
+            *vertical_movement = jump_speed;
+            *grounded_timer = 0.0;
+        }
+    }
+    anchor_movement.y = *vertical_movement;
+    *vertical_movement += GRAVITY * delta_time * anchor_controller.custom_mass.unwrap_or(1.0);
+
+    anchor_controller.translation = Some(anchor_transform.rotation * (anchor_movement * delta_time));
+
+}
+
+
+
+
+// ACTUALLY TRANSLATE THE PLAYER AND THE CAMERA (6 directions)
+// movement_input come from keyboard
+pub fn translate_player_no_cursor(
+    time: Res<Time>,
+    mut movement_input: ResMut<MovementInput>,
+    mut anchor: Query<(
+        &mut Transform,
+        &mut KinematicCharacterController,
+        Option<&KinematicCharacterControllerOutput>,
+    ), (With<Anchor>, Without<PlayerCamera>),>,
     // mut camera: Query<&mut Transform, (With<PlayerCamera>, Without<Anchor>)>,
     mut vertical_movement: Local<f32>,
     mut grounded_timer: Local<f32>,
@@ -255,7 +313,3 @@ pub fn translate_player(
 
 
 }
-
-
-
-

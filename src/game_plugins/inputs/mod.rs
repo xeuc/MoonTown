@@ -12,7 +12,7 @@ impl Plugin for InputsPlugin {
         app
             .init_resource::<MovementInput>()
             .init_resource::<LookInput>()
-            // .add_systems(Startup, cursor_grab)
+            .add_systems(Startup, cursor_grab)
             .add_systems(PreUpdate, handle_input.after(InputSystem))
             ;
     }
