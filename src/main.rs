@@ -1,47 +1,49 @@
 use bevy::prelude::*;
-use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
-// use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
-pub mod plugins;
-
-#[derive(Component)]
-struct Player;
+mod game_plugins;
+use crate::game_plugins::GamePlugins;
 
 fn main() {
     App::new()
-        .add_plugins((
-            DefaultPlugins,
-            FrameTimeDiagnosticsPlugin,
-            // WorldInspectorPlugin::new(),
-        ))
-        .add_plugins((
-            plugins::lost_player::LostPlayerPlugin,
-            plugins::screenshot::ScreenshotPlugin,
-            plugins::cursor_as_movement::RotateHeadPlugin,
-            plugins::pause::PausePlugin,
-            plugins::keyboard::KeyboardPlugin,
-            plugins::skybox::SkyboxPlugin,
-            plugins::light::LightPlugin,
-            // plugins::fps::FpsPlugin,
-            // plugins::egui::UiPlugin,
-            plugins::app_state::AppStatePlugin,
-            plugins::setup_map::SetupMapPlugin,
-            plugins::player::spawn_player_ball::SpawnPlayerBallPlugin,
-            // plugins::debug::DebugPlugin,
-            plugins::pokeball::SpawnPokeBallPlugin,
-        ))
-        .add_plugins((
-            plugins::animation::AnimationPlugin,
-            plugins::player::controls_player_ball::ControlsPlayerBallPlugin,
-            plugins::iyes_perf_ui::IvesPerfUIPlugin,
-        ))
-
-        // .insert_resource(TimestepMode::Fixed {
-        //     dt: 1.0 / 240.0,
-        //     substeps: 64,
-        // })// Clip using "f" key
+        .add_plugins(DefaultPlugins)
+        .add_plugins(GamePlugins)
         .run();
 }
+
+
+// # Features priorities
+// Numeric movment DONE
+//     Conf file
+//     Pause and change Pause
+//     Save file
+// Split Screen
+// Multi local
+//     Gamepad controller
+//     Animation
+// Trigger's Button
+//     Trigger's Area
+// Multi-scene load
+//     Sparkling0's UI
+// TP
+// Scene Travel
+//     Grass
+//     Shaders
+//     During a tp in another zone, the camera unzooms,
+//      with Sparkling's loading screen,
+//      on a scene that represents the world map,
+//      and starts from where the player is located
+//      and goes to the destination, the player tp, and that's it.
+
+// subsurface scattering
+// parallax mapping
+// Billboarding
+
+// IES Light
+// Motion blurr
+// Camera shacking
+
+
+
 
 // TODO
 // BUG
@@ -72,11 +74,11 @@ fn main() {
     // Finish the tutorial (???)
     // Change everything to plugins
     // Create a plugin for setup so that main is only 100 lines :)
-    // y < 1 => TP player
+// y < 1 => TP player
     // Remove public (pub) from plugins
-    // UI log position + DEBUG
-    // Please put the light back
-    // Put UI back but as a plugin
+// UI log position + DEBUG
+// Please put the light back
+// Put UI back but as a plugin
     // Fix screenshot folder not existing error
     // [OPTI] MAKE check_mesh_ready_no_rapier CALLED ONCE (or not after the thing is done) (gamestate or component)
     // Resolve light problem
@@ -113,3 +115,8 @@ fn main() {
 // I need a way to switch between security and performance. (for server)
 // I need camera collision handling.
 // I need to manage other players, including non-local ones.
+
+// allow avian3D as it no more uses xpbd
+
+
+// Change LoD based on framerate
