@@ -1,0 +1,3726 @@
+{
+  "jsn": {
+    "format_version": [
+      3,
+      0,
+      0
+    ],
+    "editor_version": "0.4.1",
+    "bevy_version": "0.18"
+  },
+  "metadata": {
+    "name": "Untitled",
+    "description": "",
+    "author": "",
+    "created": "2026-07-28T19:54:32Z",
+    "modified": "2026-07-28T19:54:32Z"
+  },
+  "assets": {
+    "bevy_mesh::mesh::Mesh": {
+      "#Mesh8": "tree2.gltf#Mesh2/Primitive0",
+      "#Mesh17": "playtest_map_24x24_scale1.gltf#Mesh5/Primitive0",
+      "#Mesh33": "playtest_map_24x24_scale1.gltf#Mesh8/Primitive0",
+      "#Mesh39": "playtest_map_24x24_scale1.gltf#Mesh16/Primitive0",
+      "#Mesh28": "pokeball.gltf#Mesh0/Primitive0",
+      "#Mesh31": "playtest_map_24x24_scale1.gltf#Mesh9/Primitive0",
+      "#Mesh37": "tree2.gltf#Mesh5/Primitive0",
+      "#Mesh10": "tree2.gltf#Mesh4/Primitive0",
+      "#Mesh38": "playtest_map_24x24_scale1.gltf#Mesh10/Primitive0",
+      "#Mesh11": "playtest_map_24x24_scale1.gltf#Mesh12/Primitive0",
+      "#Mesh12": "playtest_map_24x24_scale1.gltf#Mesh0/Primitive0",
+      "#Mesh15": "tree2.gltf#Mesh6/Primitive0",
+      "#Mesh29": "tree2.gltf#Mesh1/Primitive0",
+      "#Mesh21": "tree_birch.gltf#Mesh1/Primitive0",
+      "#Mesh24": "playtest_map_24x24_scale1.gltf#Mesh14/Primitive0",
+      "#Mesh25": "tree2.gltf#Mesh0/Primitive0",
+      "#Mesh19": "tree_birch.gltf#Mesh4/Primitive0",
+      "#Mesh27": "playtest_map_24x24_scale1.gltf#Mesh3/Primitive0",
+      "#Mesh32": "playtest_map_24x24_scale1.gltf#Mesh2/Primitive0",
+      "#Mesh18": "playtest_map_24x24_scale1.gltf#Mesh4/Primitive0",
+      "#Mesh34": "playtest_map_24x24_scale1.gltf#Mesh7/Primitive0",
+      "#Mesh35": "tree2.gltf#Mesh7/Primitive0",
+      "#Mesh1": "avatar_model_test_16x16_scale16.gltf#Mesh0/Primitive0",
+      "#Mesh22": "tree_birch.gltf#Mesh5/Primitive0",
+      "#Mesh5": "playtest_map_24x24_scale1.gltf#Mesh6/Primitive0",
+      "#Mesh40": "tree2.gltf#Mesh3/Primitive0",
+      "#Mesh0": "playtest_map_24x24_scale1.gltf#Mesh1/Primitive0",
+      "#Mesh4": "Tree3.gltf#Mesh1/Primitive0",
+      "#Mesh20": "avatar_model_test_16x16_scale16.gltf#Mesh0/Primitive2",
+      "#Mesh41": "tree2.gltf#Mesh10/Primitive0",
+      "#Mesh23": "tree_birch.gltf#Mesh3/Primitive0",
+      "#Mesh36": "Tree3.gltf#Mesh0/Primitive0",
+      "#Mesh3": "Tree3.gltf#Mesh3/Primitive0",
+      "#Mesh30": "avatar_model_test_16x16_scale16.gltf#Mesh0/Primitive1",
+      "#Mesh16": "tree2.gltf#Mesh8/Primitive0",
+      "#Mesh14": "tree2.gltf#Mesh9/Primitive0",
+      "#Mesh2": "Tree3.gltf#Mesh2/Primitive0",
+      "#Mesh26": "tree_birch.gltf#Mesh0/Primitive0",
+      "#Mesh6": "playtest_map_24x24_scale1.gltf#Mesh13/Primitive0",
+      "#Mesh7": "tree_birch.gltf#Mesh2/Primitive0",
+      "#Mesh9": "playtest_map_24x24_scale1.gltf#Mesh11/Primitive0",
+      "#Mesh13": "playtest_map_24x24_scale1.gltf#Mesh15/Primitive0"
+    },
+    "bevy_pbr::pbr_material::StandardMaterial": {
+      "#StandardMaterial9": "tree2.gltf#Material1",
+      "#StandardMaterial12": "avatar_model_test_16x16_scale16.gltf#Material2",
+      "#StandardMaterial8": "playtest_map_24x24_scale1.gltf#Material3",
+      "#StandardMaterial14": "playtest_map_24x24_scale1.gltf#Material5",
+      "#StandardMaterial5": "playtest_map_24x24_scale1.gltf#Material4",
+      "#StandardMaterial15": "pokeball.gltf#Material0",
+      "#StandardMaterial16": "avatar_model_test_16x16_scale16.gltf#Material1",
+      "#StandardMaterial6": "tree_birch.gltf#Material1",
+      "#StandardMaterial13": "tree_birch.gltf#Material0",
+      "#StandardMaterial2": "Tree3.gltf#Material1",
+      "#StandardMaterial0": "playtest_map_24x24_scale1.gltf#Material1",
+      "#StandardMaterial4": "playtest_map_24x24_scale1.gltf#Material2",
+      "#StandardMaterial7": "tree2.gltf#Material0",
+      "#StandardMaterial1": "avatar_model_test_16x16_scale16.gltf#Material0",
+      "#StandardMaterial11": "playtest_map_24x24_scale1.gltf#Material6",
+      "#StandardMaterial10": "playtest_map_24x24_scale1.gltf#Material0",
+      "#StandardMaterial3": "Tree3.gltf#Material0"
+    }
+  },
+  "editor": null,
+  "scene": [
+    {
+      "parent": 132,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh0",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial0"
+      }
+    },
+    {
+      "parent": 106,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh1",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial1"
+      }
+    },
+    {
+      "parent": 4,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial2",
+        "bevy_mesh::components::Mesh3d": "#Mesh2",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "parent": 94,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial2",
+        "bevy_mesh::components::Mesh3d": "#Mesh3",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 79,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "circle",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.4619397521018982,
+            -0.19134171307086945,
+            -0.3314135670661926,
+            0.8001031279563904
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0021699999924749136,
+            2.198242425918579,
+            0.6900075078010559
+          ]
+        }
+      }
+    },
+    {
+      "components": {
+        "bevy_ecs::name::Name": "pokeball",
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\pokeball.gltf",
+          "scene_index": 0
+        },
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -11.75,
+            2.0,
+            5.5
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 44,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.0625,
+            -0.375,
+            0.375
+          ]
+        },
+        "bevy_ecs::name::Name": "branch",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 60,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            -0.237685889005661,
+            0.9713420867919922
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.4375,
+            0.125,
+            0.3125
+          ]
+        },
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 6,
+      "components": {
+        "bevy_ecs::name::Name": "circle",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.04361938685178757,
+            0.0,
+            0.0,
+            0.9990482330322266
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            -0.5625,
+            -0.15625
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 25,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "head",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.6875,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 38,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.1285431832075119,
+            -0.02266567014157772,
+            -0.17216263711452484,
+            0.9763825535774231
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.375,
+            0.6875,
+            0.3125
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "sphere"
+      }
+    },
+    {
+      "parent": 64,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 73,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial3",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh4"
+      }
+    },
+    {
+      "parent": 24,
+      "components": {
+        "bevy_ecs::name::Name": "circle",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.04361938685178757,
+            0.0,
+            0.0,
+            0.9990482330322266
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.046875,
+            -0.5625,
+            -0.15625
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 6,
+      "components": {
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.04361938685178757,
+            0.0,
+            0.0,
+            0.9990482330322266
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "plane"
+      }
+    },
+    {
+      "parent": 114,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial4",
+        "bevy_mesh::components::Mesh3d": "#Mesh5",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "parent": 108,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial5",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh6"
+      }
+    },
+    {
+      "parent": 79,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "circle"
+      }
+    },
+    {
+      "parent": 13,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh7",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial6",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 119,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            -0.40274667739868164,
+            0.9153114557266235
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0625,
+            1.8125,
+            -0.3125
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "sphere"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            -0.3826834261417389,
+            0.9238795042037964
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -16.0,
+            0.0,
+            -80.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "cube"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "cube",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            64.0,
+            0.0,
+            44.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            72.0,
+            12.0,
+            -40.0
+          ]
+        },
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 44,
+      "components": {
+        "bevy_ecs::name::Name": "branch2",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.010492715053260326,
+            -0.8765181303024292,
+            0.019125692546367645,
+            -0.48087430000305176
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.15625,
+            -0.1875,
+            -0.1875
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 110,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0625,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "upper_body"
+      }
+    },
+    {
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -8.75,
+            0.0,
+            -24.5
+          ]
+        },
+        "bevy_ecs::name::Name": "playtest_map_24x24_scale1",
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\playtest_map_24x24_scale1.gltf",
+          "scene_index": 0
+        }
+      }
+    },
+    {
+      "parent": 10,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh8",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial7",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 75,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial8",
+        "bevy_mesh::components::Mesh3d": "#Mesh9",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 85,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "leftLegfar",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            -0.375,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 136,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            -3.0,
+            -10.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "pokeball"
+      }
+    },
+    {
+      "parent": 101,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "left_arm far",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.4375,
+            0.0,
+            -0.0625
+          ]
+        }
+      }
+    },
+    {
+      "parent": 50,
+      "components": {
+        "bevy_mesh::components::Mesh3d": "#Mesh10",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial9",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 118,
+      "components": {
+        "bevy_ecs::name::Name": "right arm far",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.4375,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 126,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 138,
+      "components": {
+        "bevy_mesh::components::Mesh3d": "#Mesh11",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial8",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 15,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial10",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh12"
+      }
+    },
+    {
+      "parent": 96,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial2",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh2",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 119,
+      "components": {
+        "bevy_ecs::name::Name": "Branch0",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.125,
+            1.4375,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 56,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial2",
+        "bevy_mesh::components::Mesh3d": "#Mesh2",
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "parent": 69,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh13",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial11"
+      }
+    },
+    {
+      "parent": 115,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial9",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh14",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "components": {
+        "bevy_ecs::name::Name": "tree_birch",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.600000023841858,
+            1.399999976158142,
+            1.0
+          ],
+          "translation": [
+            -11.25,
+            0.0,
+            1.25
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\tree_birch.gltf",
+          "scene_index": 0
+        }
+      }
+    },
+    {
+      "parent": 7,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial7",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh15",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 59,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0625,
+            3.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "main",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 127,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh16",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial7",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 111,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial0",
+        "bevy_mesh::components::Mesh3d": "#Mesh17",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 103,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            -0.375,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "right_leg_far",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 98,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial0",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh18"
+      }
+    },
+    {
+      "components": {
+        "bevy_ecs::name::Name": "Tree3",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            2.75,
+            0.0,
+            -3.0
+          ]
+        },
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\Tree3.gltf",
+          "scene_index": 0
+        }
+      }
+    },
+    {
+      "parent": 133,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            -0.08715574443340302,
+            0.9961947202682495
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.0625,
+            0.6875,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "cylinder"
+      }
+    },
+    {
+      "parent": 128,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh4",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial3",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_ecs::name::Name": "torus",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -88.0,
+            0.0,
+            88.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 55,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial6",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh19"
+      }
+    },
+    {
+      "parent": 106,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial12",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh20",
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "parent": 44,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "circle",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.0625,
+            -3.0625,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 71,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.4619397521018982,
+            -0.19134171307086945,
+            -0.3314135670661926,
+            0.8001031279563904
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0021699999924749136,
+            2.198242425918579,
+            0.6900075078010559
+          ]
+        },
+        "bevy_ecs::name::Name": "circle"
+      }
+    },
+    {
+      "parent": 71,
+      "components": {
+        "bevy_ecs::name::Name": "circle",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 60,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.1515444964170456,
+            -0.013258461840450764,
+            0.08614140748977661,
+            0.9846004843711853
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.375,
+            -0.8125,
+            0.375
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "cylinder"
+      }
+    },
+    {
+      "parent": 87,
+      "components": {
+        "bevy_ecs::name::Name": "GltfNode9",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 119,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.5625,
+            2.375,
+            -0.375
+          ]
+        },
+        "bevy_ecs::name::Name": "Branch1"
+      }
+    },
+    {
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\tree2.gltf",
+          "scene_index": 0
+        },
+        "bevy_ecs::name::Name": "tree2",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            3.0,
+            3.6000001430511475,
+            3.1000001430511475
+          ],
+          "translation": [
+            8.75,
+            0.0,
+            -3.25
+          ]
+        }
+      }
+    },
+    {
+      "parent": 8,
+      "components": {
+        "bevy_mesh::components::Mesh3d": "#Mesh21",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial6",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 24,
+      "components": {
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.04361938685178757,
+            0.0,
+            0.0,
+            0.9990482330322266
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "components": {
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\Tree3.gltf",
+          "scene_index": 0
+        },
+        "bevy_ecs::name::Name": "Tree3",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.2000000476837158,
+            1.0,
+            1.600000023841858
+          ],
+          "translation": [
+            -3.5,
+            0.0,
+            2.5
+          ]
+        }
+      }
+    },
+    {
+      "parent": 79,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.06540312618017197,
+            0.0,
+            0.0,
+            0.9978589415550232
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            1.6875,
+            0.25
+          ]
+        },
+        "bevy_ecs::name::Name": "circle_selection",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 93,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh22",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial13"
+      }
+    },
+    {
+      "parent": 63,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial13",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh23",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 119,
+      "components": {
+        "bevy_ecs::name::Name": "Branch2",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.273817777633667,
+            -0.9151636958122253,
+            -0.23940788209438324,
+            0.1737327128648758
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.125,
+            1.9375,
+            0.8125
+          ]
+        }
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.3826834261417389,
+            0.9238795042037964
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -4.0,
+            8.0,
+            -80.0
+          ]
+        },
+        "bevy_ecs::name::Name": "cube"
+      }
+    },
+    {
+      "parent": 99,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 11,
+      "components": {
+        "bevy_ecs::name::Name": "GltfNode4",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 30,
+      "components": {
+        "bevy_ecs::name::Name": "pokeball",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 112,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.06540312618017197,
+            0.0,
+            0.0,
+            0.9978589415550232
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            1.6875,
+            0.25
+          ]
+        },
+        "bevy_ecs::name::Name": "circle_selection",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 52,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial14",
+        "bevy_mesh::components::Mesh3d": "#Mesh24",
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            72.0,
+            8.0,
+            -16.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            64.0,
+            0.0,
+            56.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "cube"
+      }
+    },
+    {
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Sun",
+        "bevy_light::cascade::CascadeShadowConfig": {
+          "bounds": [
+            10.0,
+            24.662120819091797,
+            60.822021484375,
+            149.99998474121094
+          ],
+          "minimum_distance": 0.10000000149011612,
+          "overlap_proportion": 0.20000000298023224
+        },
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.38165590167045593,
+            0.1829865723848343,
+            -0.07736548036336899,
+            0.9027010798454285
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            10.0,
+            20.0,
+            10.0
+          ]
+        },
+        "bevy_light::directional_light::DirectionalLight": {
+          "affects_lightmapped_mesh_diffuse": true,
+          "color": {
+            "LinearRgba": {
+              "alpha": 1.0,
+              "blue": 1.0,
+              "green": 1.0,
+              "red": 1.0
+            }
+          },
+          "illuminance": 10000.0,
+          "shadow_depth_bias": 0.019999999552965164,
+          "shadow_normal_bias": 1.7999999523162842,
+          "shadows_enabled": true
+        }
+      }
+    },
+    {
+      "parent": 20,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh25",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial7",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 129,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "GltfNode4",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 14,
+      "components": {
+        "bevy_mesh::components::Mesh3d": "#Mesh26",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial13"
+      }
+    },
+    {
+      "parent": 22,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial0",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh27"
+      }
+    },
+    {
+      "parent": 30,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial15",
+        "bevy_mesh::components::Mesh3d": "#Mesh28"
+      }
+    },
+    {
+      "parent": 61,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 122,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial2",
+        "bevy_mesh::components::Mesh3d": "#Mesh3",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "parent": 110,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.25,
+            -0.3125,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "left_leg"
+      }
+    },
+    {
+      "parent": 133,
+      "components": {
+        "bevy_ecs::name::Name": "cylinder",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.021809693425893784,
+            0.0004758892173413187,
+            0.021809693425893784,
+            0.9995241165161133
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 42,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "pyramid",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -76.0,
+            12.0,
+            -76.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_ecs::name::Name": "pyramid",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -76.0,
+            8.0,
+            -40.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 117,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh29",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial9"
+      }
+    },
+    {
+      "parent": 26,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 112,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "circle"
+      }
+    },
+    {
+      "parent": 44,
+      "components": {
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.0625,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 112,
+      "components": {
+        "bevy_ecs::name::Name": "circle",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.7697511315345764,
+            -0.23106546700000763,
+            -0.25216370820999146,
+            0.538985550403595
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.06032999977469444,
+            2.541992425918579,
+            -0.5599924921989441
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 106,
+      "components": {
+        "bevy_mesh::components::Mesh3d": "#Mesh30",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial16"
+      }
+    },
+    {
+      "parent": 112,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.4619397521018982,
+            -0.19134171307086945,
+            -0.3314135670661926,
+            0.8001031279563904
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0021699999924749136,
+            2.198242425918579,
+            0.6900075078010559
+          ]
+        },
+        "bevy_ecs::name::Name": "circle",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 134,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial8",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh31"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            64.0,
+            0.0,
+            80.0
+          ]
+        },
+        "bevy_ecs::name::Name": "cube"
+      }
+    },
+    {
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            5.25,
+            0.2500004768371582,
+            7.75
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\Tree3.gltf",
+          "scene_index": 0
+        },
+        "bevy_ecs::name::Name": "Tree3"
+      }
+    },
+    {
+      "parent": 76,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial0",
+        "bevy_mesh::components::Mesh3d": "#Mesh32"
+      }
+    },
+    {
+      "parent": 25,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.3125,
+            0.5,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "left_arm",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 60,
+      "components": {
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.258819043636322,
+            0.9659258127212524
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 110,
+      "components": {
+        "bevy_ecs::name::Name": "right_leg",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.25,
+            -0.3125,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 65,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial3",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh4"
+      }
+    },
+    {
+      "parent": 88,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial4",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh33",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 34,
+      "components": {
+        "bevy_ecs::name::Name": "Avatar",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 89,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial4",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh34",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.7071067690849304,
+            0.0,
+            0.0,
+            0.7071067690849304
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            24.0,
+            164.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "tube"
+      }
+    },
+    {
+      "parent": 102,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh35",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial7",
+        "bevy_ecs::name::Name": "Mesh"
+      }
+    },
+    {
+      "parent": 106,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Avatar",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            64.0,
+            0.0,
+            32.0
+          ]
+        },
+        "bevy_ecs::name::Name": "cube",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 70,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "GltfNode4"
+      }
+    },
+    {
+      "parent": 18,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial3",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh36"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -76.0,
+            4.0,
+            -12.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "pyramid"
+      }
+    },
+    {
+      "parent": 68,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "cylinder",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.010904676280915737,
+            -0.9304804801940918,
+            0.13401193916797638,
+            0.3407755494117737
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.25,
+            -0.8125,
+            0.375
+          ]
+        }
+      }
+    },
+    {
+      "parent": 71,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.7697511315345764,
+            -0.23106546700000763,
+            -0.25216370820999146,
+            0.538985550403595
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.06032999977469444,
+            2.541992425918579,
+            -0.5599924921989441
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "circle"
+      }
+    },
+    {
+      "parent": 38,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.14789067208766937,
+            -0.03424800559878349,
+            -0.2773002088069916,
+            0.9487149119377136
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "cylinder",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 25,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "right arm",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.3125,
+            0.5,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 83,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "GltfNode15",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 58,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh37",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial9"
+      }
+    },
+    {
+      "parent": 92,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial3",
+        "bevy_mesh::components::Mesh3d": "#Mesh36",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 79,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "circle",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.7697511315345764,
+            -0.23106546700000763,
+            -0.25216370820999146,
+            0.538985550403595
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -0.06032999977469444,
+            2.541992425918579,
+            -0.5599924921989441
+          ]
+        }
+      }
+    },
+    {
+      "parent": 23,
+      "components": {
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial8",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_mesh::components::Mesh3d": "#Mesh38"
+      }
+    },
+    {
+      "parent": 68,
+      "components": {
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.6551001071929932,
+            0.4638090431690216,
+            0.07678081840276718,
+            0.5914640426635742
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.125,
+            -0.3125,
+            0.0625
+          ]
+        }
+      }
+    },
+    {
+      "parent": 21,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial11",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh39"
+      }
+    },
+    {
+      "components": {
+        "jackdaw_jsn::types::GltfSource": {
+          "path": "C:\\Users\\TBmax203\\projects\\rust\\bevy_learn\\MoonTown\\assets\\avatar_model_test_16x16_scale16.gltf",
+          "scene_index": 0
+        },
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            -12.75,
+            2.25,
+            -12.75
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "avatar_model_test_16x16_scale16"
+      }
+    },
+    {
+      "parent": 68,
+      "components": {
+        "bevy_ecs::name::Name": "sphere",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            -0.237685889005661,
+            0.9713420867919922
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.3125,
+            -0.1875,
+            0.375
+          ]
+        }
+      }
+    },
+    {
+      "parent": 71,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            -0.06540312618017197,
+            0.0,
+            0.0,
+            0.9978589415550232
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            1.6875,
+            0.25
+          ]
+        },
+        "bevy_ecs::name::Name": "circle_selection"
+      }
+    },
+    {
+      "parent": 49,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 57,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial3",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh36"
+      }
+    },
+    {
+      "parent": 9,
+      "components": {
+        "bevy_ecs::name::Name": "bave",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.125,
+            -0.1875
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_ecs::name::Name": "cube",
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            64.0,
+            0.0,
+            68.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 119,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "Trunc",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.1875,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            72.0,
+            16.0,
+            -72.0
+          ]
+        },
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_ecs::name::Name": "sphere"
+      }
+    },
+    {
+      "parent": 116,
+      "components": {
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_mesh::components::Mesh3d": "#Mesh3",
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial2",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    },
+    {
+      "parent": 5,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "parent": 86,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial9",
+        "bevy_mesh::components::Mesh3d": "#Mesh40"
+      }
+    },
+    {
+      "parent": 91,
+      "components": {
+        "bevy_camera::visibility::Visibility": "Inherited",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            72.0,
+            4.0,
+            4.0
+          ]
+        },
+        "bevy_ecs::name::Name": "sphere"
+      }
+    },
+    {
+      "parent": 124,
+      "components": {
+        "bevy_pbr::mesh_material::MeshMaterial3d<bevy_pbr::pbr_material::StandardMaterial>": "#StandardMaterial7",
+        "bevy_transform::components::transform::Transform": {
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bevy_ecs::name::Name": "Mesh",
+        "bevy_mesh::components::Mesh3d": "#Mesh41",
+        "bevy_camera::visibility::Visibility": "Inherited"
+      }
+    }
+  ]
+}
