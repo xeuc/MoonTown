@@ -6,7 +6,7 @@ pub struct Anchor;
 
 
 pub const GROUND_TIMER: f32 = 0.5;
-pub const MOVEMENT_SPEED: f32 = 8.0;
+pub const MOVEMENT_SPEED: f32 = 16.0;
 pub const ROTATION_SPEED: f32 = 1.0;
 pub const JUMP_SPEED: f32 = 20.0;
 pub const GRAVITY: f32 = -9.81;
